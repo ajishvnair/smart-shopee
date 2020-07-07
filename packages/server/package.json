@@ -1,0 +1,37 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://steevanvarghese337@gitlab.com/akshaya33/smart-shoppee.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/akshaya33/smart-shoppee/issues"
+  },
+  "homepage": "https://gitlab.com/akshaya33/smart-shoppee#readme",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "gitignore": "^0.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.21",
+    "multer": "^1.4.2",
+    "nodemon": "^2.0.4"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "2.0.5"
+  }
+}
