@@ -1,0 +1,26 @@
+.ufe-menu {
+  line-height: 64px !important;
+  overflow: auto;
+  flex: 1 1 auto;
+  background: transparent !important;
+  justify-content: flex-end;
+  display: flex;
+  overflow: hidden !important;
+  &.ant-menu-horizontal {
+    > .ant-menu-item {
+      font-weight: 500;
+      color: #969da5;
+      border-bottom-color: transparent;
+      &:hover {
+        border-bottom-color: transparent;
+      }
+    }
+    .ant-menu-item-active {
+      border-bottom-color: transparent;
+    }
+    > .ant-menu-item-selected {
+      border-bottom-color: transparent;
+      color: #1a242d;
+    }
+  }
+}
