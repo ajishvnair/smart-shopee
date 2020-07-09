@@ -131,7 +131,9 @@ export default function () {
           handleSave={handleSave}
         />
       )}
-      <Table dataSource={deepClone(categoryList)} columns={columns} />
+      <div className="list-table">
+        <Table dataSource={deepClone(categoryList)} columns={columns} />
+      </div>
     </div>
   );
 }
