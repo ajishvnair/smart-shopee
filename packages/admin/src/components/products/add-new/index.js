@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
-import { Modal, Input, Button, Form, Upload } from "antd";
+import { Modal, Input, Button, Form, Upload, Row, Col } from "antd";
+import TimePicker from "../../custom-components/time-picker";
+
+const { TextArea } = Input;
 
 export default function ({ visibility, handleCancel, handleSave, value }) {
     const [form] = Form.useForm();
@@ -77,12 +80,32 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
                 >
                     <Input />
                 </Form.Item>
+                <Row>
+                    <Col span={12}>
+                        <Form.Item
+                            name={["validity", "startTime"]}
+                            label="Start Time"
+                            rules={[]}
+                        >
+                            <TimePicker format="HH:mm" />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            name={["validity", "endTime"]}
+                            label="Start Time"
+                            rules={[]}
+                        >
+                            <TimePicker format="HH:mm" />
+                        </Form.Item>
+                    </Col>
+                </Row>
                 <Form.Item
                     name={["description"]}
                     label="Description"
                     rules={[]}
                 >
-                    <Input />
+                    <TextArea rows={3} />
                 </Form.Item>
                 <Form.Item name={["image"]} label="Upload an image">
                     <Upload name="logo" action="/upload.do" listType="picture">

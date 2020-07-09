@@ -152,7 +152,9 @@ export const users = [
 export const orders = [
     {
         _id: "o1",
+        accepted: true,
         user: "Ajish",
+        user: "u1",
         location: "686512 parathodu",
         phoneNo: "9876543212",
         totalAmount: "500",

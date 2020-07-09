@@ -52,8 +52,8 @@ export default function (props) {
             newList.push({ ...data });
         }
         setProductList([...newList]);
-        setCurrentElement(null);
         setAddModal(false);
+        setCurrentElement(null);
     };
 
     const handleCancel = () => {

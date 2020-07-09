@@ -74,8 +74,8 @@ export default withRouter(function (props) {
     };
 
     const handleCancel = () => {
-        setCurrentElement(null);
         setAddModal(false);
+        setCurrentElement(null);
     };
 
     const columns = [

@@ -16,8 +16,8 @@ export const productData = {
     sellingPrice: "",
     isDeleted: false,
     validity: {
-        startTime: "",
-        endTime: "",
+        startTime: null,
+        endTime: null,
     },
     description: "",
     image: null,
