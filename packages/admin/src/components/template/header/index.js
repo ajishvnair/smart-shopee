@@ -37,6 +37,8 @@ export default withRouter(function (props) {
                 <Menu.Item key="3" onClick={() => history.push("/location")}>
                     Location
                 </Menu.Item>
+                <Menu.Item key="4">Completed Orders</Menu.Item>
+                <Menu.Item key="5">Users</Menu.Item>
             </Menu>
         </>
     );
