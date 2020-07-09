@@ -30,26 +30,57 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
         >
             <Form form={form}>
                 <Form.Item
-                    name={["categoryNameEnglish"]}
-                    label="Category name in English"
+                    name={["productNameEnglish"]}
+                    label="Category Name in English"
                     rules={[
                         {
                             required: true,
-                            message: "name is rquired",
+                            message: "Name is rquired",
                         },
                     ]}
                 >
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    name={["categoryNameMalayalam"]}
-                    label="Category name in Malayalam"
+                    name={["productNameMalayalam"]}
+                    label="Category Name in Malayalam"
                     rules={[
                         {
                             required: true,
-                            message: "name is rquired",
+                            message: "Name is required",
                         },
                     ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    name={["actualPrice"]}
+                    label="Actual Price"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Actual price is required",
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    name={["sellingPrice"]}
+                    label="Selling Price"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Price is required",
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    name={["description"]}
+                    label="Description"
+                    rules={[]}
                 >
                     <Input />
                 </Form.Item>
