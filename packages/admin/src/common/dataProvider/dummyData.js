@@ -131,3 +131,51 @@ export const products = [
         image: null,
     },
 ];
+
+export const locations = [
+    {
+        _id: "l1",
+        location: "686512 Parathodu",
+    },
+];
+
+export const users = [
+    {
+        _id: "u1",
+        name: "Ajish",
+        phnNo: "9878675643",
+        location: "l1",
+        password: "hgty6754ertyui",
+    },
+];
+
+export const orders = [
+    {
+        _id: "o1",
+        user: "Ajish",
+        location: "686512 parathodu",
+        phoneNo: "9876543212",
+        totalAmount: "500",
+        orderedTime: "03:00",
+        products: [
+            {
+                _id: "p1",
+                productName: "Carrat",
+                quantity: 3,
+                total: "200",
+            },
+            {
+                _id: "p2",
+                productName: "Ginger",
+                quantity: 2,
+                total: "200",
+            },
+            {
+                _id: "p3",
+                productName: "Brinjal",
+                quantity: 4,
+                total: "100",
+            },
+        ],
+    },
+];
