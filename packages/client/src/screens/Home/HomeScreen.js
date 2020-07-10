@@ -4,60 +4,68 @@ import styles from "./styles";
 import { categories } from "../../dataProvider/dataArrays";
 import { getNumberOfRecipes } from "../../dataProvider/MockDataAPI";
 import MenuImage from "../../components/MenuImage/MenuImage";
+import CartImage from "../../components/CartImage";
 
 const HomeScreen = ({ navigation }) => {
-  // static navigationOptions = {
-  //   title: "Home",
-  // };
+    // static navigationOptions = {
+    //   title: "Home",
+    // };
 
-  // constructor(props) {
-  //   super(props);
-  // }
+    // constructor(props) {
+    //   super(props);
+    // }
 
-  const onPressCategory = (item) => {
-    const title = item.name;
-    const category = item;
-    navigation.navigate("Products");
-  };
+    const onPressCategory = (item) => {
+        const title = item.name;
+        const category = item;
+        navigation.navigate("Products");
+    };
 
-  const renderCategory = ({ item }) => (
-    <TouchableHighlight
-      underlayColor="rgba(73,182,77,1,0.9)"
-      onPress={() => onPressCategory(item)}
-    >
-      <View style={styles.categoriesItemContainer}>
-        <Image
-          style={styles.categoriesPhoto}
-          source={{ uri: item.photo_url }}
-        />
-        <Text style={styles.categoriesName}>{item.name}</Text>
-        {/* <Text style={styles.categoriesInfo}>
+    const renderCategory = ({ item }) => (
+        <TouchableHighlight
+            underlayColor="rgba(73,182,77,1,0.9)"
+            onPress={() => onPressCategory(item)}
+        >
+            <View style={styles.categoriesItemContainer}>
+                <Image
+                    style={styles.categoriesPhoto}
+                    source={{ uri: item.photo_url }}
+                />
+                <Text style={styles.categoriesName}>{item.name}</Text>
+                {/* <Text style={styles.categoriesInfo}>
           {getNumberOfRecipes(item.id)} recipes
         </Text> */}
-      </View>
-    </TouchableHighlight>
-  );
+            </View>
+        </TouchableHighlight>
+    );
 
-  return (
-    <View>
-      <FlatList
-        data={categories}
-        renderItem={renderCategory}
-        keyExtractor={(item) => `${item.id}`}
-      />
-    </View>
-  );
+    return (
+        <View>
+            <FlatList
+                data={categories}
+                renderItem={renderCategory}
+                keyExtractor={(item) => `${item.id}`}
+            />
+        </View>
+    );
 };
 
 HomeScreen["navigationOptions"] = ({ navigation }) => ({
-  title: "Home",
-  headerLeft: () => (
-    <MenuImage
-      onPress={() => {
-        navigation.openDrawer();
-      }}
-    />
-  ),
+    title: "Home",
+    headerLeft: () => (
+        <MenuImage
+            onPress={() => {
+                navigation.openDrawer();
+            }}
+        />
+    ),
+    headerRight: () => (
+        <CartImage
+            onPress={() => {
+                navigation.navigate("Cart");
+            }}
+        />
+    ),
 });
 
 export default HomeScreen;

@@ -7,7 +7,7 @@ const cors = require("cors");
 const config = require("config");
 
 const { HOST, mongoURI } = config;
-console.log(mongoURI);
+// console.log(mongoURI);
 
 const mongoose = require("mongoose");
 
