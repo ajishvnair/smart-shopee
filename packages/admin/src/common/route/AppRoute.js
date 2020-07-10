@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
-import Loader from "../loader";
+import Loader from "../loader/ant-loader";
 
 const Category = lazy(() => import("../../components/category"));
 const Products = lazy(() => import("../../components/products"));
