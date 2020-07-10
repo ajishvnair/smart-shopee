@@ -112,9 +112,12 @@ export default withRouter(function (props) {
             dataIndex: "_id",
             key: "_id",
             render: (data) => (
-                <span onClick={() => editCategory(data)}>
-                    <a>Edit</a>
-                </span>
+                <Button
+                    className="edit-button"
+                    onClick={() => editCategory(data)}
+                >
+                    Edit
+                </Button>
             ),
         },
         {
@@ -122,9 +125,13 @@ export default withRouter(function (props) {
             dataIndex: "_id",
             key: "_id",
             render: (data) => (
-                <span onClick={() => deleteCategory(data)}>
-                    <a>Delete</a>
-                </span>
+                <Button
+                    onClick={() => deleteCategory(data)}
+                    type="primary"
+                    danger
+                >
+                    Delete
+                </Button>
             ),
         },
     ];

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Row, Popover } from "antd";
+import { Table, Row, Popover, Button } from "antd";
 import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 import { deepClone } from "../../common/helper/commonMethods";
 import { orders } from "../../common/dataProvider/dummyData";
@@ -18,6 +18,13 @@ export default function () {
     const handleShowProduct = (data) => {
         setCurrentProducts([...data]);
         setShowProduct(true);
+    };
+
+    const deleteOrder = (item) => {
+        const newList = [...deepClone(ordersList)].filter(
+            (order) => order._id !== item
+        );
+        setOrdersList(newList);
     };
 
     const columns = [
@@ -58,7 +65,7 @@ export default function () {
             dataIndex: "products",
             key: "products",
             render: (item, data) => (
-                <Row onClick={() => handleShowProduct(item)}>Click</Row>
+                <Button onClick={() => handleShowProduct(item)}>Click</Button>
             ),
         },
         {
@@ -72,7 +79,7 @@ export default function () {
                 >
                     {({ url }) => (
                         <a
-                            className="button"
+                            className="print-button"
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -81,6 +88,16 @@ export default function () {
                         </a>
                     )}
                 </BlobProvider>
+            ),
+        },
+        {
+            title: "",
+            dataIndex: "_id",
+            key: "_id",
+            render: (item, data) => (
+                <Button onClick={() => deleteOrder(item)} type="primary" danger>
+                    Delete
+                </Button>
             ),
         },
     ];

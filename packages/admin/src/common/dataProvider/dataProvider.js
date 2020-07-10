@@ -22,3 +22,9 @@ export const productData = {
     description: "",
     image: null,
 };
+
+export const locationData = {
+    _id: null,
+    active: false,
+    location: "",
+};

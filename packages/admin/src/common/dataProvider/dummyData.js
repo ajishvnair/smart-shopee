@@ -135,7 +135,27 @@ export const products = [
 export const locations = [
     {
         _id: "l1",
+        active: true,
         location: "686512 Parathodu",
+        charge: "40",
+    },
+    {
+        _id: "l2",
+        active: true,
+        location: "686512 Pulimudu",
+        charge: "40",
+    },
+    {
+        _id: "l3",
+        active: true,
+        location: "686512 Palapra",
+        charge: "40",
+    },
+    {
+        _id: "l4",
+        active: true,
+        location: "686512 Chotti",
+        charge: "40",
     },
 ];
 
@@ -212,7 +232,7 @@ export const orders = [
         ],
     },
     {
-        _id: "o2",
+        _id: "o3",
         accepted: true,
         user: "Ajish",
         userId: "u1",
@@ -242,7 +262,7 @@ export const orders = [
         ],
     },
     {
-        _id: "o2",
+        _id: "o4",
         accepted: true,
         user: "Ajish",
         userId: "u1",
@@ -273,7 +293,7 @@ export const orders = [
         ],
     },
     {
-        _id: "o2",
+        _id: "o5",
         accepted: true,
         user: "Ajish",
         userId: "u1",
@@ -303,7 +323,7 @@ export const orders = [
         ],
     },
     {
-        _id: "o2",
+        _id: "o6",
         accepted: true,
         user: "Ajish",
         userId: "u1",
@@ -333,7 +353,7 @@ export const orders = [
         ],
     },
     {
-        _id: "o2",
+        _id: "o7",
         accepted: true,
         user: "Ajish",
         userId: "u1",
@@ -363,7 +383,7 @@ export const orders = [
         ],
     },
     {
-        _id: "o2",
+        _id: "o8",
         accepted: true,
         user: "Ajish",
         userId: "u1",
@@ -393,7 +413,7 @@ export const orders = [
         ],
     },
     {
-        _id: "o2",
+        _id: "o9",
         accepted: true,
         user: "Ajish",
         userId: "u1",
@@ -423,7 +443,7 @@ export const orders = [
         ],
     },
     {
-        _id: "o2",
+        _id: "o10",
         accepted: true,
         user: "Ajish",
         userId: "u1",
@@ -453,7 +473,7 @@ export const orders = [
         ],
     },
     {
-        _id: "o2",
+        _id: "o11",
         accepted: true,
         user: "Ajish",
         userId: "u1",
@@ -483,7 +503,7 @@ export const orders = [
         ],
     },
     {
-        _id: "o2",
+        _id: "o12",
         accepted: true,
         user: "Ajish",
         userId: "u1",

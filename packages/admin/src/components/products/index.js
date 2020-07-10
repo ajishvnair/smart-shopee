@@ -106,9 +106,12 @@ export default function (props) {
             dataIndex: "_id",
             key: "_id",
             render: (data) => (
-                <span onClick={() => editProduct(data)}>
-                    <a>Edit</a>
-                </span>
+                <Button
+                    className="edit-button"
+                    onClick={() => editProduct(data)}
+                >
+                    Edit
+                </Button>
             ),
         },
         {
@@ -116,9 +119,13 @@ export default function (props) {
             dataIndex: "_id",
             key: "_id",
             render: (data) => (
-                <span onClick={() => deleteProduct(data)}>
-                    <a>Delete</a>
-                </span>
+                <Button
+                    onClick={() => deleteProduct(data)}
+                    type="primary"
+                    danger
+                >
+                    Delete
+                </Button>
             ),
         },
     ];
