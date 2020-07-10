@@ -4,12 +4,16 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const config = require("config");
+
+const { HOST, mongoURI } = config;
+console.log(mongoURI);
 
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/Smart-shoppee", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+mongoose.connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 });
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
@@ -28,4 +32,4 @@ app.use("/uploads", express.static("uploads"));
 app.use(express.static(path.join(__dirname, "public")));
 const apiRouter = require("./src/routes/api");
 app.use("/api/v1", apiRouter);
-app.listen(3001, () => console.log("server started"));
+app.listen(HOST, () => console.log("server started"));
