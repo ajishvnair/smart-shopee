@@ -11,6 +11,7 @@ const { HOST, mongoURI } = config;
 
 const mongoose = require('mongoose');
 console.log('server running....');
+console.log('server running....');
 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
