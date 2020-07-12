@@ -20,4 +20,8 @@ router.post(
     adminController.login
 );
 
+router.post("/auth", adminController.auth, (req, res) => {
+    res.send({ msg: "Authorization successfull" });
+});
+
 module.exports = router;
