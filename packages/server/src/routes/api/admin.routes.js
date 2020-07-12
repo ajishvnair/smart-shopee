@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 
 const Admin = require("../../models/Admin");
 const adminController = require("../../controller/admin.controller");
+const adminAuth = require("../../middlewares/adminAuth");
 
 // for lohin api api/v1/admin/login
 // recive username and password
@@ -20,7 +21,7 @@ router.post(
     adminController.login
 );
 
-router.post("/auth", adminController.auth, (req, res) => {
+router.post("/auth", adminAuth.auth, (req, res) => {
     res.send({ msg: "Authorization successfull" });
 });
 
