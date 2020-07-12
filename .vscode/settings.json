@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "admin",
         "server",
-        "client"
+        "client",
+        "global"
     ]
 }

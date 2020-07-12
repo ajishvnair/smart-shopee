@@ -59,4 +59,6 @@ router.post("/delete/:id", adminAuth.auth, categoryController.delete);
 // for updating status
 router.post("/update/:id", adminAuth.auth, categoryController.updateStatus);
 
+// for listing category
+
 module.exports = router;

@@ -32,7 +32,7 @@ exports.login = async (req, res) => {
 
             res.send({ accessToken });
         } else {
-            return res.status(400).json({ errors: "Incorrect Password" });
+            return res.status(404).json({ errors: "Incorrect Password" });
         }
     });
 };

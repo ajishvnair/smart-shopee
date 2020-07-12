@@ -1,20 +1,46 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Alert } from "antd";
+import { Form, Input, Button, Alert, notification } from "antd";
+import { storageEngine } from "../../../common/helper/commonMethods";
+import { httpProvider } from "../../../common/http";
+import axios from "axios";
 import LoginImage from "../../../images/login.svg";
 import "./login.scss";
 
 export default function ({ setAuthenticated }) {
     const [showAlert, setShowAlert] = useState(false);
+    const [buttonLoader, setButtonLoader] = useState(false);
     const checkLogin = (value) => {
-        if (
-            value.username === "ajishvnair55@gmail.com" &&
-            value.password === "aaa"
-        ) {
-            setAuthenticated(true);
-            setShowAlert(false);
-        } else {
-            setShowAlert(true);
-        }
+        setButtonLoader(true);
+        setShowAlert(false);
+        httpProvider
+            .postAction("api/v1/admin/login", {
+                ...value,
+            })
+            .then((res) => {
+                if (res.status !== 200) {
+                    setShowAlert(true);
+                    setButtonLoader(false);
+                } else {
+                    const { accessToken } = res.data;
+                    storageEngine.set("accessToken", accessToken);
+                    setButtonLoader(false);
+                    setAuthenticated(true);
+                    setShowAlert(false);
+                }
+            })
+            .catch((err) => {
+                setButtonLoader(false);
+                setShowAlert(true);
+            });
+        // if (
+        //     value.username === "ajishvnair55@gmail.com" &&
+        //     value.password === "aaa"
+        // ) {
+        //     setAuthenticated(true);
+        //     setShowAlert(false);
+        // } else {
+        //     setShowAlert(true);
+        // }
     };
     return (
         <div className="base-container">
@@ -60,6 +86,7 @@ export default function ({ setAuthenticated }) {
                 )}
                 <div className="footer">
                     <Button
+                        loading={buttonLoader}
                         type="primary"
                         style={{ marginTop: "5px" }}
                         className="btn"

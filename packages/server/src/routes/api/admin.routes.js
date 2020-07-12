@@ -13,7 +13,7 @@ router.post(
     "/login",
     [
         check("username", "Username is required").isEmail(),
-        check("password", "Password is required").isLength({ min: 5 }),
+        check("password", "Password is required").isString(),
     ],
     adminController.login
 );
