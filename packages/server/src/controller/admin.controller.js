@@ -17,17 +17,22 @@ exports.login = async (req, res) => {
         return res.status(400).json({ errors: "not found" });
     }
     // validating password
-    const salt = await bcryptjs.genSalt(10);
-    const hashedPassword = await bcryptjs.hash(password, salt);
+    // const salt = await bcryptjs.genSalt(10);
+    // const hashedPassword = await bcryptjs.hash(password, salt);
     // checking
-    if (await bcryptjs.compare(user.password, hashedPassword)) {
-        return res.status(400).json({ errors: "Incorrect password" });
-    }
-    // all success send token
-    const accessToken = jwt.sign(
-        { username, password },
-        process.env.ACCESS_TOKEN_SECRET
-    );
+    await bcryptjs.compare(password, user.password, (err, isMatch) => {
+        console.log(err, isMatch);
 
-    res.send({ accessToken });
+        if (isMatch) {
+            // all success send token
+            const accessToken = jwt.sign(
+                { username, password },
+                process.env.ACCESS_TOKEN_SECRET
+            );
+
+            res.send({ accessToken });
+        } else {
+            return res.status(400).json({ errors: "Incorrect Password" });
+        }
+    });
 };
