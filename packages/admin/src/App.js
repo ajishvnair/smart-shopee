@@ -36,7 +36,7 @@ function App() {
         } else {
             setAuthenticating(false);
         }
-    });
+    }, []);
 
     return (
         <div>

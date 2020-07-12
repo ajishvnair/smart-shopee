@@ -116,3 +116,14 @@ exports.updateStatus = async (req, res) => {
         });
     }
 };
+
+exports.getAll = async (req, res) => {
+    try {
+        const categories = await Category.find();
+        res.send({ categories });
+    } catch (err) {
+        return res.status(400).json({
+            errors: "Something went wrong in fetching categories",
+        });
+    }
+};
