@@ -98,3 +98,21 @@ exports.delete = async (req, res) => {
             .json({ errors: "Something went wrong in deleting category" });
     }
 };
+
+exports.updateStatus = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const { active } = req.body;
+        const category = await Category.findOneAndUpdate(
+            { _id: id },
+            {
+                active,
+            }
+        );
+        res.send({ msg: "Status changed successfully" });
+    } catch (err) {
+        return res.status(400).json({
+            errors: "Something went wrong in updating category status",
+        });
+    }
+};
