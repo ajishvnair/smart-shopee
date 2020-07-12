@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+{
+    /** for image uploading */
+}
 const multer = require("multer");
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -31,6 +34,10 @@ const upload = multer({
 const adminAuth = require("../../middlewares/adminAuth");
 const categoryController = require("../../controller/category.controller");
 
+{
+    /**All api s */
+}
+
 // add new category
 router.post(
     "/",
@@ -38,5 +45,7 @@ router.post(
     upload.single("image"),
     categoryController.create
 );
+
+// for editing
 
 module.exports = router;
