@@ -53,5 +53,7 @@ router.post(
     upload.single("image"),
     categoryController.edit
 );
+// for deleting
+router.post("/delete/:id", adminAuth.auth, categoryController.delete);
 
 module.exports = router;
