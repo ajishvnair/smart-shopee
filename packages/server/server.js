@@ -14,6 +14,7 @@ const mongoose = require("mongoose");
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
 });
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));

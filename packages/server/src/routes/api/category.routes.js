@@ -47,5 +47,11 @@ router.post(
 );
 
 // for editing
+router.post(
+    "/:id",
+    adminAuth.auth,
+    upload.single("image"),
+    categoryController.edit
+);
 
 module.exports = router;
