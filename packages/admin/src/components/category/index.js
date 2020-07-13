@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Table, Switch, Button, notification } from "antd";
+import { Table, Switch, Button, notification, Spin } from "antd";
 import { withRouter } from "react-router-dom";
 import { categoryData } from "../../common/dataProvider/dataProvider";
 import { deepClone, toFormData } from "../../common/helper/commonMethods";
 import { protectedHttpProvider, httpProvider } from "../../common/http";
+import { SERVER } from "../../environments/Environments";
 import AddNew from "./add-new";
 
 export default withRouter(function (props) {
     const { history } = props;
+    const [completeLoading, setCompleteLoading] = useState(true);
     const [categoryList, setCategoryList] = useState([]);
     const [addModal, setAddModal] = useState(false);
     const [curreElement, setCurrentElement] = useState(null);
@@ -18,11 +20,13 @@ export default withRouter(function (props) {
             .then((res) => {
                 const { categories } = res.data;
                 setCategoryList([...categories]);
+                setCompleteLoading(false);
             })
             .catch((err) => {
                 notification.error({
                     message: "Error while fetching categories please refresh",
                 });
+                setCompleteLoading(false);
             });
     }, []);
     /**
@@ -31,16 +35,7 @@ export default withRouter(function (props) {
      */
     const changeStatus = useCallback(
         (id, value) => {
-            // let item = [...deepClone(categoryList)].find(
-            //     (cat) => cat._id === id
-            // );
-            // const index = [...deepClone(categoryList)].findIndex(
-            //     (cat) => cat._id === id
-            // );
-            // item.active = !item.active;
-            // const newList = [...deepClone(categoryList)];
-            // newList[index] = item;
-            // setCategoryList([...newList]);
+            setCompleteLoading(true);
             protectedHttpProvider
                 .postAction(`api/v1/category/update/${id}`, { active: value })
                 .then((res) => {
@@ -54,11 +49,13 @@ export default withRouter(function (props) {
                     const newList = [...deepClone(categoryList)];
                     newList[index] = item;
                     setCategoryList([...newList]);
+                    setCompleteLoading(false);
                 })
                 .catch((err) => {
                     notification.error({
                         message: "Error while updating status",
                     });
+                    setCompleteLoading(false);
                 });
         },
         [categoryList]
@@ -68,10 +65,7 @@ export default withRouter(function (props) {
      * @param {*String} id category id
      */
     const deleteCategory = (id) => {
-        // const newList = [...deepClone(categoryList)].filter(
-        //     (cat) => cat._id !== id
-        // );
-        // setCategoryList(newList);
+        setCompleteLoading(true);
         protectedHttpProvider
             .postAction(`api/v1/category/delete/${id}`, {})
             .then((res) => {
@@ -83,12 +77,14 @@ export default withRouter(function (props) {
                         (cat) => cat._id !== id
                     );
                     setCategoryList(newList);
+                    setCompleteLoading(false);
                 }
             })
             .catch((err) => {
                 notification.error({
                     message: "Error while deleting category",
                 });
+                setCompleteLoading(false);
             });
     };
     /**
@@ -112,6 +108,8 @@ export default withRouter(function (props) {
      */
     const handleSave = useCallback(
         (data) => {
+            setAddModal(false);
+            setCompleteLoading(true);
             const newList = [...deepClone(categoryList)];
             if (data._id) {
                 const formData = toFormData(data);
@@ -125,18 +123,20 @@ export default withRouter(function (props) {
                         );
                         newList[index] = { ...category };
                         setCategoryList([...newList]);
-                        setAddModal(false);
+                        // setAddModal(false);
 
                         notification.success({
                             message: "Category Editted successfully",
                         });
+                        setCompleteLoading(false);
                     })
                     .catch((err) => {
                         notification.error({
                             message: "Error while Editting category",
                         });
-                        setAddModal(false);
+                        // setAddModal(false);
                         setCurrentElement(null);
+                        setCompleteLoading(false);
                     });
             } else {
                 const formData = toFormData(data);
@@ -150,14 +150,16 @@ export default withRouter(function (props) {
                         // setting to local
                         newList.push({ ...category });
                         setCategoryList([...newList]);
-                        setAddModal(false);
+                        // setAddModal(false);
+                        setCompleteLoading(false);
                     })
                     .catch((err) => {
                         notification.error({
                             message: "Error while Adding category",
                         });
-                        setAddModal(false);
+                        // setAddModal(false);
                         setCurrentElement(null);
+                        setCompleteLoading(false);
                     });
             }
         },
@@ -202,6 +204,14 @@ export default withRouter(function (props) {
             ),
         },
         {
+            title: "Image",
+            dataIndex: "image",
+            key: "image",
+            render: (item) => (
+                <img className="image" src={`${SERVER}${item}`} alt={item} />
+            ),
+        },
+        {
             title: "",
             dataIndex: "_id",
             key: "_id",
@@ -230,23 +240,28 @@ export default withRouter(function (props) {
         },
     ];
     return (
-        <div className="items-list">
-            <div className="add-button">
-                <Button type="primary" onClick={addCategory}>
-                    + Add New
-                </Button>
+        <Spin size="large" spinning={completeLoading}>
+            <div className="items-list">
+                <div className="add-button">
+                    <Button type="primary" onClick={addCategory}>
+                        + Add New
+                    </Button>
+                </div>
+                {addModal && (
+                    <AddNew
+                        visibility={addModal}
+                        handleCancel={handleCancel}
+                        value={curreElement}
+                        handleSave={handleSave}
+                    />
+                )}
+                <div className="list-table">
+                    <Table
+                        dataSource={deepClone(categoryList)}
+                        columns={columns}
+                    />
+                </div>
             </div>
-            {addModal && (
-                <AddNew
-                    visibility={addModal}
-                    handleCancel={handleCancel}
-                    value={curreElement}
-                    handleSave={handleSave}
-                />
-            )}
-            <div className="list-table">
-                <Table dataSource={deepClone(categoryList)} columns={columns} />
-            </div>
-        </div>
+        </Spin>
     );
 });
