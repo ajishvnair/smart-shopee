@@ -1,8 +1,16 @@
 import axios from "axios";
 import { API_URL } from "../../environments/Environments";
-// import { storeAuthenticate } from './../authentication/storeAuthentication';
+import { storageEngine } from "../helper/commonMethods";
 
 const getBaseUrl = (url) => API_URL + url;
+
+const getHeader = () => {
+    const token = storageEngine.get("accessToken");
+    const headers = {
+        Authorization: token,
+    };
+    return { headers };
+};
 
 export const httpProvider = {
     postAction: (url, payload) =>
@@ -10,6 +18,6 @@ export const httpProvider = {
 };
 
 export const protectedHttpProvider = {
-    postAction: (url, payload, header) =>
-        axios.post(getBaseUrl(url), payload, header).catch((err) => {}),
+    postAction: (url, payload) =>
+        axios.post(getBaseUrl(url), payload, getHeader()).catch((err) => {}),
 };

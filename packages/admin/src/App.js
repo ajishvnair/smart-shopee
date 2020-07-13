@@ -17,12 +17,12 @@ function App() {
 
     useEffect(() => {
         const token = storageEngine.get("accessToken");
-        const headers = {
-            Authorization: token,
-        };
+        // const headers = {
+        //     Authorization: token,
+        // };
         if (token) {
             protectedHttpProvider
-                .postAction("api/v1/admin/auth", {}, { headers })
+                .postAction("api/v1/admin/auth", {})
                 .then((res) => {
                     if (res.status !== 200) {
                         setAuthenticating(false);

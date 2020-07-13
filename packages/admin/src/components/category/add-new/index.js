@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Input, Button, Form, Upload } from "antd";
 
 export default function ({ visibility, handleCancel, handleSave, value }) {
     const [form] = Form.useForm();
+    const [selectedFile, setSelectedFile] = useState(null);
 
     useEffect(() => {
         const { setFieldsValue } = form;
@@ -16,8 +17,16 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
         validateFields().then(() => {
             const formValues = getFieldsValue();
 
-            handleSave({ ...value, ...formValues });
+            handleSave({
+                ...value,
+                ...formValues,
+                image: selectedFile,
+            });
         });
+    };
+
+    const handleImageUplaod = (event) => {
+        setSelectedFile(event.target.files[0]);
     };
 
     return (
@@ -53,11 +62,7 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
                 >
                     <Input />
                 </Form.Item>
-                <Form.Item name={["image"]} label="Upload an image">
-                    <Upload name="logo" action="/upload.do" listType="picture">
-                        <Button>Click to upload</Button>
-                    </Upload>
-                </Form.Item>
+                <input type="file" onChange={handleImageUplaod} />
             </Form>
         </Modal>
     );

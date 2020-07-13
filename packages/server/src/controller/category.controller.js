@@ -14,22 +14,33 @@ exports.create = async (req, res) => {
             isDeleted,
         } = req.body;
 
-        const { path } = req.file;
-
-        const category = new Category({
-            _id: mongoose.Types.ObjectId(),
-            active,
-            categoryNameEnglish,
-            categoryNameMalayalam,
-            image: path,
-            isDeleted,
-        });
-        const image = new Image({
-            _id: category._id,
-            path: path,
-        });
-        await category.save();
-        await image.save();
+        const path = req.file ? req.file.path : undefined;
+        if (path) {
+            const category = new Category({
+                _id: mongoose.Types.ObjectId(),
+                active,
+                categoryNameEnglish,
+                categoryNameMalayalam,
+                image: path,
+                isDeleted,
+            });
+            const image = new Image({
+                _id: category._id,
+                path: path,
+            });
+            await category.save();
+            await image.save();
+        } else {
+            const category = new Category({
+                _id: mongoose.Types.ObjectId(),
+                active,
+                categoryNameEnglish,
+                categoryNameMalayalam,
+                image: null,
+                isDeleted,
+            });
+            await category.save();
+        }
 
         res.send({ msg: "category added successfully" });
     } catch (err) {

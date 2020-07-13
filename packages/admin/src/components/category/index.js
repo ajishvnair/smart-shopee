@@ -3,7 +3,13 @@ import { Table, Switch, Button } from "antd";
 import { withRouter } from "react-router-dom";
 import { category } from "../../common/dataProvider/dummyData";
 import { categoryData } from "../../common/dataProvider/dataProvider";
-import { deepClone, createUUID } from "../../common/helper/commonMethods";
+import {
+    deepClone,
+    createUUID,
+    storageEngine,
+    toFormData,
+} from "../../common/helper/commonMethods";
+import { protectedHttpProvider } from "../../common/http";
 import AddNew from "./add-new";
 
 export default withRouter(function (props) {
@@ -64,9 +70,18 @@ export default withRouter(function (props) {
             const index = categoryList.findIndex((cat) => cat._id === data._id);
             newList[index] = { ...data };
         } else {
-            data._id = createUUID();
-            data.active = true;
-            newList.push(data);
+            // data._id = createUUID();
+            // data.active = true;
+            // newList.push(data);
+            const formData = toFormData(data);
+            protectedHttpProvider
+                .postAction("api/v1/category", formData)
+                .then((res) => {
+                    console.log("success");
+                })
+                .catch((err) => {
+                    console.log("error");
+                });
         }
         setCategoryList([...newList]);
         setAddModal(false);
