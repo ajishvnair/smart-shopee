@@ -107,18 +107,24 @@ exports.edit = async (req, res) => {
 exports.delete = async (req, res) => {
     const { id } = req.params;
     try {
-        await Category.findByIdAndRemove(id);
-        try {
-            const image = await Image.findByIdAndRemove(id);
-            // delete file
-            fs.unlinkSync(image.path);
+        const category = await Category.find({ _id: id });
 
-            res.send({ msg: "category deleted successfully" });
-        } catch (err) {
-            return res
-                .status(400)
-                .json({ errors: "Something went wrong in deleting image" });
+        await Category.findByIdAndRemove(id);
+        // if image does not exist
+        if (category.image) {
+            try {
+                const image = await Image.findByIdAndRemove(id);
+                // delete file
+                fs.unlinkSync(image.path);
+
+                res.send({ msg: "category deleted successfully" });
+            } catch (err) {
+                return res
+                    .status(400)
+                    .json({ errors: "Something went wrong in deleting image" });
+            }
         }
+        res.send({ msg: "category deleted successfully" });
     } catch (err) {
         return res
             .status(400)

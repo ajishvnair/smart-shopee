@@ -68,10 +68,28 @@ export default withRouter(function (props) {
      * @param {*String} id category id
      */
     const deleteCategory = (id) => {
-        const newList = [...deepClone(categoryList)].filter(
-            (cat) => cat._id !== id
-        );
-        setCategoryList(newList);
+        // const newList = [...deepClone(categoryList)].filter(
+        //     (cat) => cat._id !== id
+        // );
+        // setCategoryList(newList);
+        protectedHttpProvider
+            .postAction(`api/v1/category/delete/${id}`, {})
+            .then((res) => {
+                if (res.status === 200) {
+                    notification.success({
+                        message: "Category deleted successfully",
+                    });
+                    const newList = [...deepClone(categoryList)].filter(
+                        (cat) => cat._id !== id
+                    );
+                    setCategoryList(newList);
+                }
+            })
+            .catch((err) => {
+                notification.error({
+                    message: "Error while deleting category",
+                });
+            });
     };
     /**
      * to add category get initial data
