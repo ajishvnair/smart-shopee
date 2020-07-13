@@ -96,7 +96,7 @@ exports.edit = async (req, res) => {
             );
         }
         const newCategory = await Category.find({ _id: id });
-        res.send({ category: newCategory });
+        res.send({ category: newCategory[0] });
     } catch (err) {
         return res
             .status(400)

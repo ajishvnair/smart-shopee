@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Table, Switch, Button, notification } from "antd";
 import { withRouter } from "react-router-dom";
-import { category } from "../../common/dataProvider/dummyData";
 import { categoryData } from "../../common/dataProvider/dataProvider";
 import { deepClone, toFormData } from "../../common/helper/commonMethods";
-import { protectedHttpProvider } from "../../common/http";
+import { protectedHttpProvider, httpProvider } from "../../common/http";
 import AddNew from "./add-new";
 
 export default withRouter(function (props) {
@@ -14,7 +13,17 @@ export default withRouter(function (props) {
     const [curreElement, setCurrentElement] = useState(null);
 
     useEffect(() => {
-        // setCategoryList([...category]);
+        httpProvider
+            .getAction("api/v1/category/all")
+            .then((res) => {
+                const { categories } = res.data;
+                setCategoryList([...categories]);
+            })
+            .catch((err) => {
+                notification.error({
+                    message: "Error while fetching categories please refresh",
+                });
+            });
     }, []);
     /**
      *
@@ -63,10 +72,30 @@ export default withRouter(function (props) {
         (data) => {
             const newList = [...deepClone(categoryList)];
             if (data._id) {
-                const index = categoryList.findIndex(
-                    (cat) => cat._id === data._id
-                );
-                newList[index] = { ...data };
+                const formData = toFormData(data);
+                protectedHttpProvider
+                    .postAction(`api/v1/category/${data._id}`, formData)
+                    .then((res) => {
+                        const { category } = res.data;
+                        // editting category in local
+                        const index = categoryList.findIndex(
+                            (cat) => cat._id === category._id
+                        );
+                        newList[index] = { ...category };
+                        setCategoryList([...newList]);
+                        setAddModal(false);
+
+                        notification.success({
+                            message: "Category Editted successfully",
+                        });
+                    })
+                    .catch((err) => {
+                        notification.error({
+                            message: "Error while Editting category",
+                        });
+                        setAddModal(false);
+                        setCurrentElement(null);
+                    });
             } else {
                 const formData = toFormData(data);
                 protectedHttpProvider
@@ -82,7 +111,9 @@ export default withRouter(function (props) {
                         setAddModal(false);
                     })
                     .catch((err) => {
-                        console.log("error");
+                        notification.error({
+                            message: "Error while Adding category",
+                        });
                         setAddModal(false);
                         setCurrentElement(null);
                     });
