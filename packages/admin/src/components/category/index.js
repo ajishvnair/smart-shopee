@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Table, Switch, Button } from "antd";
+import React, { useEffect, useState, useCallback } from "react";
+import { Table, Switch, Button, notification } from "antd";
 import { withRouter } from "react-router-dom";
 import { category } from "../../common/dataProvider/dummyData";
 import { categoryData } from "../../common/dataProvider/dataProvider";
-import {
-    deepClone,
-    createUUID,
-    storageEngine,
-    toFormData,
-} from "../../common/helper/commonMethods";
+import { deepClone, toFormData } from "../../common/helper/commonMethods";
 import { protectedHttpProvider } from "../../common/http";
 import AddNew from "./add-new";
 
@@ -19,7 +14,7 @@ export default withRouter(function (props) {
     const [curreElement, setCurrentElement] = useState(null);
 
     useEffect(() => {
-        setCategoryList([...category]);
+        // setCategoryList([...category]);
     }, []);
     /**
      *
@@ -64,29 +59,37 @@ export default withRouter(function (props) {
      * otherwise save
      * @param {*Objcet} data full category data
      */
-    const handleSave = (data) => {
-        const newList = [...deepClone(categoryList)];
-        if (data._id) {
-            const index = categoryList.findIndex((cat) => cat._id === data._id);
-            newList[index] = { ...data };
-        } else {
-            // data._id = createUUID();
-            // data.active = true;
-            // newList.push(data);
-            const formData = toFormData(data);
-            protectedHttpProvider
-                .postAction("api/v1/category", formData)
-                .then((res) => {
-                    console.log("success");
-                })
-                .catch((err) => {
-                    console.log("error");
-                });
-        }
-        setCategoryList([...newList]);
-        setAddModal(false);
-        setCurrentElement(null);
-    };
+    const handleSave = useCallback(
+        (data) => {
+            const newList = [...deepClone(categoryList)];
+            if (data._id) {
+                const index = categoryList.findIndex(
+                    (cat) => cat._id === data._id
+                );
+                newList[index] = { ...data };
+            } else {
+                const formData = toFormData(data);
+                protectedHttpProvider
+                    .postAction("api/v1/category", formData)
+                    .then((res) => {
+                        const { category } = res.data;
+                        notification.success({
+                            message: "Category added successfully",
+                        });
+                        // setting to local
+                        newList.push({ ...category });
+                        setCategoryList([...newList]);
+                        setAddModal(false);
+                    })
+                    .catch((err) => {
+                        console.log("error");
+                        setAddModal(false);
+                        setCurrentElement(null);
+                    });
+            }
+        },
+        [categoryList]
+    );
 
     const handleCancel = () => {
         setAddModal(false);
