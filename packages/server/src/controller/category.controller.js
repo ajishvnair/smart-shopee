@@ -57,29 +57,45 @@ exports.edit = async (req, res) => {
             isDeleted,
         } = req.body;
 
-        const { path } = req.file;
         const { id } = req.params;
+        const path = req.file ? req.file.path : undefined;
 
-        const category = await Category.findOneAndUpdate(
-            { _id: id },
-            {
-                active,
-                categoryNameEnglish,
-                categoryNameMalayalam,
-                isDeleted,
-                image: path,
+        if (path) {
+            const category = await Category.findOneAndUpdate(
+                { _id: id },
+                {
+                    active,
+                    categoryNameEnglish,
+                    categoryNameMalayalam,
+                    isDeleted,
+                    image: path,
+                }
+            );
+            try {
+                const image = await Image.findOneAndUpdate(
+                    { _id: id },
+                    { path }
+                );
+                // console.log(image.path);
+                // delete file
+                fs.unlinkSync(image.path);
+            } catch (err) {
+                return res
+                    .status(400)
+                    .json({ errors: "Something went wrong in saving image" });
             }
-        );
-        try {
-            const image = await Image.findOneAndUpdate({ _id: id }, { path });
-            // console.log(image.path);
-            // delete file
-            fs.unlinkSync(image.path);
-        } catch (err) {
-            return res
-                .status(400)
-                .json({ errors: "Something went wrong in saving image" });
+        } else {
+            const category = await Category.findOneAndUpdate(
+                { _id: id },
+                {
+                    active,
+                    categoryNameEnglish,
+                    categoryNameMalayalam,
+                    isDeleted,
+                }
+            );
         }
+
         res.send({ msg: "category editted successfully" });
     } catch (err) {
         return res
