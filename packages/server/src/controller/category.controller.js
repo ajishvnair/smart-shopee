@@ -30,6 +30,7 @@ exports.create = async (req, res) => {
             });
             await category.save();
             await image.save();
+            res.send({ category });
         } else {
             const category = new Category({
                 _id: mongoose.Types.ObjectId(),
@@ -40,9 +41,8 @@ exports.create = async (req, res) => {
                 isDeleted,
             });
             await category.save();
+            res.send({ category });
         }
-
-        res.send({ msg: "category added successfully" });
     } catch (err) {
         return res.status(400).json({ errors: "Something went wrong" });
     }
@@ -95,8 +95,8 @@ exports.edit = async (req, res) => {
                 }
             );
         }
-
-        res.send({ msg: "category editted successfully" });
+        const newCategory = await Category.find({ _id: id });
+        res.send({ category: newCategory });
     } catch (err) {
         return res
             .status(400)
