@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Spin } from "antd";
 import { withRouter } from "react-router-dom";
 import { storageEngine } from "./common/helper/commonMethods";
 import { protectedHttpProvider } from "./common/http";
@@ -28,6 +29,7 @@ function App() {
                         setAuthenticating(false);
                     } else {
                         setAuthenticated(true);
+                        setAuthenticating(false);
                     }
                 })
                 .catch((err) => {
@@ -39,24 +41,28 @@ function App() {
     }, []);
 
     return (
-        <div>
-            {authenticated ? (
-                <>
-                    <Header />
-                    <AppRoute />
-                </>
-            ) : (
-                !authenticating && (
-                    <div className="App">
-                        <div className="login">
-                            <div className="container">
-                                <Login setAuthenticated={setAuthenticated} />
+        <Spin size="large" spinning={authenticating}>
+            <div>
+                {authenticated ? (
+                    <>
+                        <Header />
+                        <AppRoute />
+                    </>
+                ) : (
+                    !authenticating && (
+                        <div className="App">
+                            <div className="login">
+                                <div className="container">
+                                    <Login
+                                        setAuthenticated={setAuthenticated}
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )
-            )}
-        </div>
+                    )
+                )}
+            </div>
+        </Spin>
     );
 }
 
