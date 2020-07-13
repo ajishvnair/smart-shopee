@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 
-const ProducSchema = new mongoose.Schema({
-    categoryId: {
-        type: mongoose.Schema.ObjectId,
-        required: true,
-    },
+const ProductSchema = new mongoose.Schema({
     active: {
         type: Boolean,
         required: true,
         default: false,
+    },
+    categoryId: {
+        type: mongoose.Schema.ObjectId,
+        required: true,
     },
     productNameEnglish: {
         type: String,
@@ -32,8 +32,7 @@ const ProducSchema = new mongoose.Schema({
         default: false,
     },
     validity: {
-        startTime: { type: String },
-        endTime: { type: String },
+        type: Object,
     },
     description: {
         type: String,

@@ -3,7 +3,7 @@ const { validationResult } = require("express-validator");
 const Category = require("../models/Category");
 const Image = require("../models/Image");
 const fs = require("fs");
-const { findOneAndRemove } = require("../models/Category");
+// const { findOneAndRemove } = require("../models/Category");
 // create a category
 exports.create = async (req, res) => {
     try {
@@ -107,9 +107,9 @@ exports.edit = async (req, res) => {
 exports.delete = async (req, res) => {
     const { id } = req.params;
     try {
-        const category = await Category.find({ _id: id });
+        // const category = await Category.find({ _id: id });
 
-        await Category.findByIdAndRemove(id);
+        const category = await Category.findByIdAndRemove(id);
         // if image does not exist
         if (category.image) {
             try {

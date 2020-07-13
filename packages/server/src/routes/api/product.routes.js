@@ -32,8 +32,32 @@ const upload = multer({
 });
 
 const adminAuth = require("../../middlewares/adminAuth");
-const categoryController = require("../../controller/category.controller");
+const productController = require("../../controller/product.controller");
 
 {
     /**All api s */
 }
+// add new category
+router.post(
+    "/",
+    adminAuth.auth,
+    upload.single("image"),
+    productController.create
+);
+// for editing
+router.post(
+    "/:id",
+    adminAuth.auth,
+    upload.single("image"),
+    productController.edit
+);
+// for deleting
+router.post("/delete/:id", adminAuth.auth, productController.delete);
+
+// for updating status
+router.post("/update/:id", adminAuth.auth, productController.updateStatus);
+
+// for listing category
+router.get("/all", productController.getAll);
+
+module.exports = router;
