@@ -42,7 +42,7 @@ function App() {
 
     return (
         <Spin size="large" spinning={authenticating}>
-            <div>
+            <div className="app-container">
                 {authenticated ? (
                     <>
                         <Header />

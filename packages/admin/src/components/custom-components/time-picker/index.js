@@ -3,7 +3,7 @@ import moment from "moment";
 import { TimePicker } from "antd";
 
 export default React.memo(function ({ value, onChange }) {
-    const timeFormat = "mm:ss";
+    const timeFormat = "HH:mm";
     const [time, setTime] = useState(
         value ? moment(value, timeFormat) : undefined
     );
@@ -46,7 +46,7 @@ export default React.memo(function ({ value, onChange }) {
                 onChange={onTimeChange}
                 value={time}
                 style={{ width: "150px" }}
-                placeholder="Minute:Seconds"
+                placeholder="Hour:Minutes"
                 format={timeFormat}
             />
         </span>
