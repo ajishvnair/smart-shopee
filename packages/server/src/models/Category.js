@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const CategorySchema = new mongoose.Schema({
     active: {
-        type: String,
+        type: Boolean,
         required: true,
         default: false,
     },
@@ -18,7 +18,7 @@ const CategorySchema = new mongoose.Schema({
         type: String,
     },
     isDeleted: {
-        type: String,
+        type: Boolean,
         required: true,
         default: false,
     },

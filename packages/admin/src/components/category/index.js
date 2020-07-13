@@ -29,16 +29,40 @@ export default withRouter(function (props) {
      *
      * @param {*String} id category id
      */
-    const changeStatus = (id) => {
-        let item = [...deepClone(categoryList)].find((cat) => cat._id === id);
-        const index = [...deepClone(categoryList)].findIndex(
-            (cat) => cat._id === id
-        );
-        item.active = !item.active;
-        const newList = [...deepClone(categoryList)];
-        newList[index] = item;
-        setCategoryList([...newList]);
-    };
+    const changeStatus = useCallback(
+        (id, value) => {
+            // let item = [...deepClone(categoryList)].find(
+            //     (cat) => cat._id === id
+            // );
+            // const index = [...deepClone(categoryList)].findIndex(
+            //     (cat) => cat._id === id
+            // );
+            // item.active = !item.active;
+            // const newList = [...deepClone(categoryList)];
+            // newList[index] = item;
+            // setCategoryList([...newList]);
+            protectedHttpProvider
+                .postAction(`api/v1/category/update/${id}`, { active: value })
+                .then((res) => {
+                    let item = [...deepClone(categoryList)].find(
+                        (cat) => cat._id === id
+                    );
+                    const index = [...deepClone(categoryList)].findIndex(
+                        (cat) => cat._id === id
+                    );
+                    item.active = value;
+                    const newList = [...deepClone(categoryList)];
+                    newList[index] = item;
+                    setCategoryList([...newList]);
+                })
+                .catch((err) => {
+                    notification.error({
+                        message: "Error while updating status",
+                    });
+                });
+        },
+        [categoryList]
+    );
     /**
      *
      * @param {*String} id category id
@@ -133,7 +157,10 @@ export default withRouter(function (props) {
             dataIndex: "active",
             key: "active",
             render: (item, data) => (
-                <Switch checked={item} onClick={() => changeStatus(data._id)} />
+                <Switch
+                    checked={item}
+                    onClick={(value) => changeStatus(data._id, value)}
+                />
             ),
         },
         {
