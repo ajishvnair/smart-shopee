@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Table, Switch, Button, notification, Spin } from "antd";
+import { Table, Switch, Button, notification, Spin, Modal, Row } from "antd";
 import { withRouter } from "react-router-dom";
 import { categoryData } from "../../common/dataProvider/dataProvider";
 import { deepClone, toFormData } from "../../common/helper/commonMethods";
 import { protectedHttpProvider, httpProvider } from "../../common/http";
 import { SERVER } from "../../environments/Environments";
 import AddNew from "./add-new";
+
+const { confirm } = Modal;
 
 export default withRouter(function (props) {
     const { history } = props;
@@ -65,27 +67,42 @@ export default withRouter(function (props) {
      * @param {*String} id category id
      */
     const deleteCategory = (id) => {
-        setCompleteLoading(true);
-        protectedHttpProvider
-            .postAction(`api/v1/category/delete/${id}`, {})
-            .then((res) => {
-                if (res.status === 200) {
-                    notification.success({
-                        message: "Category deleted successfully",
+        confirm({
+            title: "Please remove all products before deleting Category",
+            // icon: <ExclamationCircleOutlined />,
+            content: (
+                <>
+                    <Row>
+                        Deleting Category with products will messed up Database
+                    </Row>
+                    <Row>Otherwise disable it</Row>
+                </>
+            ),
+            onOk() {
+                setCompleteLoading(true);
+                protectedHttpProvider
+                    .postAction(`api/v1/category/delete/${id}`, {})
+                    .then((res) => {
+                        if (res.status === 200) {
+                            notification.success({
+                                message: "Category deleted successfully",
+                            });
+                            const newList = [...deepClone(categoryList)].filter(
+                                (cat) => cat._id !== id
+                            );
+                            setCategoryList(newList);
+                            setCompleteLoading(false);
+                        }
+                    })
+                    .catch((err) => {
+                        notification.error({
+                            message: "Error while deleting category",
+                        });
+                        setCompleteLoading(false);
                     });
-                    const newList = [...deepClone(categoryList)].filter(
-                        (cat) => cat._id !== id
-                    );
-                    setCategoryList(newList);
-                    setCompleteLoading(false);
-                }
-            })
-            .catch((err) => {
-                notification.error({
-                    message: "Error while deleting category",
-                });
-                setCompleteLoading(false);
-            });
+            },
+            onCancel() {},
+        });
     };
     /**
      * to add category get initial data
