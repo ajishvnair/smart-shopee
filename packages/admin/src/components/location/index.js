@@ -148,8 +148,8 @@ export default withRouter(function (props) {
                             message: "Location added successfully",
                         });
                         // setting to local
-                        newList.push({ ...location });
-                        setLocationsList([...newList]);
+                        // newList.push({ ...location });
+                        setLocationsList([location, ...newList]);
                         // setAddModal(false);
                         setCompleteLoading(false);
                     })

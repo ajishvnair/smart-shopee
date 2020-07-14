@@ -66,7 +66,7 @@ exports.update = async (req, res) => {
 
 exports.all = async (req, res) => {
     try {
-        const locations = await Location.find();
+        const locations = await Location.find().sort({ createdAt: -1 });
         res.send({ locations });
     } catch (err) {
         return res.status(400).json({ errors: "Something went wrong" });

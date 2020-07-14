@@ -187,7 +187,9 @@ exports.updateStatus = async (req, res) => {
 exports.getAll = async (req, res) => {
     try {
         const { id } = req.params;
-        const products = await Product.find({ categoryId: id });
+        const products = await Product.find({ categoryId: id }).sort({
+            createdAt: -1,
+        });
         res.send({ products });
     } catch (err) {
         return res.status(400).json({
