@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Table, Switch, Button, Spin } from "antd";
+import React, { useEffect, useState, useCallback } from "react";
+import { Table, Switch, Button, Spin, notification } from "antd";
 import { withRouter } from "react-router-dom";
 import { locationData } from "../../common/dataProvider/dataProvider";
 import { deepClone, createUUID } from "../../common/helper/commonMethods";
-import { httpProvider } from "../../common/http";
+import { httpProvider, protectedHttpProvider } from "../../common/http";
 import AddNew from "./add-new";
 
 export default withRouter(function (props) {
@@ -15,10 +15,10 @@ export default withRouter(function (props) {
     useEffect(() => {
         // setLocationsList([...locations]);
         httpProvider
-            .getAction("api/v1/category/all")
+            .getAction("/api/v1/location/all")
             .then((res) => {
-                const { categories } = res.data;
-                setCategoryList([...categories]);
+                const { locations } = res.data;
+                setLocationsList([...locations]);
                 setCompleteLoading(false);
             })
             .catch((err) => {
@@ -32,25 +32,60 @@ export default withRouter(function (props) {
      *
      * @param {*String} id category id
      */
-    const changeStatus = (id) => {
-        let item = [...deepClone(locationsList)].find(
-            (location) => location._id === id
-        );
-        const index = [...deepClone(locationsList)].findIndex(
-            (cat) => cat._id === id
-        );
-        item.active = !item.active;
-        const newList = [...deepClone(locationsList)];
-        newList[index] = item;
-        setLocationsList([...newList]);
-    };
+    const changeStatus = useCallback(
+        (id, value) => {
+            setCompleteLoading(true);
+            protectedHttpProvider
+                .postAction(`api/v1/location/update/${id}`, { active: value })
+                .then((res) => {
+                    let item = [...deepClone(locationsList)].find(
+                        (loc) => loc._id === id
+                    );
+                    const index = [...deepClone(locationsList)].findIndex(
+                        (loc) => loc._id === id
+                    );
+                    item.active = value;
+                    const newList = [...deepClone(locationsList)];
+                    newList[index] = item;
+                    setLocationsList([...newList]);
+                    setCompleteLoading(false);
+                })
+                .catch((err) => {
+                    notification.error({
+                        message: "Error while updating status",
+                    });
+                    setCompleteLoading(false);
+                });
+        },
+        [locationsList]
+    );
 
-    const deleteLocation = (id) => {
-        const newList = [...deepClone(locationsList)].filter(
-            (cat) => cat._id !== id
-        );
-        setLocationsList(newList);
-    };
+    const deleteLocation = useCallback(
+        (id) => {
+            setCompleteLoading(true);
+            protectedHttpProvider
+                .postAction(`api/v1/location/delete/${id}`, {})
+                .then((res) => {
+                    if (res.status === 200) {
+                        notification.success({
+                            message: "Location deleted successfully",
+                        });
+                        const newList = [...deepClone(locationsList)].filter(
+                            (loc) => loc._id !== id
+                        );
+                        setLocationsList(newList);
+                        setCompleteLoading(false);
+                    }
+                })
+                .catch((err) => {
+                    notification.error({
+                        message: "Error while deleting location",
+                    });
+                    setCompleteLoading(false);
+                });
+        },
+        [locationsList]
+    );
     /**
      * to add location get initial data
      * and set to current in order to get it in add modal
@@ -72,22 +107,67 @@ export default withRouter(function (props) {
      * otherwise save
      * @param {*Objcet} data full category data
      */
-    const handleSave = (data) => {
-        const newList = [...deepClone(locationsList)];
-        if (data._id) {
-            const index = locationsList.findIndex(
-                (cat) => cat._id === data._id
-            );
-            newList[index] = { ...data };
-        } else {
-            data._id = createUUID();
-            data.active = true;
-            newList.push(data);
-        }
-        setLocationsList([...newList]);
-        setAddModal(false);
-        setCurrentElement(null);
-    };
+    const handleSave = useCallback(
+        (data) => {
+            setAddModal(false);
+            setCompleteLoading(true);
+            const newList = [...deepClone(locationsList)];
+            if (data._id) {
+                // const index = locationsList.findIndex(
+                //     (cat) => cat._id === data._id
+                // );
+                // newList[index] = { ...data };
+                protectedHttpProvider
+                    .postAction(`api/v1/location/${data._id}`, data)
+                    .then((res) => {
+                        const { location } = res.data;
+                        const index = locationsList.findIndex(
+                            (loc) => loc._id === location._id
+                        );
+                        newList[index] = { ...location };
+                        setLocationsList([...newList]);
+                        notification.success({
+                            message: "Location Editted successfully",
+                        });
+                        setCompleteLoading(false);
+                    })
+                    .catch((err) => {
+                        notification.error({
+                            message: "Error while Editting location",
+                        });
+                        // setAddModal(false);
+                        setCurrentElement(null);
+                        setCompleteLoading(false);
+                    });
+            } else {
+                protectedHttpProvider
+                    .postAction("/api/v1/location", data)
+                    .then((res) => {
+                        const { location } = res.data;
+                        notification.success({
+                            message: "Location added successfully",
+                        });
+                        // setting to local
+                        newList.push({ ...location });
+                        setLocationsList([...newList]);
+                        // setAddModal(false);
+                        setCompleteLoading(false);
+                    })
+                    .catch((err) => {
+                        notification.error({
+                            message: "Error while Adding category",
+                        });
+                        // setAddModal(false);
+                        setCurrentElement(null);
+                        setCompleteLoading(false);
+                    });
+            }
+            // setLocationsList([...newList]);
+            // setAddModal(false);
+            // setCurrentElement(null);
+        },
+        [locationsList]
+    );
 
     const handleCancel = () => {
         setAddModal(false);
@@ -100,7 +180,10 @@ export default withRouter(function (props) {
             dataIndex: "active",
             key: "active",
             render: (item, data) => (
-                <Switch checked={item} onClick={() => changeStatus(data._id)} />
+                <Switch
+                    checked={item}
+                    onClick={(value) => changeStatus(data._id, value)}
+                />
             ),
         },
         {
@@ -110,7 +193,7 @@ export default withRouter(function (props) {
         },
         {
             title: "Delivery Charge",
-            dataIndex: "charge",
+            dataIndex: "deliveryCharge",
             key: "charge",
         },
         {
@@ -142,7 +225,7 @@ export default withRouter(function (props) {
         },
     ];
     return (
-        <Spin spinning={completeLoading}>
+        <Spin spinning={completeLoading} size="large">
             <div className="items-list">
                 <div className="add-button">
                     <Button type="primary" onClick={addCategory}>

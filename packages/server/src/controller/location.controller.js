@@ -34,8 +34,7 @@ exports.edit = async (req, res) => {
         );
 
         newLocation = await Location.find({ _id: id });
-
-        res.send({ location: newLocation });
+        res.send({ location: newLocation[0] });
     } catch (err) {
         return res.status(400).json({ errors: "Something went wrong" });
     }
