@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Table, Switch, Button } from "antd";
+import { Table, Switch, Button, Spin } from "antd";
 import { withRouter } from "react-router-dom";
-import { locations } from "../../common/dataProvider/dummyData";
 import { locationData } from "../../common/dataProvider/dataProvider";
 import { deepClone, createUUID } from "../../common/helper/commonMethods";
+import { httpProvider } from "../../common/http";
 import AddNew from "./add-new";
 
 export default withRouter(function (props) {
@@ -11,9 +11,22 @@ export default withRouter(function (props) {
     const [locationsList, setLocationsList] = useState([]);
     const [addModal, setAddModal] = useState(false);
     const [curreElement, setCurrentElement] = useState({});
-
+    const [completeLoading, setCompleteLoading] = useState(true);
     useEffect(() => {
-        setLocationsList([...locations]);
+        // setLocationsList([...locations]);
+        httpProvider
+            .getAction("api/v1/category/all")
+            .then((res) => {
+                const { categories } = res.data;
+                setCategoryList([...categories]);
+                setCompleteLoading(false);
+            })
+            .catch((err) => {
+                notification.error({
+                    message: "Error while fetching categories please refresh",
+                });
+                setCompleteLoading(false);
+            });
     }, []);
     /**
      *
@@ -129,26 +142,28 @@ export default withRouter(function (props) {
         },
     ];
     return (
-        <div className="items-list">
-            <div className="add-button">
-                <Button type="primary" onClick={addCategory}>
-                    + Add New
-                </Button>
+        <Spin spinning={completeLoading}>
+            <div className="items-list">
+                <div className="add-button">
+                    <Button type="primary" onClick={addCategory}>
+                        + Add New
+                    </Button>
+                </div>
+                {addModal && (
+                    <AddNew
+                        visibility={addModal}
+                        handleCancel={handleCancel}
+                        value={curreElement}
+                        handleSave={handleSave}
+                    />
+                )}
+                <div className="list-table">
+                    <Table
+                        dataSource={deepClone(locationsList)}
+                        columns={columns}
+                    />
+                </div>
             </div>
-            {addModal && (
-                <AddNew
-                    visibility={addModal}
-                    handleCancel={handleCancel}
-                    value={curreElement}
-                    handleSave={handleSave}
-                />
-            )}
-            <div className="list-table">
-                <Table
-                    dataSource={deepClone(locationsList)}
-                    columns={columns}
-                />
-            </div>
-        </div>
+        </Spin>
     );
 });

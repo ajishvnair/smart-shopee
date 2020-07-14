@@ -31,18 +31,18 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
             <Form form={form}>
                 <Form.Item
                     name={["location"]}
-                    label="Category name in English"
+                    label="Location"
                     rules={[
                         {
                             required: true,
-                            message: "name is rquired",
+                            message: "location is rquired",
                         },
                     ]}
                 >
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    name={["charge"]}
+                    name={["deliveryCharge"]}
                     label="Delivery Charge"
                     rules={[
                         {

@@ -64,3 +64,12 @@ exports.update = async (req, res) => {
         return res.status(400).json({ errors: "Something went wrong" });
     }
 };
+
+exports.all = async (req, res) => {
+    try {
+        const locations = await Location.find();
+        res.send({ locations });
+    } catch (err) {
+        return res.status(400).json({ errors: "Something went wrong" });
+    }
+};

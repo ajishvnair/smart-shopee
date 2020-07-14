@@ -8,5 +8,6 @@ router.post("/", adminAuth.auth, locationController.create);
 router.post("/:id", adminAuth.auth, locationController.edit);
 router.post("/delete/:id", adminAuth.auth, locationController.delete);
 router.post("/update/:id", adminAuth.auth, locationController.update);
+router.get("/all", locationController.all);
 
 module.exports = router;
