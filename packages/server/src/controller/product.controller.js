@@ -12,7 +12,8 @@ exports.create = async (req, res) => {
             productNameMalayalam,
             actualPrice,
             sellingPrice,
-            validity,
+            startTime,
+            endTime,
             description,
             isDeleted,
         } = req.body;
@@ -27,7 +28,8 @@ exports.create = async (req, res) => {
                 productNameMalayalam,
                 actualPrice,
                 sellingPrice,
-                validity,
+                startTime,
+                endTime,
                 description,
                 isDeleted,
                 image: path,
@@ -48,7 +50,8 @@ exports.create = async (req, res) => {
                 productNameMalayalam,
                 actualPrice,
                 sellingPrice,
-                validity,
+                startTime,
+                endTime,
                 description,
                 isDeleted,
                 image: null,
@@ -70,7 +73,8 @@ exports.edit = async (req, res) => {
             productNameMalayalam,
             actualPrice,
             sellingPrice,
-            validity,
+            startTime,
+            endTime,
             description,
             isDeleted,
         } = req.body;
@@ -88,7 +92,8 @@ exports.edit = async (req, res) => {
                     productNameMalayalam,
                     actualPrice,
                     sellingPrice,
-                    validity,
+                    startTime,
+                    endTime,
                     description,
                     isDeleted,
                     image: path,
@@ -117,7 +122,8 @@ exports.edit = async (req, res) => {
                     productNameMalayalam,
                     actualPrice,
                     sellingPrice,
-                    validity,
+                    startTime,
+                    endTime,
                     description,
                     isDeleted,
                 }
@@ -180,7 +186,8 @@ exports.updateStatus = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     try {
-        const products = await Product.find();
+        const { id } = req.params;
+        const products = await Product.find({ categoryId: id });
         res.send({ products });
     } catch (err) {
         return res.status(400).json({

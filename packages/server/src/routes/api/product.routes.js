@@ -37,7 +37,7 @@ const productController = require("../../controller/product.controller");
 {
     /**All api s */
 }
-// add new category
+// add new product
 router.post(
     "/",
     adminAuth.auth,
@@ -57,7 +57,7 @@ router.post("/delete/:id", adminAuth.auth, productController.delete);
 // for updating status
 router.post("/update/:id", adminAuth.auth, productController.updateStatus);
 
-// for listing category
-router.get("/all", productController.getAll);
+// for listing product
+router.get("/all/:id", productController.getAll);
 
 module.exports = router;

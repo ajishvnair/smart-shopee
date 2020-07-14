@@ -23,7 +23,7 @@ function App() {
         // };
         if (token) {
             protectedHttpProvider
-                .postAction("api/v1/admin/auth", {})
+                .postAction("/api/v1/admin/auth", {})
                 .then((res) => {
                     if (res.status !== 200) {
                         setAuthenticating(false);

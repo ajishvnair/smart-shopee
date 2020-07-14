@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Input, Button, Form, Upload, Row, Col } from "antd";
 import TimePicker from "../../custom-components/time-picker";
 
@@ -6,10 +6,12 @@ const { TextArea } = Input;
 
 export default function ({ visibility, handleCancel, handleSave, value }) {
     const [form] = Form.useForm();
+    const [selectedFile, setSelectedFile] = useState(null);
 
     useEffect(() => {
         const { setFieldsValue } = form;
         setFieldsValue({ ...value });
+        setSelectedFile(null);
     }, [value, form]);
     /**
      * take formValue and merge with formValues
@@ -19,8 +21,16 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
         validateFields().then(() => {
             const formValues = getFieldsValue();
 
-            handleSave({ ...value, ...formValues });
+            handleSave({
+                ...value,
+                ...formValues,
+                image: selectedFile,
+            });
         });
+    };
+
+    const handleImageUplaod = (event) => {
+        setSelectedFile(event.target.files[0]);
     };
 
     return (
@@ -83,7 +93,7 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
                 <Row>
                     <Col span={12}>
                         <Form.Item
-                            name={["validity", "startTime"]}
+                            name={["startTime"]}
                             label="Start Time"
                             rules={[]}
                         >
@@ -92,7 +102,7 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name={["validity", "endTime"]}
+                            name={["endTime"]}
                             label="Start Time"
                             rules={[]}
                         >
@@ -107,11 +117,7 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
                 >
                     <TextArea rows={3} />
                 </Form.Item>
-                <Form.Item name={["image"]} label="Upload an image">
-                    <Upload name="logo" action="/upload.do" listType="picture">
-                        <Button>Click to upload</Button>
-                    </Upload>
-                </Form.Item>
+                <input type="file" onChange={handleImageUplaod} />
             </Form>
         </Modal>
     );

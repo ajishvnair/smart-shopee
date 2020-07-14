@@ -1,33 +1,92 @@
-import React, { useEffect, useState } from "react";
-import { Table, Switch, Button } from "antd";
-import { deepClone, createUUID } from "../../common/helper/commonMethods";
-import { products } from "../../common/dataProvider/dummyData";
+import React, { useEffect, useState, useCallback } from "react";
+import { Table, Switch, Button, Spin, notification } from "antd";
+import {
+    deepClone,
+    createUUID,
+    toFormData,
+} from "../../common/helper/commonMethods";
 import { productData } from "../../common/dataProvider/dataProvider";
+import { protectedHttpProvider, httpProvider } from "../../common/http";
+import { SERVER } from "../../environments/Environments";
 import AddNew from "./add-new";
 
 export default function (props) {
     const [productList, setProductList] = useState([]);
     const [addModal, setAddModal] = useState(false);
     const [curreElement, setCurrentElement] = useState(null);
+    const [completeLoading, setCompleteLoading] = useState(true);
+    const [categoryId, setCategoryId] = useState(null);
 
     useEffect(() => {
         const { id } = props.match.params;
-        const list = products.filter((prod) => prod.categoryId === id);
-        setProductList([...list]);
+        httpProvider
+            .getAction(`/api/v1/product/all/${id}`)
+            .then((res) => {
+                const { products } = res.data;
+                setProductList([...products]);
+                setCompleteLoading(false);
+            })
+            .catch((err) => {
+                notification.error({
+                    message: "Error while fetching products please refresh",
+                });
+                setCompleteLoading(false);
+            });
+        setCategoryId(id);
     }, [props.match.params]);
 
-    const changeProductStatus = (id) => {
-        const product = productList.find((prod) => prod._id === id);
-        const productIndex = productList.findIndex((prod) => prod._id === id);
-        product.active = !product.active;
-        const newProductsList = [...deepClone(productList)];
-        newProductsList[productIndex] = product;
-        setProductList([...newProductsList]);
-    };
+    const changeProductStatus = useCallback(
+        (id, value) => {
+            setCompleteLoading(true);
+            protectedHttpProvider
+                .postAction(`/api/v1/product/update/${id}`, { active: value })
+                .then((res) => {
+                    if (res.status === 200) {
+                        let item = [...deepClone(productList)].find(
+                            (pro) => pro._id === id
+                        );
+                        const index = [...deepClone(productList)].findIndex(
+                            (pro) => pro._id === id
+                        );
+                        item.active = value;
+                        const newList = [...deepClone(productList)];
+                        newList[index] = item;
+                        setProductList([...newList]);
+                        setCompleteLoading(false);
+                    }
+                })
+                .catch((err) => {
+                    notification.error({
+                        message: "Error while updating status",
+                    });
+                    setCompleteLoading(false);
+                });
+        },
+        [productList]
+    );
 
     const deleteProduct = (id) => {
-        const newList = [...productList].filter((prod) => prod._id !== id);
-        setProductList([...newList]);
+        setCompleteLoading(true);
+        protectedHttpProvider
+            .postAction(`/api/v1/product/delete/${id}`, {})
+            .then((res) => {
+                if (res.status === 200) {
+                    notification.success({
+                        message: "Product deleted successfully",
+                    });
+                    const newList = [...deepClone(productList)].filter(
+                        (pro) => pro._id !== id
+                    );
+                    setProductList(newList);
+                    setCompleteLoading(false);
+                }
+            })
+            .catch((err) => {
+                notification.error({
+                    message: "Error while deleting category",
+                });
+                setCompleteLoading(false);
+            });
     };
 
     const editProduct = (id) => {
@@ -41,20 +100,67 @@ export default function (props) {
         setAddModal(true);
     };
 
-    const handleSave = (data) => {
-        const newList = [...deepClone(productList)];
-        if (data._id) {
-            const index = newList.findIndex((prod) => prod._id === data._id);
-            newList[index] = { ...data };
-        } else {
-            data._id = createUUID();
-            data.active = true;
-            newList.push({ ...data });
-        }
-        setProductList([...newList]);
-        setAddModal(false);
-        setCurrentElement(null);
-    };
+    const handleSave = useCallback(
+        (data) => {
+            const newList = [...deepClone(productList)];
+            setCompleteLoading(true);
+            if (data._id) {
+                const formData = toFormData({ ...data, categoryId });
+                protectedHttpProvider
+                    .postAction(`/api/v1/product/${data._id}`, formData)
+                    .then((res) => {
+                        const { product } = res.data;
+                        // editting category in local
+                        const index = productList.findIndex(
+                            (pro) => pro._id === product._id
+                        );
+                        newList[index] = { ...product };
+                        setProductList([...newList]);
+                        // setAddModal(false);
+
+                        notification.success({
+                            message: "Category Editted successfully",
+                        });
+                        setCompleteLoading(false);
+                    })
+                    .catch((err) => {
+                        notification.error({
+                            message: "Error while Editting product",
+                        });
+                        // setAddModal(false);
+                        setCurrentElement(null);
+                        setCompleteLoading(false);
+                    });
+            } else {
+                const formData = toFormData({ ...data, categoryId });
+                protectedHttpProvider
+                    .postAction("/api/v1/product", formData)
+                    .then((res) => {
+                        const { product } = res.data;
+                        notification.success({
+                            message: "Product added successfully",
+                        });
+                        // setting to local
+                        newList.push({ ...product });
+                        setProductList([...newList]);
+                        // setAddModal(false);
+                        setCompleteLoading(false);
+                    })
+                    .catch((err) => {
+                        notification.error({
+                            message: "Error while Adding category",
+                        });
+                        // setAddModal(false);
+                        setCurrentElement(null);
+                        setCompleteLoading(false);
+                    });
+            }
+            setProductList([...newList]);
+            setAddModal(false);
+            setCurrentElement(null);
+        },
+        [productList]
+    );
 
     const handleCancel = () => {
         setAddModal(false);
@@ -69,7 +175,7 @@ export default function (props) {
             render: (item, data) => (
                 <Switch
                     checked={item}
-                    onClick={() => changeProductStatus(data._id)}
+                    onClick={(value) => changeProductStatus(data._id, value)}
                 />
             ),
         },
@@ -95,10 +201,25 @@ export default function (props) {
         },
         {
             title: "Validity",
-            dataIndex: "validity",
-            key: "validity",
+            dataIndex: "startTime",
+            key: "startTime",
+            render: (item, data) => (
+                <span>
+                    {data.startTime &&
+                    data.startTime !== "undefined" &&
+                    data.endTime &&
+                    data.startTime !== "undefined"
+                        ? `${data.startTime} ${data.endTime}`
+                        : `Not set`}
+                </span>
+            ),
+        },
+        {
+            title: "Image",
+            dataIndex: "image",
+            key: "image",
             render: (item) => (
-                <span>{`${item.startTime} ${item.endTime}`}</span>
+                <img className="image" src={`${SERVER}${item}`} alt={item} />
             ),
         },
         {
@@ -130,23 +251,28 @@ export default function (props) {
         },
     ];
     return (
-        <div className="items-list">
-            <div className="add-button">
-                <Button type="primary" onClick={addProduct}>
-                    + Add New
-                </Button>
+        <Spin size="large" spinning={completeLoading}>
+            <div className="items-list">
+                <div className="add-button">
+                    <Button type="primary" onClick={addProduct}>
+                        + Add New
+                    </Button>
+                </div>
+                {addModal && (
+                    <AddNew
+                        visibility={addModal}
+                        handleCancel={handleCancel}
+                        value={curreElement}
+                        handleSave={handleSave}
+                    />
+                )}
+                <div className="list-table">
+                    <Table
+                        dataSource={deepClone(productList)}
+                        columns={columns}
+                    />
+                </div>
             </div>
-            {addModal && (
-                <AddNew
-                    visibility={addModal}
-                    handleCancel={handleCancel}
-                    value={curreElement}
-                    handleSave={handleSave}
-                />
-            )}
-            <div className="list-table">
-                <Table dataSource={deepClone(productList)} columns={columns} />
-            </div>
-        </div>
+        </Spin>
     );
 }

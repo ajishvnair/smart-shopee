@@ -28,12 +28,17 @@ const ProductSchema = new mongoose.Schema({
     },
     isDeleted: {
         type: Boolean,
-        required: true,
         default: false,
     },
-    validity: {
-        type: Object,
+    startTime: {
+        type: String,
+        default: null,
     },
+    endTime: {
+        type: String,
+        default: null,
+    },
+
     description: {
         type: String,
     },
