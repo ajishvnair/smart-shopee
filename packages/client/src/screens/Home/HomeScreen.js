@@ -26,15 +26,16 @@ const HomeScreen = ({ navigation }) => {
     const onPressCategory = (item) => {
         const title = item.name;
         const category = item;
-        navigation.navigate("Products");
+        navigation.navigate("Products", { id: item._id });
     };
 
     const renderCategory = ({ item }) => (
         <TouchableHighlight
             underlayColor="rgba(73,182,77,1,0.9)"
             onPress={() => onPressCategory(item)}
+            key={item._id}
         >
-            <View style={styles.categoriesItemContainer}>
+            <View style={styles.categoriesItemContainer} key={item._id}>
                 <Image
                     style={styles.categoriesPhoto}
                     source={{
@@ -57,7 +58,7 @@ const HomeScreen = ({ navigation }) => {
             <FlatList
                 data={categories}
                 renderItem={renderCategory}
-                keyExtractor={(item) => `${item.id}`}
+                keyExtractor={(item) => `${item._id}`}
             />
         </View>
     );

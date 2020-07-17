@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     FlatList,
     ScrollView,
@@ -7,6 +7,7 @@ import {
     TouchableHighlight,
     Image,
 } from "react-native";
+import axios from 'axios';
 import styles from "./styles";
 import { recipes } from "../../dataProvider/dataArrays";
 // import MenuImage from "../../components/MenuImage/MenuImage";
@@ -15,6 +16,23 @@ import { getCategoryName } from "../../dataProvider/MockDataAPI";
 import CartImage from "../../components/CartImage";
 
 const ProductsScreen = ({ navigation }) => {
+
+    const [productList, setProductList] = useState([]);
+
+    const id = navigation.getParam('id', 1);
+    useEffect(() => {
+        axios
+            .get(`http://127.0.0.1:3001/api/v1/product/all/${id}`)
+            .then((res) => {
+                const { products } = res.data;
+                setProductList([...products]);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+    }, [id])
+
     onPressRecipe = (item) => {
         navigation.navigate("Product", { item });
     };
@@ -25,8 +43,8 @@ const ProductsScreen = ({ navigation }) => {
             onPress={() => onPressRecipe(item)}
         >
             <View style={styles.container}>
-                <Image style={styles.photo} source={{ uri: item.photo_url }} />
-                <Text style={styles.title}>{item.title}</Text>
+                <Image style={styles.photo} source={{ uri: item.image }} />
+                <Text style={styles.title}>{item.productNameEnglish}</Text>
                 <Text style={styles.discountPrice}>
                     ₹ 100<Text style={styles.actualPrice}> ₹ 150</Text>{" "}
                     <Text style={styles.unit}>/kg</Text>
@@ -41,9 +59,9 @@ const ProductsScreen = ({ navigation }) => {
                 vertical
                 showsVerticalScrollIndicator={false}
                 numColumns={2}
-                data={recipes}
+                data={[...productList]}
                 renderItem={renderProducts}
-                keyExtractor={(item) => `${item.recipeId}`}
+                keyExtractor={(item) => `${item._id}`}
             />
         </View>
     );
