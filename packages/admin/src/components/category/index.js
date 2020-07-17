@@ -213,7 +213,7 @@ export default withRouter(function (props) {
         {
             title: "Category(Malayalam)",
             dataIndex: "categoryNameMalayalam",
-            key: "categoryNameEnglish",
+            key: "categoryNameMalayalam",
             render: (item, data) => (
                 <span onClick={() => history.push(`/products/${data._id}`)}>
                     {item}

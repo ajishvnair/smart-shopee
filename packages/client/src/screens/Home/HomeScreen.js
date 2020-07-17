@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, Text, View, Image, TouchableHighlight } from "react-native";
 import styles from "./styles";
-import { categories } from "../../dataProvider/dataArrays";
-import { getNumberOfRecipes } from "../../dataProvider/MockDataAPI";
+// import { categories } from "../../dataProvider/dataArrays";
+// import { getNumberOfRecipes } from "../../dataProvider/MockDataAPI";
+import axios from "axios";
 import MenuImage from "../../components/MenuImage/MenuImage";
 import CartImage from "../../components/CartImage";
 
 const HomeScreen = ({ navigation }) => {
-    // static navigationOptions = {
-    //   title: "Home",
-    // };
-
-    // constructor(props) {
-    //   super(props);
-    // }
+    // for storing category
+    const [categories, setCategories] = useState([]);
+    // for fetching data
+    useEffect(() => {
+        axios
+            .get("http://127.0.0.1:3001/api/v1/category/all")
+            .then((res) => {
+                const { categories } = res.data;
+                setCategories([...categories]);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
     const onPressCategory = (item) => {
         const title = item.name;
@@ -29,9 +37,14 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.categoriesItemContainer}>
                 <Image
                     style={styles.categoriesPhoto}
-                    source={{ uri: item.photo_url }}
+                    source={{
+                        uri:
+                            "https://www.telegraph.co.uk/content/dam/Travel/2019/January/france-food.jpg?imwidth=1400",
+                    }}
                 />
-                <Text style={styles.categoriesName}>{item.name}</Text>
+                <Text style={styles.categoriesName}>
+                    {item.categoryNameEnglish}
+                </Text>
                 {/* <Text style={styles.categoriesInfo}>
           {getNumberOfRecipes(item.id)} recipes
         </Text> */}
