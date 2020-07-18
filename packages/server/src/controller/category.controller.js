@@ -3,6 +3,16 @@ const Category = require("../models/Category");
 const Image = require("../models/Image");
 const fs = require("fs");
 
+const cloudinary = require("cloudinary").v2;
+
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+
 exports.create = async (req, res) => {
     try {
         const {
@@ -12,37 +22,36 @@ exports.create = async (req, res) => {
             isDeleted,
         } = req.body;
 
-        res.send({ url: req.file });
+        const filePath = req.file ? req.file.path : undefined;
 
-        // const filePath = req.file ? req.file.path : undefined;
-        // if (filePath) {
-        //     const category = new Category({
-        //         _id: mongoose.Types.ObjectId(),
-        //         active,
-        //         categoryNameEnglish,
-        //         categoryNameMalayalam,
-        //         image: filePath,
-        //         isDeleted,
-        //     });
-        //     const image = new Image({
-        //         _id: category._id,
-        //         path: filePath,
-        //     });
-        //     await category.save();
-        //     await image.save();
-        //     res.send({ category });
-        // } else {
-        //     const category = new Category({
-        //         _id: mongoose.Types.ObjectId(),
-        //         active,
-        //         categoryNameEnglish,
-        //         categoryNameMalayalam,
-        //         image: null,
-        //         isDeleted,
-        //     });
-        //     await category.save();
-        //     res.send({ category });
-        // }
+        if (filePath) {
+            const category = new Category({
+                _id: mongoose.Types.ObjectId(),
+                active,
+                categoryNameEnglish,
+                categoryNameMalayalam,
+                image: filePath,
+                isDeleted,
+            });
+            const image = new Image({
+                _id: category._id,
+                path: req.file.filename,
+            });
+            await category.save();
+            await image.save();
+            res.send({ category });
+        } else {
+            const category = new Category({
+                _id: mongoose.Types.ObjectId(),
+                active,
+                categoryNameEnglish,
+                categoryNameMalayalam,
+                image: null,
+                isDeleted,
+            });
+            await category.save();
+            res.send({ category });
+        }
     } catch (err) {
         return res.status(400).json({ errors: "Something went wrong" });
     }
@@ -58,45 +67,45 @@ exports.edit = async (req, res) => {
         } = req.body;
 
         const { id } = req.params;
-        // const filePath = req.file ? req.file.path : undefined;
+        const filePath = req.file ? req.file.path : undefined;
 
-        // if (filePath) {
-        //     const category = await Category.findOneAndUpdate(
-        //         { _id: id },
-        //         {
-        //             active,
-        //             categoryNameEnglish,
-        //             categoryNameMalayalam,
-        //             isDeleted,
-        //             image: filePath,
-        //         }
-        //     );
-        //     try {
-        //         const image = await Image.findOneAndUpdate(
-        //             { _id: id },
-        //             { filePath }
-        //         );
-        //         // console.log(image.path);
-        //         // delete file
-        //         fs.unlinkSync(image.path);
-        //     } catch (err) {
-        //         return res
-        //             .status(400)
-        //             .json({ errors: "Something went wrong in saving image" });
-        //     }
-        // } else {
-        //     const category = await Category.findOneAndUpdate(
-        //         { _id: id },
-        //         {
-        //             active,
-        //             categoryNameEnglish,
-        //             categoryNameMalayalam,
-        //             isDeleted,
-        //         }
-        //     );
-        // }
-        // const newCategory = await Category.find({ _id: id });
-        // res.send({ category: newCategory[0] });
+        if (filePath) {
+            const category = await Category.findOneAndUpdate(
+                { _id: id },
+                {
+                    active,
+                    categoryNameEnglish,
+                    categoryNameMalayalam,
+                    isDeleted,
+                    image: filePath,
+                }
+            );
+            try {
+                const image = await Image.findOneAndUpdate(
+                    { _id: id },
+                    { path: req.file.filename }
+                );
+                // delete file
+                await cloudinary.uploader.destroy(`${image.path}`);
+
+            } catch (err) {
+                return res
+                    .status(400)
+                    .json({ errors: "Something went wrong in saving image" });
+            }
+        } else {
+            const category = await Category.findOneAndUpdate(
+                { _id: id },
+                {
+                    active,
+                    categoryNameEnglish,
+                    categoryNameMalayalam,
+                    isDeleted,
+                }
+            );
+        }
+        const newCategory = await Category.find({ _id: id });
+        res.send({ category: newCategory[0] });
     } catch (err) {
         return res
             .status(400)
@@ -115,8 +124,7 @@ exports.delete = async (req, res) => {
             try {
                 const image = await Image.findByIdAndRemove(id);
                 // delete file
-                fs.unlinkSync(image.path);
-
+                await cloudinary.uploader.destroy(`${image.path}`);
                 res.send({ msg: "category deleted successfully" });
             } catch (err) {
                 return res

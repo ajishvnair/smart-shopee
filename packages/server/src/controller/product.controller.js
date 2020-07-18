@@ -3,6 +3,15 @@ const Product = require("../models/Product");
 const Image = require("../models/Image");
 const fs = require("fs");
 
+const cloudinary = require("cloudinary").v2;
+
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 exports.create = async (req, res) => {
     try {
         const {
@@ -36,7 +45,7 @@ exports.create = async (req, res) => {
             });
             const image = new Image({
                 _id: product._id,
-                path: path,
+                path: req.file.filename,
             });
             await product.save();
             await image.save();
@@ -104,9 +113,8 @@ exports.edit = async (req, res) => {
                     { _id: id },
                     { path }
                 );
-                // console.log(image.path);
                 // delete file
-                fs.unlinkSync(image.path);
+                await cloudinary.uploader.destroy(`${image.path}`);
             } catch (err) {
                 return res
                     .status(400)
@@ -149,7 +157,7 @@ exports.delete = async (req, res) => {
             try {
                 const image = await Image.findByIdAndRemove(id);
                 // delete file
-                fs.unlinkSync(image.path);
+                await cloudinary.uploader.destroy(`${image.path}`);
 
                 res.send({ msg: "Product deleted successfully" });
             } catch (err) {
