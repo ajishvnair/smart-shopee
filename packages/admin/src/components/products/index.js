@@ -224,7 +224,7 @@ export default function (props) {
             dataIndex: "image",
             key: "image",
             render: (item) => (
-                <img className="image" src={`${SERVER}${item}`} alt={item} />
+                <img className="image" src={`${item}`} alt={item} />
             ),
         },
         {
