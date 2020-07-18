@@ -7,7 +7,7 @@ import {
     TouchableHighlight,
     Image,
 } from "react-native";
-import axios from 'axios';
+import http from '../../common/http';
 import styles from "./styles";
 import { recipes } from "../../dataProvider/dataArrays";
 // import MenuImage from "../../components/MenuImage/MenuImage";
@@ -21,8 +21,8 @@ const ProductsScreen = ({ navigation }) => {
 
     const id = navigation.getParam('id', 1);
     useEffect(() => {
-        axios
-            .get(`http://127.0.0.1:3001/api/v1/product/all/${id}`)
+        http
+            .getAction(`api/v1/product/all/${id}`)
             .then((res) => {
                 const { products } = res.data;
                 setProductList([...products]);
@@ -45,9 +45,10 @@ const ProductsScreen = ({ navigation }) => {
             <View style={styles.container}>
                 <Image style={styles.photo} source={{ uri: item.image }} />
                 <Text style={styles.title}>{item.productNameEnglish}</Text>
+                <Text style={styles.title}>{item.productNameMalayalam}</Text>
                 <Text style={styles.discountPrice}>
-                    ₹ 100<Text style={styles.actualPrice}> ₹ 150</Text>{" "}
-                    <Text style={styles.unit}>/kg</Text>
+                    ₹ {item.sellingPrice}<Text style={styles.actualPrice}> ₹ {item.actualPrice}</Text>{" "}
+                    <Text style={styles.unit}>{item.unit}</Text>
                 </Text>
             </View>
         </TouchableHighlight>

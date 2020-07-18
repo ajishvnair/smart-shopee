@@ -3,7 +3,7 @@ import { FlatList, Text, View, Image, TouchableHighlight } from "react-native";
 import styles from "./styles";
 // import { categories } from "../../dataProvider/dataArrays";
 // import { getNumberOfRecipes } from "../../dataProvider/MockDataAPI";
-import axios from "axios";
+import http from '../../common/http';
 import MenuImage from "../../components/MenuImage/MenuImage";
 import CartImage from "../../components/CartImage";
 
@@ -12,8 +12,8 @@ const HomeScreen = ({ navigation }) => {
     const [categories, setCategories] = useState([]);
     // for fetching data
     useEffect(() => {
-        axios
-            .get("http://127.0.0.1:3001/api/v1/category/all")
+        http
+            .getAction("api/v1/category/all")
             .then((res) => {
                 const { categories } = res.data;
                 setCategories([...categories]);
