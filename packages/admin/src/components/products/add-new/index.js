@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Input, Button, Form, Upload, Row, Col } from "antd";
+import { Modal, Input, Select, Form, Row, Col } from "antd";
 import TimePicker from "../../custom-components/time-picker";
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 export default function ({ visibility, handleCancel, handleSave, value }) {
     const [form] = Form.useForm();
@@ -67,6 +68,21 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
                     <Input />
                 </Form.Item>
                 <Form.Item
+                    name={["unit"]}
+                    label="Unit"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Unit is required",
+                        },
+                    ]}
+                >
+                    <Select>
+                        <Option value="kg">Kg</Option>
+                        <Option value="litre">Litre</Option>
+                    </Select>
+                </Form.Item>
+                <Form.Item
                     name={["actualPrice"]}
                     label="Actual Price"
                     rules={[
@@ -87,6 +103,12 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
                             message: "Price is required",
                         },
                     ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    name={["priority"]}
+                    label="Priority"
                 >
                     <Input />
                 </Form.Item>

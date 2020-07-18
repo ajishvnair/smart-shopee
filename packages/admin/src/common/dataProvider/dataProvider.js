@@ -4,6 +4,7 @@ export const categoryData = {
     image: null,
     status: false,
     isDeleted: false,
+    priority: null,
 };
 
 export const productData = {
@@ -12,6 +13,7 @@ export const productData = {
     active: false,
     productNameEnglish: "",
     productNameMalayalam: "",
+    unit: "kg",
     actualPrice: "",
     sellingPrice: "",
     isDeleted: false,
@@ -21,6 +23,7 @@ export const productData = {
     },
     description: "",
     image: null,
+    priority: null,
 };
 
 export const locationData = {
