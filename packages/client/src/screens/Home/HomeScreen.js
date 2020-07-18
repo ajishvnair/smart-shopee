@@ -40,15 +40,16 @@ const HomeScreen = ({ navigation }) => {
                     style={styles.categoriesPhoto}
                     source={{
                         uri:
-                            "https://res.cloudinary.com/dkwvxrstj/image/upload/v1595048686/jg4gc2m3cikjj2roe4xj.jpg",
+                            `${item.image}`,
                     }}
                 />
                 <Text style={styles.categoriesName}>
                     {item.categoryNameEnglish}
                 </Text>
-                {/* <Text style={styles.categoriesInfo}>
-          {getNumberOfRecipes(item.id)} recipes
-        </Text> */}
+
+                <Text style={styles.categoriesInfo}>
+                    {item.categoryNameMalayalam}
+                </Text>
             </View>
         </TouchableHighlight>
     );

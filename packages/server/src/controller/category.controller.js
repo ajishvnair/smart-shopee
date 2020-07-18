@@ -20,6 +20,7 @@ exports.create = async (req, res) => {
             categoryNameEnglish,
             categoryNameMalayalam,
             isDeleted,
+            priority,
         } = req.body;
 
         const filePath = req.file ? req.file.path : undefined;
@@ -31,6 +32,7 @@ exports.create = async (req, res) => {
                 categoryNameEnglish,
                 categoryNameMalayalam,
                 image: filePath,
+                priority,
                 isDeleted,
             });
             const image = new Image({
@@ -47,6 +49,7 @@ exports.create = async (req, res) => {
                 categoryNameEnglish,
                 categoryNameMalayalam,
                 image: null,
+                priority,
                 isDeleted,
             });
             await category.save();
@@ -64,6 +67,7 @@ exports.edit = async (req, res) => {
             categoryNameEnglish,
             categoryNameMalayalam,
             isDeleted,
+            priority,
         } = req.body;
 
         const { id } = req.params;
@@ -77,6 +81,7 @@ exports.edit = async (req, res) => {
                     categoryNameEnglish,
                     categoryNameMalayalam,
                     isDeleted,
+                    priority,
                     image: filePath,
                 }
             );
@@ -101,6 +106,7 @@ exports.edit = async (req, res) => {
                     categoryNameEnglish,
                     categoryNameMalayalam,
                     isDeleted,
+                    priority,
                 }
             );
         }
@@ -160,7 +166,7 @@ exports.updateStatus = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     try {
-        const categories = await Category.find().sort({ createdAt: -1 });
+        const categories = await Category.find().sort({ priority: -1 });
         res.send({ categories });
     } catch (err) {
         return res.status(400).json({

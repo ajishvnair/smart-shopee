@@ -101,7 +101,7 @@ export default withRouter(function (props) {
                         setCompleteLoading(false);
                     });
             },
-            onCancel() {},
+            onCancel() { },
         });
     };
     /**
@@ -225,7 +225,7 @@ export default withRouter(function (props) {
             dataIndex: "image",
             key: "image",
             render: (item) => (
-                <img className="image" src={`${SERVER}${item}`} alt={item} />
+                <img className="image" src={`${item}`} alt={item} />
             ),
         },
         {
