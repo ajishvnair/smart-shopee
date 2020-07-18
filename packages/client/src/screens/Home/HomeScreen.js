@@ -40,7 +40,7 @@ const HomeScreen = ({ navigation }) => {
                     style={styles.categoriesPhoto}
                     source={{
                         uri:
-                            "https://www.telegraph.co.uk/content/dam/Travel/2019/January/france-food.jpg?imwidth=1400",
+                            "https://res.cloudinary.com/dkwvxrstj/image/upload/v1595048686/jg4gc2m3cikjj2roe4xj.jpg",
                     }}
                 />
                 <Text style={styles.categoriesName}>

@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const config = require("config");
 
+// const { cloudinaryConfig } = require("./config/cloudinaryConfig");
+
 const { HOST, mongoURI } = config;
 // console.log(mongoURI);
 
@@ -21,6 +23,7 @@ db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));
 
 const app = express();
+// app.use("*", cloudinaryConfig);
 
 // app.use(cors());
 
