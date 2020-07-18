@@ -19,12 +19,14 @@ exports.create = async (req, res) => {
             categoryId,
             productNameEnglish,
             productNameMalayalam,
+            unit,
             actualPrice,
             sellingPrice,
             startTime,
             endTime,
             description,
             isDeleted,
+            priority,
         } = req.body;
 
         const path = req.file ? req.file.path : undefined;
@@ -35,6 +37,7 @@ exports.create = async (req, res) => {
                 categoryId,
                 productNameEnglish,
                 productNameMalayalam,
+                unit,
                 actualPrice,
                 sellingPrice,
                 startTime,
@@ -42,6 +45,7 @@ exports.create = async (req, res) => {
                 description,
                 isDeleted,
                 image: path,
+                priority,
             });
             const image = new Image({
                 _id: product._id,
@@ -57,6 +61,7 @@ exports.create = async (req, res) => {
                 categoryId,
                 productNameEnglish,
                 productNameMalayalam,
+                unit,
                 actualPrice,
                 sellingPrice,
                 startTime,
@@ -64,6 +69,7 @@ exports.create = async (req, res) => {
                 description,
                 isDeleted,
                 image: null,
+                priority,
             });
             await product.save();
             res.send({ product });
@@ -80,12 +86,14 @@ exports.edit = async (req, res) => {
             categoryId,
             productNameEnglish,
             productNameMalayalam,
+            unit,
             actualPrice,
             sellingPrice,
             startTime,
             endTime,
             description,
             isDeleted,
+            priority,
         } = req.body;
 
         const { id } = req.params;
@@ -99,6 +107,7 @@ exports.edit = async (req, res) => {
                     categoryId,
                     productNameEnglish,
                     productNameMalayalam,
+                    unit,
                     actualPrice,
                     sellingPrice,
                     startTime,
@@ -106,6 +115,7 @@ exports.edit = async (req, res) => {
                     description,
                     isDeleted,
                     image: path,
+                    priority,
                 }
             );
             try {
@@ -128,12 +138,14 @@ exports.edit = async (req, res) => {
                     categoryId,
                     productNameEnglish,
                     productNameMalayalam,
+                    unit,
                     actualPrice,
                     sellingPrice,
                     startTime,
                     endTime,
                     description,
                     isDeleted,
+                    priority,
                 }
             );
         }
@@ -196,7 +208,7 @@ exports.getAll = async (req, res) => {
     try {
         const { id } = req.params;
         const products = await Product.find({ categoryId: id }).sort({
-            createdAt: -1,
+            priority: 1,
         });
         res.send({ products });
     } catch (err) {

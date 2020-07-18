@@ -18,6 +18,10 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    unit: {
+        type: String,
+        required: true,
+    },
     actualPrice: {
         type: String,
         required: true,
@@ -49,6 +53,9 @@ const ProductSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    priority: {
+        type: Number,
+    }
 });
 
 module.exports = Product = mongoose.model("products", ProductSchema);
