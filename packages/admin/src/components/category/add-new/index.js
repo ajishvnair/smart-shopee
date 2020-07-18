@@ -62,6 +62,12 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
                 >
                     <Input />
                 </Form.Item>
+                <Form.Item
+                    name={["priority"]}
+                    label="Displaying Priority"
+                >
+                    <Input />
+                </Form.Item>
                 <input type="file" onChange={handleImageUplaod} />
             </Form>
         </Modal>

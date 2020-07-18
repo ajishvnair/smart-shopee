@@ -221,6 +221,16 @@ export default withRouter(function (props) {
             ),
         },
         {
+            title: "priority",
+            dataIndex: "priority",
+            key: "priority",
+            render: (item) => (
+                <span >
+                    {item}
+                </span>
+            ),
+        },
+        {
             title: "Image",
             dataIndex: "image",
             key: "image",

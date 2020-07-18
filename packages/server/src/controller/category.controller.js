@@ -166,7 +166,7 @@ exports.updateStatus = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     try {
-        const categories = await Category.find().sort({ priority: -1 });
+        const categories = await Category.find().sort({ priority: 1 });
         res.send({ categories });
     } catch (err) {
         return res.status(400).json({
