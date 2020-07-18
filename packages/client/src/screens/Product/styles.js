@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     marginLeft: 5,
-    color: "#2cd18a",
+    // color: "#2cd18a",
   },
   discountPrice: {
     fontSize: 23,
@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
   quantityText: {
     fontWeight: "bold",
     fontSize: 17,
+    paddingHorizontal: 5,
   },
   delivery: {
     marginTop: 5,

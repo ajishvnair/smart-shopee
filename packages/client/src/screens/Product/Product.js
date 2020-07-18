@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Image,
     ScrollView,
@@ -23,25 +23,49 @@ import CartImage from "../../components/CartImage";
 const { width: viewportWidth } = Dimensions.get("window");
 
 const Product = ({ navigation }) => {
-    const [quantity, setQuantity] = useState(0);
-
-    const renderImage = ({ item }) => (
-        <TouchableHighlight>
-            <View style={styles.imageContainer}>
-                <Image style={styles.image} source={{ uri: item }} />
-            </View>
-        </TouchableHighlight>
-    );
-
-    const onPressIngredient = (item) => {
-        var name = getIngredientName(item);
-        let ingredient = item;
-        // this.props.navigation.navigate("Ingredient", { ingredient, name });
-    };
+    const [quantity, setQuantity] = useState(1);
+    const [total, setTotal] = useState(0);
 
     const item = navigation.getParam("item");
-    const category = getCategoryById(item.categoryId);
-    const title = getCategoryName(category.id);
+
+    useEffect(() => {
+        setQuantity(1);
+        setTotal(quantity * item.sellingPrice)
+    }, [item])
+
+    const checkAvailability = (startTime, endTime) => {
+        if (startTime && endTime && startTime !== '' && endTime !== ''
+            && startTime !== 'undefined'
+            && endTime !== 'undefined') {
+            const date = new Date();
+            // return `${currentTime.getHours()} : ${currentTime.getMinutes()}`;
+            const currentTime = `${date.getHours()} : ${date.getMinutes()}`
+            const startTimes = startTime.split(':');
+            const endTimes = endTime.split(':');
+            if (startTimes[0] < date.getHours() < endTimes[0]) {
+                if (startTimes[1] < date.getMinutes() < endTimes[1]) {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+        return true;
+
+    }
+
+    const quantityOperation = (action) => {
+
+        if (action === '+') {
+            setQuantity((quantity) => quantity + 1)
+            setTotal((quantity + 1) * item.sellingPrice);
+        }
+        else if (quantity !== 1) {
+            setQuantity((quantity) => quantity - 1)
+            setTotal((quantity - 1) * item.sellingPrice);
+        }
+
+    }
 
     return (
         <>
@@ -51,7 +75,7 @@ const Product = ({ navigation }) => {
                         <View style={styles.imageContainer}>
                             <Image
                                 style={styles.image}
-                                source={{ uri: item.photosArray[0] }}
+                                source={{ uri: item.image }}
                             />
                         </View>
                     </View>
@@ -60,17 +84,17 @@ const Product = ({ navigation }) => {
                     <View style={styles.infoContainer}>
                         <View>
                             <Text style={styles.infoRecipeName}>
-                                {item.title}
+                                {`${item.productNameEnglish}(${item.productNameMalayalam})`}
                             </Text>
                             <View style={styles.infoContainerSub}>
                                 <Text style={styles.discountPrice}>
-                                    ₹ 150
+                                    ₹ {item.sellingPrice}
                                     <Text style={styles.actualPrice}>
                                         {" "}
-                                        ₹ 100
+                                        ₹ {item.actualPrice}
                                     </Text>
                                 </Text>
-                                <Text style={styles.unit}>/Kg</Text>
+                                <Text style={styles.unit}>{item.unit}</Text>
                             </View>
                         </View>
                         <Image
@@ -87,34 +111,49 @@ const Product = ({ navigation }) => {
                                 style={styles.infoPhoto}
                                 source={require("../../../assets/icons/time.png")}
                             />
-                            <Text style={styles.timer}>Available Now </Text>
+                            <Text style={{ ...styles.timer, color: checkAvailability(item.startTime, item.endTime) ? `#2cd18a` : `red` }}>{checkAvailability(item.startTime, item.endTime) ?
+                                `Available Now` : `Not Available`
+
+
+                            } </Text>
                         </View>
-                        <View style={styles.addQuantity}>
-                            <Text
-                                style={{
-                                    ...styles.quantityText,
-                                    color: "#C0C0C0",
-                                }}
-                            >
-                                -
-                            </Text>
-                            <Text
-                                style={{
-                                    ...styles.quantityText,
-                                    color: "#2cd18a",
-                                }}
-                            >
-                                1
-                            </Text>
-                            <Text
-                                style={{
-                                    ...styles.quantityText,
-                                    color: "#2cd18a",
-                                }}
-                            >
-                                +
-                            </Text>
-                        </View>
+                        {checkAvailability(item.startTime, item.endTime) ?
+                            <View style={styles.addQuantity}>
+                                <TouchableHighlight
+                                    activeOpacity={0.1}
+                                    underlayColor="#DDDDDD"
+                                    onPress={() => quantityOperation('-')}
+
+                                >
+                                    <Text style={{
+                                        ...styles.quantityText,
+                                        color: "#C0C0C0",
+                                    }}>
+                                        -
+                                        </Text>
+                                </TouchableHighlight>
+                                <Text
+                                    style={{
+                                        ...styles.quantityText,
+                                        color: "#2cd18a",
+                                    }}
+                                >
+                                    {quantity}
+                                </Text>
+                                <TouchableHighlight
+                                    activeOpacity={0.1}
+                                    underlayColor="#DDDDDD"
+                                    onPress={() => quantityOperation('+')}
+
+                                >
+                                    <Text style={{
+                                        ...styles.quantityText,
+                                        color: "#2cd18a",
+                                    }}>
+                                        +
+                                    </Text>
+                                </TouchableHighlight>
+                            </View> : null}
                     </View>
                     {/* Delivery card */}
                     <View style={styles.delivery}>
@@ -151,7 +190,7 @@ const Product = ({ navigation }) => {
                 <View style={styles.addButtons}>
                     <QuantitySelector
                         quantity={quantity}
-                        setQuantity={setQuantity}
+                        total={total}
                     />
                 </View>
                 <View style={styles.addButtons}>
