@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { FlatList, Text, View, TouchableHighlight, Image } from "react-native";
 import styles from "./styles";
 import { recipes } from "../../dataProvider/dataArrays";
-import ConfirmationModal from "../../components/confirmation-modal";
 // import MenuImage from "../../components/MenuImage/MenuImage";
 // import DrawerActions from "react-navigation";
 import { getCategoryName } from "../../dataProvider/MockDataAPI";
@@ -89,10 +88,6 @@ const Cart = ({ navigation }) => {
                     <Text style={styles.checkoutText}> CHECKOUT</Text>
                 </>
             </TouchableHighlight>
-            <ConfirmationModal
-                visible={confirmationModal}
-                setVisibility={setConfirmationModal}
-            />
         </>
     );
 };
