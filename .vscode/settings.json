@@ -1,4 +1,9 @@
 {
+    "editor.formatOnSave": false,
+// Enable per-language
+    "[javascript]": {
+        "editor.formatOnSave": true
+    },
     "conventionalCommits.scopes": [
         "admin",
         "server",

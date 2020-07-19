@@ -30,18 +30,23 @@ const Product = ({ navigation }) => {
 
     useEffect(() => {
         setQuantity(1);
-        setTotal(quantity * item.sellingPrice)
-    }, [item])
+        setTotal(quantity * item.sellingPrice);
+    }, [item]);
 
     const checkAvailability = (startTime, endTime) => {
-        if (startTime && endTime && startTime !== '' && endTime !== ''
-            && startTime !== 'undefined'
-            && endTime !== 'undefined') {
+        if (
+            startTime &&
+            endTime &&
+            startTime !== "" &&
+            endTime !== "" &&
+            startTime !== "undefined" &&
+            endTime !== "undefined"
+        ) {
             const date = new Date();
             // return `${currentTime.getHours()} : ${currentTime.getMinutes()}`;
-            const currentTime = `${date.getHours()} : ${date.getMinutes()}`
-            const startTimes = startTime.split(':');
-            const endTimes = endTime.split(':');
+            const currentTime = `${date.getHours()} : ${date.getMinutes()}`;
+            const startTimes = startTime.split(":");
+            const endTimes = endTime.split(":");
             if (startTimes[0] < date.getHours() < endTimes[0]) {
                 if (startTimes[1] < date.getMinutes() < endTimes[1]) {
                     return true;
@@ -51,21 +56,17 @@ const Product = ({ navigation }) => {
             return false;
         }
         return true;
-
-    }
+    };
 
     const quantityOperation = (action) => {
-
-        if (action === '+') {
-            setQuantity((quantity) => quantity + 1)
+        if (action === "+") {
+            setQuantity((quantity) => quantity + 1);
             setTotal((quantity + 1) * item.sellingPrice);
-        }
-        else if (quantity !== 1) {
-            setQuantity((quantity) => quantity - 1)
+        } else if (quantity !== 1) {
+            setQuantity((quantity) => quantity - 1);
             setTotal((quantity - 1) * item.sellingPrice);
         }
-
-    }
+    };
 
     return (
         <>
@@ -111,26 +112,37 @@ const Product = ({ navigation }) => {
                                 style={styles.infoPhoto}
                                 source={require("../../../assets/icons/time.png")}
                             />
-                            <Text style={{ ...styles.timer, color: checkAvailability(item.startTime, item.endTime) ? `#2cd18a` : `red` }}>{checkAvailability(item.startTime, item.endTime) ?
-                                `Available Now` : `Not Available`
-
-
-                            } </Text>
+                            <Text
+                                style={{
+                                    ...styles.timer,
+                                    color: checkAvailability(
+                                        item.startTime,
+                                        item.endTime
+                                    )
+                                        ? `#2cd18a`
+                                        : `red`,
+                                }}
+                            >
+                                {checkAvailability(item.startTime, item.endTime)
+                                    ? `Available Now`
+                                    : `Not Available`}{" "}
+                            </Text>
                         </View>
-                        {checkAvailability(item.startTime, item.endTime) ?
+                        {checkAvailability(item.startTime, item.endTime) ? (
                             <View style={styles.addQuantity}>
                                 <TouchableHighlight
                                     activeOpacity={0.1}
                                     underlayColor="#DDDDDD"
-                                    onPress={() => quantityOperation('-')}
-
+                                    onPress={() => quantityOperation("-")}
                                 >
-                                    <Text style={{
-                                        ...styles.quantityText,
-                                        color: "#C0C0C0",
-                                    }}>
+                                    <Text
+                                        style={{
+                                            ...styles.quantityText,
+                                            color: "#C0C0C0",
+                                        }}
+                                    >
                                         -
-                                        </Text>
+                                    </Text>
                                 </TouchableHighlight>
                                 <Text
                                     style={{
@@ -143,17 +155,19 @@ const Product = ({ navigation }) => {
                                 <TouchableHighlight
                                     activeOpacity={0.1}
                                     underlayColor="#DDDDDD"
-                                    onPress={() => quantityOperation('+')}
-
+                                    onPress={() => quantityOperation("+")}
                                 >
-                                    <Text style={{
-                                        ...styles.quantityText,
-                                        color: "#2cd18a",
-                                    }}>
+                                    <Text
+                                        style={{
+                                            ...styles.quantityText,
+                                            color: "#2cd18a",
+                                        }}
+                                    >
                                         +
                                     </Text>
                                 </TouchableHighlight>
-                            </View> : null}
+                            </View>
+                        ) : null}
                     </View>
                     {/* Delivery card */}
                     <View style={styles.delivery}>
@@ -188,10 +202,7 @@ const Product = ({ navigation }) => {
 
             <View style={styles.addToCart}>
                 <View style={styles.addButtons}>
-                    <QuantitySelector
-                        quantity={quantity}
-                        total={total}
-                    />
+                    <QuantitySelector quantity={quantity} total={total} />
                 </View>
                 <View style={styles.addButtons}>
                     <AddToCart quantity={quantity} />
