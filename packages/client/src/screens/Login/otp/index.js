@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Icon } from "react-native-elements";
+import { Input, Icon, Button } from "react-native-elements";
 import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
 
 export default function () {
@@ -22,22 +22,10 @@ export default function () {
                     }
                 />
             </View>
-            <TouchableHighlight
-                style={{ ...styles.button, backgroundColor: "#FFA500" }}
-                activeOpacity={0.1}
-                underlayColor="#DDDDDD"
-                onPress={() => {}}
-            >
-                <Text
-                    style={{
-                        fontSize: 20,
-                        fontWeight: "bold",
-                        color: "white",
-                    }}
-                >
-                    Generate OTP
-                </Text>
-            </TouchableHighlight>
+            <Button
+                buttonStyle={{ ...styles.button, backgroundColor: "#FFA500" }}
+                title="Generate OTP"
+            />
         </View>
     );
 }
