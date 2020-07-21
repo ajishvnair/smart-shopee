@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Input, Icon, Button } from "react-native-elements";
 import { View, StyleSheet } from "react-native";
 
+import OtpVerificationScreen from "./validate-otp";
+
 export default function () {
     // for mobile number
     const [mobileNo, setMobileNo] = useState("");
@@ -9,6 +11,8 @@ export default function () {
     const [mobileNoError, setMobileNoError] = useState(null);
     // for generate otp button loading
     const [loading, setLoading] = useState(false);
+    // for setting status
+    const [status, setStatus] = useState("inMobileVerification");
 
     const validateMobileNumber = () => {
         const phno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
@@ -16,6 +20,7 @@ export default function () {
             // alert("success");
             setLoading(true);
             setMobileNoError(null);
+            setStatus("otpVerification");
         } else {
             setMobileNoError("Not a valid Phone number");
         }
@@ -24,42 +29,47 @@ export default function () {
     return (
         <View style={styles.main}>
             <View style={styles.inputContainer}>
-                <View style={styles.textInput}>
-                    <Input
-                        label="Register with Mobile Number"
-                        labelStyle={{ color: "white" }}
-                        placeholder="987656789"
-                        containerStyle={styles.input}
-                        errorStyle={{ fontWeight: "bold" }}
-                        keyboardType="numeric"
-                        inputStyle={{
-                            fontSize: 20,
-                            color: "white",
-                            fontWeight: "bold",
-                        }}
-                        leftIcon={
-                            <Icon
-                                name="phone"
-                                type="font-awesome"
-                                color="white"
+                {status === "inMobileVerification" && (
+                    <>
+                        <View style={styles.textInput}>
+                            <Input
+                                label="Register with Mobile Number"
+                                labelStyle={{ color: "white" }}
+                                placeholder="987656789"
+                                containerStyle={styles.input}
+                                errorStyle={{ fontWeight: "bold" }}
+                                keyboardType="numeric"
+                                inputStyle={{
+                                    fontSize: 20,
+                                    color: "white",
+                                    fontWeight: "bold",
+                                }}
+                                leftIcon={
+                                    <Icon
+                                        name="phone"
+                                        type="font-awesome"
+                                        color="white"
+                                    />
+                                }
+                                // operations
+                                onChangeText={(value) => setMobileNo(value)}
+                                errorMessage={mobileNoError}
+                                value={mobileNo}
                             />
-                        }
-                        // operations
-                        onChangeText={(value) => setMobileNo(value)}
-                        errorMessage={mobileNoError}
-                        value={mobileNo}
-                    />
-                </View>
-                <Button
-                    buttonStyle={{
-                        ...styles.button,
-                        backgroundColor: "#FFA500",
-                    }}
-                    title="Generate OTP"
-                    // operations
-                    onPress={validateMobileNumber}
-                    loading={loading}
-                />
+                        </View>
+                        <Button
+                            buttonStyle={{
+                                ...styles.button,
+                                backgroundColor: "#FFA500",
+                            }}
+                            title="Generate OTP"
+                            // operations
+                            onPress={validateMobileNumber}
+                            loading={loading}
+                        />
+                    </>
+                )}
+                {status === "otpVerification" && <OtpVerificationScreen />}
             </View>
         </View>
     );
