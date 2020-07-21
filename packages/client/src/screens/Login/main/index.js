@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Image } from "react-native";
-import Home from "../home";
-import Otp from "../otp";
-import Register from "../register";
+
+import HomeScreen from "../home";
+import OtpScreen from "../otp";
+import RegisterScreen from "../register";
+import SignInScreen from "../sign-in";
 
 export default function () {
     const [status, setStatus] = useState("home");
@@ -10,11 +12,13 @@ export default function () {
     const getContent = () => {
         switch (status) {
             case "home":
-                return <Home setStatus={setStatus} />;
+                return <HomeScreen setStatus={setStatus} />;
             case "otp":
-                return <Otp setStatus={setStatus} />;
+                return <OtpScreen setStatus={setStatus} />;
             case "register":
-                return <Register setStatus={setStatus} />;
+                return <RegisterScreen setStatus={setStatus} />;
+            case "signIn":
+                return <SignInScreen setStatus={setStatus} />;
         }
     };
     return (

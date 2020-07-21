@@ -16,7 +16,7 @@ export default function ({ setStatus }) {
                 activeOpacity={0.4}
                 underlayColor="#DDDDDD"
                 style={styles.button}
-                onPress={() => alert("Pressed!")}
+                onPress={() => setStatus("signIn")}
             >
                 <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                     SIGN IN
