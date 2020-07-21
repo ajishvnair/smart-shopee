@@ -4,9 +4,11 @@ import Login from "./src/screens/Login/LoginScreen";
 
 // import "antd-mobile/dist/antd-mobile.css";
 
-// import firebase from "firebase";
-// import { firebaseConfig } from "./config";
-// firebase.initializeApp(firebaseConfig);
+import firebase from "firebase";
+import { firebaseConfig } from "./config";
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 
 export default function App() {
     const [authenticated, setAuthenticated] = useState(false);

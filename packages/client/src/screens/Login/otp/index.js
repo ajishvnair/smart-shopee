@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Input, Icon, Button } from "react-native-elements";
 import { View, StyleSheet, BackHandler } from "react-native";
+
+import firebase from "firebase";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import { firebaseConfig } from "../../../../config";
 
 import OtpVerificationScreen from "./validate-otp";
 
@@ -13,6 +17,9 @@ export default function ({ setStatus }) {
     const [loading, setLoading] = useState(false);
     // for setting status
     const [screen, setScreen] = useState("inMobileVerification");
+    // for otp
+    const [verificationId, setVerificationId] = useState(null);
+    const recaptchaVerifier = React.useRef(null);
     // handling back action
     const backAction = () => {
         setStatus("home");
@@ -24,66 +31,87 @@ export default function ({ setStatus }) {
         backAction
     );
 
-    const validateMobileNumber = () => {
+    const validateMobileNumber = async () => {
         const phno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         if (mobileNo.match(phno)) {
-            // alert("success");
             setLoading(true);
             setMobileNoError(null);
-            setScreen("otpVerification");
+            try {
+                // sending otp
+                const phoneProvider = new firebase.auth.PhoneAuthProvider();
+                const verificationId = await phoneProvider.verifyPhoneNumber(
+                    `+91${mobileNo}`,
+                    recaptchaVerifier.current
+                );
+                setVerificationId(verificationId);
+                setScreen("otpVerification");
+            } catch (err) {
+                setMobileNoError("Unable to send OTP try again");
+                setLoading(false);
+            }
         } else {
             setMobileNoError("Not a valid Phone number");
         }
     };
 
     return (
-        <View style={styles.main}>
-            <View style={styles.inputContainer}>
-                {screen === "inMobileVerification" && (
-                    <>
-                        <View style={styles.textInput}>
-                            <Input
-                                label="Register with Mobile Number"
-                                labelStyle={{ color: "white" }}
-                                placeholder="987656789"
-                                containerStyle={styles.input}
-                                errorStyle={{ fontWeight: "bold" }}
-                                keyboardType="numeric"
-                                inputStyle={{
-                                    fontSize: 20,
-                                    color: "white",
-                                    fontWeight: "bold",
+        <>
+            <View style={styles.main}>
+                <View style={styles.inputContainer}>
+                    {screen === "inMobileVerification" && (
+                        <>
+                            <View style={styles.textInput}>
+                                <Input
+                                    label="Register with Mobile Number"
+                                    labelStyle={{ color: "white" }}
+                                    placeholder="987656789"
+                                    containerStyle={styles.input}
+                                    errorStyle={{ fontWeight: "bold" }}
+                                    keyboardType="numeric"
+                                    inputStyle={{
+                                        fontSize: 20,
+                                        color: "white",
+                                        fontWeight: "bold",
+                                    }}
+                                    leftIcon={
+                                        <Icon
+                                            name="phone"
+                                            type="font-awesome"
+                                            color="white"
+                                        />
+                                    }
+                                    // operations
+                                    onChangeText={(value) => setMobileNo(value)}
+                                    errorMessage={mobileNoError}
+                                    value={mobileNo}
+                                    disabled={loading}
+                                />
+                            </View>
+                            <Button
+                                buttonStyle={{
+                                    ...styles.button,
+                                    backgroundColor: "#FFA500",
                                 }}
-                                leftIcon={
-                                    <Icon
-                                        name="phone"
-                                        type="font-awesome"
-                                        color="white"
-                                    />
-                                }
+                                title="Generate OTP"
                                 // operations
-                                onChangeText={(value) => setMobileNo(value)}
-                                errorMessage={mobileNoError}
-                                value={mobileNo}
+                                onPress={validateMobileNumber}
+                                loading={loading}
                             />
-                        </View>
-                        <Button
-                            buttonStyle={{
-                                ...styles.button,
-                                backgroundColor: "#FFA500",
-                            }}
-                            title="Generate OTP"
-                            // operations
-                            onPress={validateMobileNumber}
-                            loading={loading}
+                        </>
+                    )}
+                    {screen === "otpVerification" && (
+                        <OtpVerificationScreen
+                            setStatus={setStatus}
+                            verificationId={verificationId}
                         />
-                    </>
-                )}
-                {screen === "otpVerification" && (
-                    <OtpVerificationScreen setStatus={setStatus} />
-                )}
+                    )}
+                </View>
             </View>
-        </View>
+            <FirebaseRecaptchaVerifierModal
+                ref={recaptchaVerifier}
+                firebaseConfig={firebaseConfig}
+            />
+        </>
     );
 }
 
