@@ -1,8 +1,17 @@
 import React from "react";
-import { View, Text, StyleSheet, Picker, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Picker, BackHandler } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 
-export default function () {
+export default function ({ setStatus }) {
+    const backAction = () => {
+        setStatus("home");
+        return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+    );
     return (
         <View style={styles.main}>
             <View style={styles.container}>

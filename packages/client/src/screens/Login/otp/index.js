@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Input, Icon, Button } from "react-native-elements";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, BackHandler } from "react-native";
 
 import OtpVerificationScreen from "./validate-otp";
 
@@ -13,6 +13,16 @@ export default function ({ setStatus }) {
     const [loading, setLoading] = useState(false);
     // for setting status
     const [screen, setScreen] = useState("inMobileVerification");
+    // handling back action
+    const backAction = () => {
+        setStatus("home");
+        return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+    );
 
     const validateMobileNumber = () => {
         const phno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
