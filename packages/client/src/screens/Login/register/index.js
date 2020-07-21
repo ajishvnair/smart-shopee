@@ -7,11 +7,24 @@ export default function () {
         <View style={styles.main}>
             <View style={styles.container}>
                 <Input
+                    label="Enter Name"
+                    labelStyle={{ color: "white" }}
+                    style={styles.input}
+                    inputStyle={{
+                        fontSize: 20,
+                        color: "white",
+                        fontWeight: "bold",
+                    }}
+                    leftIcon={
+                        <Icon name="user" type="font-awesome" color="white" />
+                    }
+                />
+                <Input
                     label="Enter Address"
                     labelStyle={{ color: "white" }}
                     style={styles.input}
                     inputStyle={{
-                        fontSize: 10,
+                        fontSize: 20,
                         color: "white",
                         fontWeight: "bold",
                     }}
@@ -33,6 +46,25 @@ export default function () {
                     <Picker.Item label="Parathodu 686512" value="java" />
                     <Picker.Item label="Pullimudu 686512" value="js" />
                 </Picker>
+                <Input
+                    secureTextEntry={true}
+                    multiline={false}
+                    // passwordRules={true}
+                    label="Password"
+                    labelStyle={{ color: "white" }}
+                    inputStyle={{
+                        fontSize: 20,
+                        color: "white",
+                        fontWeight: "bold",
+                    }}
+                    leftIcon={
+                        <Icon
+                            name="unlock-alt"
+                            type="font-awesome"
+                            color="white"
+                        />
+                    }
+                />
                 <Button title="Continue" buttonStyle={styles.button} />
             </View>
         </View>
@@ -41,9 +73,12 @@ export default function () {
 
 const styles = StyleSheet.create({
     main: {
-        height: "70%",
+        height: "100%",
         alignItems: "center",
         marginHorizontal: 20,
+        alignItems: "center",
+        justifyContent: "center",
+        // position: "fixed",
     },
     container: {
         padding: 5,
