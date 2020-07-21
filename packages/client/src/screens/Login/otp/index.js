@@ -1,63 +1,90 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input, Icon, Button } from "react-native-elements";
-import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 export default function () {
+    // for mobile number
+    const [mobileNo, setMobileNo] = useState("");
+    // for error message
+    const [mobileNoError, setMobileNoError] = useState(null);
+    // for generate otp button loading
+    const [loading, setLoading] = useState(false);
+
+    const validateMobileNumber = () => {
+        const phno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        if (mobileNo.match(phno)) {
+            // alert("success");
+            setLoading(true);
+            setMobileNoError(null);
+        } else {
+            setMobileNoError("Not a valid Phone number");
+        }
+    };
+
     return (
         <View style={styles.main}>
-            <View style={styles.textInput}>
-                <Input
-                    label="Register with Mobile Number"
-                    labelStyle={{ color: "white" }}
-                    placeholder="987656789"
-                    containerStyle={styles.input}
-                    keyboardType="numeric"
-                    inputStyle={{
-                        fontSize: 20,
-                        color: "white",
-                        fontWeight: "bold",
+            <View style={styles.inputContainer}>
+                <View style={styles.textInput}>
+                    <Input
+                        label="Register with Mobile Number"
+                        labelStyle={{ color: "white" }}
+                        placeholder="987656789"
+                        containerStyle={styles.input}
+                        errorStyle={{ fontWeight: "bold" }}
+                        keyboardType="numeric"
+                        inputStyle={{
+                            fontSize: 20,
+                            color: "white",
+                            fontWeight: "bold",
+                        }}
+                        leftIcon={
+                            <Icon
+                                name="phone"
+                                type="font-awesome"
+                                color="white"
+                            />
+                        }
+                        // operations
+                        onChangeText={(value) => setMobileNo(value)}
+                        errorMessage={mobileNoError}
+                        value={mobileNo}
+                    />
+                </View>
+                <Button
+                    buttonStyle={{
+                        ...styles.button,
+                        backgroundColor: "#FFA500",
                     }}
-                    leftIcon={
-                        <Icon name="phone" type="font-awesome" color="white" />
-                    }
+                    title="Generate OTP"
+                    // operations
+                    onPress={validateMobileNumber}
+                    loading={loading}
                 />
             </View>
-            <Button
-                buttonStyle={{ ...styles.button, backgroundColor: "#FFA500" }}
-                title="Generate OTP"
-            />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     main: {
-        // backgroundColor: "white",
         height: "60%",
         alignItems: "center",
     },
+    inputContainer: {
+        backgroundColor: "rgba(52, 52, 52, 0.8)",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 10,
+        borderRadius: 15,
+    },
     textInput: {
-        // opacity: 0.4,
-        // backgroundColor: "black",
-        // borderColor: "black",
-        // borderWidth: 1,
-        // borderBottomColor: "white",
-        // // borderRadius: 25,
-        // borderBottomWidth: 1,
         marginHorizontal: 10,
-        // height: 40,
     },
     input: {
-        // opacity: 0.1,
-        // backgroundColor: "black",
         color: "white",
         fontSize: 28,
-        // paddingVertical: 5,
-        // paddingHorizontal: 10,
         fontWeight: "bold",
         textAlign: "center",
-        // height: 50,
-        // width: "",
         backgroundColor: "transparent",
     },
     button: {

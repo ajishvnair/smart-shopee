@@ -4,8 +4,7 @@ import { Asset } from "expo-asset";
 import { AppLoading } from "expo";
 
 // import SplashScreen from "./splash";
-import SignInScreen from "./sign-in";
-import SignupScreen from "./register";
+import MainScreen from "./main";
 
 function cacheImages(images) {
     return images.map((image) => {
@@ -32,6 +31,6 @@ export default function () {
             onError={console.warn}
         />
     ) : (
-        <SignInScreen />
+        <MainScreen />
     );
 }
