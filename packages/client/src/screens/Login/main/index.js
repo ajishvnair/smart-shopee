@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image, BackHandler } from "react-native";
 
 import HomeScreen from "../home";
 import OtpScreen from "../otp";
@@ -8,6 +8,16 @@ import SignInScreen from "../sign-in";
 
 export default function () {
     const [status, setStatus] = useState("home");
+
+    const backAction = () => {
+        BackHandler.exitApp();
+        return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+    );
 
     const getContent = () => {
         switch (status) {
