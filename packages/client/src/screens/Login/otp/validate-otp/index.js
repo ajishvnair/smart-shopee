@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 
-export default function () {
+export default function ({ setStatus }) {
+    // otp
+    const [otp, setOtp] = useState("");
+    // validate otp
+    const validateOtp = () => {
+        setStatus("register");
+    };
     return (
         <>
             <Input
@@ -18,6 +24,9 @@ export default function () {
                 leftIcon={
                     <Icon name="shield" type="font-awesome" color="white" />
                 }
+                // opertaions
+                value={otp}
+                onChangeText={(value) => setOtp(value)}
             />
             <Button
                 title="Verify"
@@ -25,6 +34,7 @@ export default function () {
                     ...styles.button,
                     backgroundColor: "#FFA500",
                 }}
+                onPress={validateOtp}
             />
         </>
     );

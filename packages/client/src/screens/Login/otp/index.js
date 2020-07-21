@@ -4,7 +4,7 @@ import { View, StyleSheet } from "react-native";
 
 import OtpVerificationScreen from "./validate-otp";
 
-export default function () {
+export default function ({ setStatus }) {
     // for mobile number
     const [mobileNo, setMobileNo] = useState("");
     // for error message
@@ -12,7 +12,7 @@ export default function () {
     // for generate otp button loading
     const [loading, setLoading] = useState(false);
     // for setting status
-    const [status, setStatus] = useState("inMobileVerification");
+    const [screen, setScreen] = useState("inMobileVerification");
 
     const validateMobileNumber = () => {
         const phno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
@@ -20,7 +20,7 @@ export default function () {
             // alert("success");
             setLoading(true);
             setMobileNoError(null);
-            setStatus("otpVerification");
+            setScreen("otpVerification");
         } else {
             setMobileNoError("Not a valid Phone number");
         }
@@ -29,7 +29,7 @@ export default function () {
     return (
         <View style={styles.main}>
             <View style={styles.inputContainer}>
-                {status === "inMobileVerification" && (
+                {screen === "inMobileVerification" && (
                     <>
                         <View style={styles.textInput}>
                             <Input
@@ -69,7 +69,9 @@ export default function () {
                         />
                     </>
                 )}
-                {status === "otpVerification" && <OtpVerificationScreen />}
+                {screen === "otpVerification" && (
+                    <OtpVerificationScreen setStatus={setStatus} />
+                )}
             </View>
         </View>
     );

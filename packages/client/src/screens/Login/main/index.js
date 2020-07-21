@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, Image } from "react-native";
 import Home from "../home";
 import Otp from "../otp";
+import Register from "../register";
 
 export default function () {
     const [status, setStatus] = useState("home");
@@ -12,6 +13,8 @@ export default function () {
                 return <Home setStatus={setStatus} />;
             case "otp":
                 return <Otp setStatus={setStatus} />;
+            case "register":
+                return <Register setStatus={setStatus} />;
         }
     };
     return (
