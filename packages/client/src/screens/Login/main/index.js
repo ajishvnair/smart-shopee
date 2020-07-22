@@ -5,6 +5,7 @@ import {
     Image,
     BackHandler,
     AsyncStorage,
+    ActivityIndicator,
 } from "react-native";
 import http from "../../../common/http";
 
@@ -24,7 +25,7 @@ export default function ({ setAuthenticated }) {
         };
         http.postAction("api/v1/user/auth", {}, { headers })
             .then((res) => {
-                //setAuthenticated(true);
+                setAuthenticated(true);
             })
             .catch((err) => {
                 setStatus("home");
@@ -92,6 +93,23 @@ export default function ({ setAuthenticated }) {
                 />
             </View>
             {getContent()}
+            {status === "" && (
+                <View style={[styles.container, styles.horizontal]}>
+                    <ActivityIndicator size="large" color="#00ff00" />
+                </View>
+            )}
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+    },
+    horizontal: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10,
+    },
+});
