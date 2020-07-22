@@ -16,6 +16,7 @@ export default function App() {
     const [authenticated, setAuthenticated] = useState(false);
 
     useEffect(() => {
+        // to get location
         http.getAction("api/v1/location/all/active")
             .then(async (res) => {
                 const { locations } = res.data;
