@@ -41,7 +41,12 @@ export default function ({ setAuthenticated }) {
                     />
                 );
             case "signIn":
-                return <SignInScreen setStatus={setStatus} />;
+                return (
+                    <SignInScreen
+                        setStatus={setStatus}
+                        setAuthenticated={setAuthenticated}
+                    />
+                );
         }
     };
     return (

@@ -73,7 +73,7 @@ export default function ({ setStatus, mobileNo, setAuthenticated }) {
                 error: "Address must contain 6 characters",
             });
             setName({ ...name, error: null });
-        } else if (password.value.length < 5) {
+        } else if ((password.value || "").length < 6) {
             setPassword({
                 ...password,
                 error: "Password must contain 6 characters",
