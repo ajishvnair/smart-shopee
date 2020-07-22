@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { AsyncStorage } from "react-native";
 import http from "./src/common/http";
 import AppContainer from "./src/navigations/AppNavigation";
 import Login from "./src/screens/Login/LoginScreen";
@@ -16,9 +17,12 @@ export default function App() {
 
     useEffect(() => {
         http.getAction("api/v1/location/all/active")
-            .then((res) => {
+            .then(async (res) => {
                 const { locations } = res.data;
-                console.log(locations);
+                await AsyncStorage.setItem(
+                    "locations",
+                    JSON.stringify([...locations])
+                );
             })
             .catch((err) => {
                 console.log("error");

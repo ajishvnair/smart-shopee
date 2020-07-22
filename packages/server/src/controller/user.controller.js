@@ -52,7 +52,7 @@ exports.checkMobileNumber = async (req, res) => {
         let user = await User.findOne({ mobileNo });
         if (user) {
             return res
-                .status(400)
+                .status(202)
                 .json({ errors: ["mobile number already exist"] });
         }
 

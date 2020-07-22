@@ -16,7 +16,7 @@ function cacheImages(images) {
     });
 }
 
-export default function () {
+export default function ({ setAuthenticated }) {
     const [showImage, setShowImage] = useState(false);
 
     const _loadAssetsAsync = async () => {
@@ -31,6 +31,6 @@ export default function () {
             onError={console.warn}
         />
     ) : (
-        <MainScreen />
+        <MainScreen setAuthenticated={setAuthenticated} />
     );
 }

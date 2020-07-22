@@ -1,17 +1,101 @@
-import React from "react";
-import { View, Text, StyleSheet, Picker, BackHandler } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+    View,
+    StyleSheet,
+    Picker,
+    BackHandler,
+    AsyncStorage,
+} from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
+import http from "../../../common/http";
 
-export default function ({ setStatus }) {
+export default function ({ setStatus, mobileNo, setAuthenticated }) {
+    // store locations
+    const [locations, setLocations] = useState([]);
+    const [name, setName] = useState({ value: "", error: null });
+    const [address, setAddress] = useState({ value: "", error: null });
+    const [location, setLocation] = useState({ value: "", error: null });
+    const [password, setPassword] = useState({ value: "", error: null });
+    const [loading, setLoading] = useState(false);
+
+    const getLocation = async () => {
+        const item = await AsyncStorage.getItem("locations");
+        setLocations(JSON.parse(item));
+        // console.log(JSON.parse(item));
+    };
+
+    const getLocations = () => {
+        const pickerItems = locations.map((location) => (
+            <Picker.Item label={location.location} value={location._id} />
+        ));
+        return pickerItems;
+    };
+
+    const registerUser = () => {
+        setLoading(true);
+        const payload = {
+            mobileNo,
+            userName: name.value,
+            address: address.value,
+            location: location.value,
+            password: password.value,
+        };
+        http.postAction("api/v1/user/register", { ...payload }).then(
+            async (res) => {
+                if (res.status === 200) {
+                    const { accessToken } = res.data;
+                    await AsyncStorage.setItem("accessToken", accessToken);
+                    setAuthenticated(true);
+                }
+            }
+        );
+    };
+
+    useEffect(() => {
+        getLocation();
+    }, []);
+    // for handling back button
     const backAction = () => {
         setStatus("home");
         return true;
     };
-
     const backHandler = BackHandler.addEventListener(
         "hardwareBackPress",
         backAction
     );
+
+    const submitAction = () => {
+        if (name.value === "") {
+            setName({ ...name, error: "Please enter name" });
+        } else if ((address.value || "").length < 5) {
+            setAddress({
+                ...address,
+                error: "Address must contain 6 characters",
+            });
+            setName({ ...name, error: null });
+        } else if (password.value.length < 5) {
+            setPassword({
+                ...password,
+                error: "Password must contain 6 characters",
+            });
+            setName({ ...name, error: null });
+            setAddress({
+                ...address,
+                error: null,
+            });
+        } else {
+            setName({ ...name, error: null });
+            setAddress({
+                ...address,
+                error: null,
+            });
+            setPassword({
+                ...password,
+                error: null,
+            });
+            registerUser();
+        }
+    };
     return (
         <View style={styles.main}>
             <View style={styles.container}>
@@ -24,9 +108,15 @@ export default function ({ setStatus }) {
                         color: "white",
                         fontWeight: "bold",
                     }}
+                    errorStyle={{ fontWeight: "bold" }}
                     leftIcon={
                         <Icon name="user" type="font-awesome" color="white" />
                     }
+                    // operations
+                    value={name.value}
+                    errorMessage={name.error}
+                    onChangeText={(value) => setName({ ...name, value })}
+                    disabled={loading}
                 />
                 <Input
                     label="Enter Address"
@@ -44,6 +134,11 @@ export default function ({ setStatus }) {
                             color="white"
                         />
                     }
+                    // operations
+                    value={address.value}
+                    errorMessage={address.error}
+                    onChangeText={(value) => setAddress({ ...address, value })}
+                    disabled={loading}
                 />
                 <Input
                     label="Select Location"
@@ -51,9 +146,14 @@ export default function ({ setStatus }) {
                     labelStyle={{ color: "white" }}
                     containerStyle={{ height: 15 }}
                 />
-                <Picker style={styles.picker}>
-                    <Picker.Item label="Parathodu 686512" value="java" />
-                    <Picker.Item label="Pullimudu 686512" value="js" />
+                <Picker
+                    style={styles.picker}
+                    selectedValue={location.value}
+                    onValueChange={(value) =>
+                        setLocation({ ...location, value })
+                    }
+                >
+                    {getLocations()}
                 </Picker>
                 <Input
                     secureTextEntry={true}
@@ -73,8 +173,28 @@ export default function ({ setStatus }) {
                             color="white"
                         />
                     }
+                    // operations
+                    value={password.value}
+                    errorMessage={password.error}
+                    onChangeText={(value) => {
+                        setPassword({ ...password, value });
+                        if (value.length < 6) {
+                            setPassword({
+                                value,
+                                error: "Password must contains 6 characters",
+                            });
+                        } else {
+                            setPassword({ value, error: null });
+                        }
+                    }}
+                    disabled={loading}
                 />
-                <Button title="Continue" buttonStyle={styles.button} />
+                <Button
+                    title="Continue"
+                    onPress={submitAction}
+                    buttonStyle={styles.button}
+                    loading={loading}
+                />
             </View>
         </View>
     );

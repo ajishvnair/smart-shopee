@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Input, Icon, Button } from "react-native-elements";
 import { View, StyleSheet, BackHandler } from "react-native";
+import http from "../../../common/http";
 
 import firebase from "firebase";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
@@ -8,9 +9,9 @@ import { firebaseConfig } from "../../../../config";
 
 import OtpVerificationScreen from "./validate-otp";
 
-export default function ({ setStatus }) {
+export default function ({ setStatus, mobileNo, setMobileNo }) {
     // for mobile number
-    const [mobileNo, setMobileNo] = useState("");
+    // const [mobileNo, setMobileNo] = useState("");
     // for error message
     const [mobileNoError, setMobileNoError] = useState(null);
     // for generate otp button loading
@@ -36,21 +37,35 @@ export default function ({ setStatus }) {
         if (mobileNo.match(phno)) {
             setLoading(true);
             setMobileNoError(null);
-            try {
-                // sending otp
-                const phoneProvider = new firebase.auth.PhoneAuthProvider();
-                const verificationId = await phoneProvider.verifyPhoneNumber(
-                    `+91${mobileNo}`,
-                    recaptchaVerifier.current
-                );
-                setVerificationId(verificationId);
-                setScreen("otpVerification");
-            } catch (err) {
-                setMobileNoError("Unable to send OTP try again");
-                setLoading(false);
-            }
+            // check user already exist or not
+            http.postAction("api/v1/user/checkMobileNo", { mobileNo })
+                .then(async (res) => {
+                    if (res.status === 200) {
+                        try {
+                            // sending otp
+                            const phoneProvider = new firebase.auth.PhoneAuthProvider();
+                            const verificationId = await phoneProvider.verifyPhoneNumber(
+                                `+91${mobileNo}`,
+                                recaptchaVerifier.current
+                            );
+                            setVerificationId(verificationId);
+                            setScreen("otpVerification");
+                        } catch (err) {
+                            setMobileNoError("Unable to send OTP try again");
+                            setLoading(false);
+                        }
+                    } else {
+                        setMobileNoError("Mobile Number Already Exist");
+                        setLoading(false);
+                    }
+                })
+                .catch((err) => {
+                    setMobileNoError("Something went wrong try again");
+                    setLoading(false);
+                });
         } else {
             setMobileNoError("Not a valid Phone number");
+            setLoading(false);
         }
     };
 

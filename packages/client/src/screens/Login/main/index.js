@@ -6,8 +6,9 @@ import OtpScreen from "../otp";
 import RegisterScreen from "../register";
 import SignInScreen from "../sign-in";
 
-export default function () {
+export default function ({ setAuthenticated }) {
     const [status, setStatus] = useState("home");
+    const [mobileNo, setMobileNo] = useState("");
 
     const backAction = () => {
         BackHandler.exitApp();
@@ -24,9 +25,21 @@ export default function () {
             case "home":
                 return <HomeScreen setStatus={setStatus} />;
             case "otp":
-                return <OtpScreen setStatus={setStatus} />;
+                return (
+                    <OtpScreen
+                        setStatus={setStatus}
+                        mobileNo={mobileNo}
+                        setMobileNo={setMobileNo}
+                    />
+                );
             case "register":
-                return <RegisterScreen setStatus={setStatus} />;
+                return (
+                    <RegisterScreen
+                        setStatus={setStatus}
+                        mobileNo={mobileNo}
+                        setAuthenticated={setAuthenticated}
+                    />
+                );
             case "signIn":
                 return <SignInScreen setStatus={setStatus} />;
         }
