@@ -195,6 +195,13 @@ export default withRouter(function (props) {
             title: "Delivery Charge",
             dataIndex: "deliveryCharge",
             key: "charge",
+            render: (data) => <span>{`${data} Rs`}</span>,
+        },
+        {
+            title: "Delivery Time",
+            dataIndex: "deliveryTime",
+            key: "time",
+            render: (data) => <span>{`${data} Hours`}</span>,
         },
         {
             title: "",

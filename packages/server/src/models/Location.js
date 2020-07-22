@@ -14,6 +14,10 @@ const LocationSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    deliveryTime: {
+        type: String,
+        required: true,
+    },
     isDeleted: {
         type: Boolean,
         default: false,

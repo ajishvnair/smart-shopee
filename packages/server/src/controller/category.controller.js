@@ -5,13 +5,11 @@ const fs = require("fs");
 
 const cloudinary = require("cloudinary").v2;
 
-
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
 
 exports.create = async (req, res) => {
     try {
@@ -92,7 +90,6 @@ exports.edit = async (req, res) => {
                 );
                 // delete file
                 await cloudinary.uploader.destroy(`${image.path}`);
-
             } catch (err) {
                 return res
                     .status(400)
@@ -167,6 +164,19 @@ exports.updateStatus = async (req, res) => {
 exports.getAll = async (req, res) => {
     try {
         const categories = await Category.find().sort({ priority: 1 });
+        res.send({ categories });
+    } catch (err) {
+        return res.status(400).json({
+            errors: "Something went wrong in fetching categories",
+        });
+    }
+};
+
+exports.getAllActive = async (req, res) => {
+    try {
+        const categories = await Category.find({ active: true }).sort({
+            priority: 1,
+        });
         res.send({ categories });
     } catch (err) {
         return res.status(400).json({

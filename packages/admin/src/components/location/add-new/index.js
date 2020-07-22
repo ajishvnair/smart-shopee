@@ -53,6 +53,18 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
                 >
                     <Input />
                 </Form.Item>
+                <Form.Item
+                    name={["deliveryTime"]}
+                    label="Delivery Time"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Delivery Time is required",
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
             </Form>
         </Modal>
     );

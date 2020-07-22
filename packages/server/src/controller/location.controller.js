@@ -3,13 +3,20 @@ const Location = require("./../models/Location");
 
 exports.create = async (req, res) => {
     try {
-        const { active, location, deliveryCharge, isDeleted } = req.body;
+        const {
+            active,
+            location,
+            deliveryCharge,
+            deliveryTime,
+            isDeleted,
+        } = req.body;
 
         const newLocation = new Location({
             active,
             location,
             deliveryCharge,
             isDeleted,
+            deliveryTime,
         });
         await newLocation.save();
         res.send({ location: newLocation });
@@ -21,7 +28,13 @@ exports.create = async (req, res) => {
 exports.edit = async (req, res) => {
     try {
         const { id } = req.params;
-        const { active, location, deliveryCharge, isDeleted } = req.body;
+        const {
+            active,
+            location,
+            deliveryCharge,
+            deliveryTime,
+            isDeleted,
+        } = req.body;
 
         let newLocation = await Location.findOneAndUpdate(
             { _id: id },
@@ -30,6 +43,7 @@ exports.edit = async (req, res) => {
                 location,
                 deliveryCharge,
                 isDeleted,
+                deliveryTime,
             }
         );
 
@@ -67,6 +81,17 @@ exports.update = async (req, res) => {
 exports.all = async (req, res) => {
     try {
         const locations = await Location.find().sort({ createdAt: -1 });
+        res.send({ locations });
+    } catch (err) {
+        return res.status(400).json({ errors: "Something went wrong" });
+    }
+};
+
+exports.allActive = async (req, res) => {
+    try {
+        const locations = await Location.find({ active: true }).sort({
+            createdAt: -1,
+        });
         res.send({ locations });
     } catch (err) {
         return res.status(400).json({ errors: "Something went wrong" });

@@ -5,7 +5,6 @@ const fs = require("fs");
 
 const cloudinary = require("cloudinary").v2;
 
-
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -208,6 +207,23 @@ exports.getAll = async (req, res) => {
     try {
         const { id } = req.params;
         const products = await Product.find({ categoryId: id }).sort({
+            priority: 1,
+        });
+        res.send({ products });
+    } catch (err) {
+        return res.status(400).json({
+            errors: "Something went wrong in fetching products",
+        });
+    }
+};
+
+exports.getAllActive = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const products = await Product.find({
+            categoryId: id,
+            active: true,
+        }).sort({
             priority: 1,
         });
         res.send({ products });
