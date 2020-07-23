@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
-const User = require("../models/User");
-const Loaction = require("../models/Location");
 const bcryptjs = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+
+const User = require("../models/User");
+const Loaction = require("../models/Location");
+const Cart = require("../models/Cart");
 
 exports.register = async (req, res) => {
     try {
