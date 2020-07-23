@@ -36,7 +36,7 @@ exports.register = async (req, res) => {
             process.env.ACCESS_TOKEN_SECRET
         );
 
-        res.send({ accessToken });
+        res.send({ accessToken, mobileNo, address, location });
     } catch (err) {
         return res.status(400).json({ errors: "Something went wrong" });
     }
@@ -83,7 +83,13 @@ exports.login = async (req, res) => {
                 process.env.ACCESS_TOKEN_SECRET
             );
 
-            res.send({ accessToken });
+            res.send({
+                accessToken,
+                mobileNo: user.mobileNo,
+                userName: user.userName,
+                address: user.address,
+                location: user.location,
+            });
         } else {
             return res.status(404).json({ errors: "Incorrect Password" });
         }

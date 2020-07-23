@@ -32,6 +32,8 @@ exports.auth = async (req, res, next) => {
                             _id: user._doc._id,
                             mobileNo: user._doc.mobileNo,
                             userName: user._doc.userName,
+                            address: user._doc.address,
+                            location: user._doc.location,
                         };
                         next();
                     } else {
