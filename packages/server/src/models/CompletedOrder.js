@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const orderSchema = new mongoose.Schema({
+const completedOrderSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.ObjectId, required: true },
     status: { type: String, default: "Accepted" },
     userName: { type: String },
@@ -12,4 +12,7 @@ const orderSchema = new mongoose.Schema({
     totalAmount: { type: String },
 });
 
-module.exports = Order = mongoose.model("orders", orderSchema);
+module.exports = CompletedOrder = mongoose.model(
+    "completedorders",
+    completedOrderSchema
+);
