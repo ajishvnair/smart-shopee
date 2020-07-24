@@ -6,23 +6,26 @@ import {
     BackHandler,
     AsyncStorage,
 } from "react-native";
+import { useSelector } from "react-redux";
 import { Input, Icon, Button } from "react-native-elements";
 import http from "../../../common/http";
 
 export default function ({ setStatus, mobileNo, setAuthenticated }) {
     // store locations
-    const [locations, setLocations] = useState([]);
+    // const [locations, setLocations] = useState([]);
     const [name, setName] = useState({ value: "", error: null });
     const [address, setAddress] = useState({ value: "", error: null });
     const [location, setLocation] = useState({ value: "", error: null });
     const [password, setPassword] = useState({ value: "", error: null });
     const [loading, setLoading] = useState(false);
 
-    const getLocation = async () => {
-        const item = await AsyncStorage.getItem("locations");
-        setLocations(JSON.parse(item));
-        // console.log(JSON.parse(item));
-    };
+    const locations = useSelector((state) => state);
+
+    // const getLocation = async () => {
+    //     // const item = await AsyncStorage.getItem("locations");
+    //     // setLocations(JSON.parse(item));
+    //     // console.log(JSON.parse(item));
+    // };
 
     const getLocations = () => {
         const pickerItems = locations.map((location) => (
@@ -51,9 +54,9 @@ export default function ({ setStatus, mobileNo, setAuthenticated }) {
         );
     };
 
-    useEffect(() => {
-        getLocation();
-    }, []);
+    // useEffect(() => {
+    //     getLocation();
+    // }, []);
     // for handling back button
     const backAction = () => {
         setStatus("home");
