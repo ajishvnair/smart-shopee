@@ -9,6 +9,7 @@ import {
     Picker,
 } from "react-native";
 import styles from "./styles";
+
 import AddToCart from "../../components/AddToCart/AddToCart";
 import QuantitySelector from "../../components/QuantitySelector/QuantitySelector";
 import CartImage from "../../components/CartImage";
@@ -18,7 +19,6 @@ const { width: viewportWidth } = Dimensions.get("window");
 const Product = ({ navigation }) => {
     const [quantity, setQuantity] = useState(1);
     const [total, setTotal] = useState(0);
-    const [locations,setLocations]=
 
     const item = navigation.getParam("item");
 
@@ -184,15 +184,6 @@ const Product = ({ navigation }) => {
                                     Pulimudu, Parathodu, 686512{" "}
                                 </Text> */}
                                 {/* location */}
-                                <Picker
-                                    style={styles.picker}
-                                    selectedValue={location.value}
-                                    onValueChange={(value) =>
-                                        setLocation({ ...location, value })
-                                    }
-                                >
-                                    {getLocations()}
-                                </Picker>
                             </View>
                             <Text style={styles.subText}>
                                 We will reach out you with in 5 hours
