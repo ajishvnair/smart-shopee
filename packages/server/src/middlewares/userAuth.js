@@ -7,7 +7,7 @@ const User = require("../models/User");
 exports.auth = async (req, res, next) => {
     const token = req.headers["authorization"];
 
-    if (token === null) {
+    if (token && token === null) {
         return res.status(400).json({ errors: "Incorrect Token" });
     }
     try {
@@ -25,6 +25,7 @@ exports.auth = async (req, res, next) => {
                         mobileNo: user._doc.mobileNo,
                     });
                     if (
+                        userFromDb &&
                         user._doc.mobileNo === userFromDb.mobileNo &&
                         user._doc.password === userFromDb.password
                     ) {

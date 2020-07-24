@@ -79,7 +79,7 @@ export default function ({ setStatus, mobileNo, setMobileNo }) {
                                 <Input
                                     label="Register with Mobile Number"
                                     labelStyle={{ color: "white" }}
-                                    placeholder="987656789"
+                                    // placeholder="987656789"
                                     containerStyle={styles.input}
                                     errorStyle={{ fontWeight: "bold" }}
                                     keyboardType="numeric"
