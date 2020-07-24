@@ -13,35 +13,9 @@ const { width, height } = Dimensions.get("window");
 export default function ({ setStatus }) {
     return (
         <View style={{ height: height / 3, justifyContent: "center" }}>
-            {/* <TouchableHighlight
-                activeOpacity={0.4}
-                underlayColor="#DDDDDD"
-                style={styles.button}
-                onPress={() => setStatus("signIn")}
-            >
-                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                    SIGN IN
-                </Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-                style={{ ...styles.button, backgroundColor: "#FFA500" }}
-                activeOpacity={0.1}
-                underlayColor="#DDDDDD"
-                onPress={() => setStatus("otp")}
-            >
-                <Text
-                    style={{
-                        fontSize: 20,
-                        fontWeight: "bold",
-                        color: "white",
-                    }}
-                >
-                    REGISTER
-                </Text>
-            </TouchableHighlight> */}
             <Button
                 title="SIGN IN"
-                buttonStyle={{ ...styles.button }}
+                buttonStyle={{ ...styles.button, backgroundColor: "#B3B6B7" }}
                 onPress={() => setStatus("signIn")}
             />
             <Button

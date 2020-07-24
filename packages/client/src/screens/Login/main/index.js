@@ -27,6 +27,7 @@ export default function ({ setAuthenticated }) {
             .then((res) => {
                 if (res.status !== 400) {
                     setAuthenticated(true);
+                    // setStatus("home");
                 } else {
                     setStatus("home");
                 }

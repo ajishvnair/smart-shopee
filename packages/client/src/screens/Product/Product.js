@@ -4,18 +4,11 @@ import {
     ScrollView,
     Text,
     View,
-    TouchableOpacity,
     Dimensions,
     TouchableHighlight,
+    Picker,
 } from "react-native";
 import styles from "./styles";
-import Carousel, { Pagination } from "react-native-snap-carousel";
-import {
-    getIngredientName,
-    getCategoryName,
-    getCategoryById,
-} from "../../dataProvider/MockDataAPI";
-import BackButton from "../../components/BackButton/BackButton";
 import AddToCart from "../../components/AddToCart/AddToCart";
 import QuantitySelector from "../../components/QuantitySelector/QuantitySelector";
 import CartImage from "../../components/CartImage";
@@ -25,6 +18,7 @@ const { width: viewportWidth } = Dimensions.get("window");
 const Product = ({ navigation }) => {
     const [quantity, setQuantity] = useState(1);
     const [total, setTotal] = useState(0);
+    const [locations,setLocations]=
 
     const item = navigation.getParam("item");
 
@@ -71,6 +65,7 @@ const Product = ({ navigation }) => {
     return (
         <>
             <ScrollView style={styles.container}>
+                {/* for image */}
                 <View style={styles.carouselContainer}>
                     <View style={styles.carousel}>
                         <View style={styles.imageContainer}>
@@ -81,6 +76,8 @@ const Product = ({ navigation }) => {
                         </View>
                     </View>
                 </View>
+                {/* title and price row */}
+
                 <View style={styles.infoRecipeContainer}>
                     <View style={styles.infoContainer}>
                         <View>
@@ -128,6 +125,7 @@ const Product = ({ navigation }) => {
                                     : `Not Available`}{" "}
                             </Text>
                         </View>
+
                         {checkAvailability(item.startTime, item.endTime) ? (
                             <View style={styles.addQuantity}>
                                 <TouchableHighlight
@@ -170,42 +168,67 @@ const Product = ({ navigation }) => {
                         ) : null}
                     </View>
                     {/* Delivery card */}
-                    <View style={styles.delivery}>
-                        <Text style={styles.deliveryHeading}>
-                            Delivery Details
-                        </Text>
-                        <View style={styles.divider}></View>
-
-                        <View style={styles.location}>
-                            <Image
-                                style={styles.locationIcon}
-                                source={require("../../../assets/icons/pin.png")}
-                            />
-                            <Text style={styles.address}>
-                                Pulimudu, Parathodu, 686512{" "}
+                    {checkAvailability(item.startTime, item.endTime) ? (
+                        <View style={styles.delivery}>
+                            <Text style={styles.deliveryHeading}>
+                                Delivery Details
                             </Text>
+                            <View style={styles.divider}></View>
+
+                            <View style={styles.location}>
+                                <Image
+                                    style={styles.locationIcon}
+                                    source={require("../../../assets/icons/pin.png")}
+                                />
+                                {/* <Text style={styles.address}>
+                                    Pulimudu, Parathodu, 686512{" "}
+                                </Text> */}
+                                {/* location */}
+                                <Picker
+                                    style={styles.picker}
+                                    selectedValue={location.value}
+                                    onValueChange={(value) =>
+                                        setLocation({ ...location, value })
+                                    }
+                                >
+                                    {getLocations()}
+                                </Picker>
+                            </View>
+                            <Text style={styles.subText}>
+                                We will reach out you with in 5 hours
+                            </Text>
+                            <Text style={styles.subText}>
+                                Delivery time will vary depending on products in
+                                your cart
+                            </Text>
+                            <Text style={styles.subText}>
+                                For any queries contact our customer support
+                            </Text>
+                            <Text style={styles.subText}>+91 9988776655</Text>
                         </View>
-                        <Text style={styles.subText}>
-                            We will reach out you with in 5 hours
-                        </Text>
-                        <Text style={styles.subText}>
-                            Delivery time will vary depending on products in
-                            your cart
-                        </Text>
-                        <Text style={styles.subText}>
-                            For any queries contact our customer support
-                        </Text>
-                        <Text style={styles.subText}>+91 9988776655</Text>
-                    </View>
+                    ) : null}
                 </View>
             </ScrollView>
 
             <View style={styles.addToCart}>
                 <View style={styles.addButtons}>
-                    <QuantitySelector quantity={quantity} total={total} />
+                    <QuantitySelector
+                        quantity={quantity}
+                        total={total}
+                        available={checkAvailability(
+                            item.startTime,
+                            item.endTime
+                        )}
+                    />
                 </View>
                 <View style={styles.addButtons}>
-                    <AddToCart quantity={quantity} />
+                    <AddToCart
+                        quantity={quantity}
+                        available={checkAvailability(
+                            item.startTime,
+                            item.endTime
+                        )}
+                    />
                 </View>
             </View>
         </>

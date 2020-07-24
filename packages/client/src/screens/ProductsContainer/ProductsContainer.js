@@ -7,7 +7,7 @@ import {
     TouchableHighlight,
     Image,
 } from "react-native";
-import http from '../../common/http';
+import http from "../../common/http";
 import styles from "./styles";
 import { recipes } from "../../dataProvider/dataArrays";
 // import MenuImage from "../../components/MenuImage/MenuImage";
@@ -16,13 +16,11 @@ import { getCategoryName } from "../../dataProvider/MockDataAPI";
 import CartImage from "../../components/CartImage";
 
 const ProductsScreen = ({ navigation }) => {
-
     const [productList, setProductList] = useState([]);
 
-    const id = navigation.getParam('id', 1);
+    const id = navigation.getParam("id", 1);
     useEffect(() => {
-        http
-            .getAction(`api/v1/product/all/${id}`)
+        http.getAction(`api/v1/product/all/${id}`)
             .then((res) => {
                 const { products } = res.data;
                 setProductList([...products]);
@@ -30,24 +28,27 @@ const ProductsScreen = ({ navigation }) => {
             .catch((err) => {
                 console.log(err);
             });
+    }, [id]);
 
-    }, [id])
-
-    onPressRecipe = (item) => {
+    const onPressProduct = (item) => {
         navigation.navigate("Product", { item });
     };
 
     const renderProducts = ({ item }) => (
         <TouchableHighlight
             underlayColor="rgba(73,182,77,1,0.9)"
-            onPress={() => onPressRecipe(item)}
+            onPress={() => onPressProduct(item)}
         >
             <View style={styles.container}>
                 <Image style={styles.photo} source={{ uri: item.image }} />
                 <Text style={styles.title}>{item.productNameEnglish}</Text>
                 <Text style={styles.title}>{item.productNameMalayalam}</Text>
                 <Text style={styles.discountPrice}>
-                    ₹ {item.sellingPrice}<Text style={styles.actualPrice}> ₹ {item.actualPrice}</Text>{" "}
+                    ₹ {item.sellingPrice}
+                    <Text style={styles.actualPrice}>
+                        {" "}
+                        ₹ {item.actualPrice}
+                    </Text>{" "}
                     <Text style={styles.unit}>{item.unit}</Text>
                 </Text>
             </View>
