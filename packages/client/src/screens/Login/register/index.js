@@ -19,7 +19,7 @@ export default function ({ setStatus, mobileNo, setAuthenticated }) {
     const [password, setPassword] = useState({ value: "", error: null });
     const [loading, setLoading] = useState(false);
 
-    const locations = useSelector((state) => state);
+    const locations = useSelector((state) => state.locations || []);
 
     // const getLocation = async () => {
     //     // const item = await AsyncStorage.getItem("locations");

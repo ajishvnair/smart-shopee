@@ -26,8 +26,8 @@ export default function ({ setAuthenticated }) {
         http.postAction("api/v1/user/auth", {}, { headers })
             .then((res) => {
                 if (res.status !== 400) {
-                    setAuthenticated(true);
-                    // setStatus("home");
+                    // setAuthenticated(true);
+                    setStatus("home");
                 } else {
                     setStatus("home");
                 }
