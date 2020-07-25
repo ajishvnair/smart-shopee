@@ -13,6 +13,9 @@ import styles from "./styles";
 import AddToCart from "../../components/AddToCart/AddToCart";
 import QuantitySelector from "../../components/QuantitySelector/QuantitySelector";
 import CartImage from "../../components/CartImage";
+import DeliveryDetails from "./DeliveryDetails";
+import AddQuantity from "./AddQuantity";
+import BottomNavigator from "./BottomNavigator";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -127,101 +130,25 @@ const Product = ({ navigation }) => {
                         </View>
 
                         {checkAvailability(item.startTime, item.endTime) ? (
-                            <View style={styles.addQuantity}>
-                                <TouchableHighlight
-                                    activeOpacity={0.1}
-                                    underlayColor="#DDDDDD"
-                                    onPress={() => quantityOperation("-")}
-                                >
-                                    <Text
-                                        style={{
-                                            ...styles.quantityText,
-                                            color: "#C0C0C0",
-                                        }}
-                                    >
-                                        -
-                                    </Text>
-                                </TouchableHighlight>
-                                <Text
-                                    style={{
-                                        ...styles.quantityText,
-                                        color: "#2cd18a",
-                                    }}
-                                >
-                                    {quantity}
-                                </Text>
-                                <TouchableHighlight
-                                    activeOpacity={0.1}
-                                    underlayColor="#DDDDDD"
-                                    onPress={() => quantityOperation("+")}
-                                >
-                                    <Text
-                                        style={{
-                                            ...styles.quantityText,
-                                            color: "#2cd18a",
-                                        }}
-                                    >
-                                        +
-                                    </Text>
-                                </TouchableHighlight>
-                            </View>
+                            <AddQuantity
+                                quantityOperation={quantityOperation}
+                                quantity={quantity}
+                            />
                         ) : null}
                     </View>
-                    {/* Delivery card */}
-                    {checkAvailability(item.startTime, item.endTime) ? (
-                        <View style={styles.delivery}>
-                            <Text style={styles.deliveryHeading}>
-                                Delivery Details
-                            </Text>
-                            <View style={styles.divider}></View>
 
-                            <View style={styles.location}>
-                                <Image
-                                    style={styles.locationIcon}
-                                    source={require("../../../assets/icons/pin.png")}
-                                />
-                                {/* <Text style={styles.address}>
-                                    Pulimudu, Parathodu, 686512{" "}
-                                </Text> */}
-                                {/* location */}
-                            </View>
-                            <Text style={styles.subText}>
-                                We will reach out you with in 5 hours
-                            </Text>
-                            <Text style={styles.subText}>
-                                Delivery time will vary depending on products in
-                                your cart
-                            </Text>
-                            <Text style={styles.subText}>
-                                For any queries contact our customer support
-                            </Text>
-                            <Text style={styles.subText}>+91 9988776655</Text>
-                        </View>
+                    {checkAvailability(item.startTime, item.endTime) ? (
+                        <DeliveryDetails />
                     ) : null}
                 </View>
             </ScrollView>
-
-            <View style={styles.addToCart}>
-                <View style={styles.addButtons}>
-                    <QuantitySelector
-                        quantity={quantity}
-                        total={total}
-                        available={checkAvailability(
-                            item.startTime,
-                            item.endTime
-                        )}
-                    />
-                </View>
-                <View style={styles.addButtons}>
-                    <AddToCart
-                        quantity={quantity}
-                        available={checkAvailability(
-                            item.startTime,
-                            item.endTime
-                        )}
-                    />
-                </View>
-            </View>
+            {/* bottom buttons */}
+            <BottomNavigator
+                quantity={quantity}
+                total={total}
+                checkAvailability={checkAvailability}
+                item={item}
+            />
         </>
     );
 };

@@ -31,8 +31,8 @@ export default function ({ setAuthenticated }) {
                 if (res.status !== 400) {
                     const { user } = res.data;
                     dispatch(setUser(user));
-                    // setAuthenticated(true);
-                    setStatus("home");
+                    setAuthenticated(true);
+                    // setStatus("home");
                 } else {
                     setStatus("home");
                 }
