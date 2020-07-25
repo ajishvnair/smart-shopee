@@ -1,4 +1,4 @@
 export const setLocations = (locations) => ({
-    type: "SET",
+    type: "SETLOCATIONS",
     locations: locations,
 });

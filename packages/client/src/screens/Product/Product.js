@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Image, ScrollView, Text, View, Dimensions } from "react-native";
+import { useSelector } from "react-redux";
 import { checkAvailability } from "../../common/commonMethods";
 import styles from "./styles";
 import CartImage from "../../components/CartImage";
@@ -10,6 +11,8 @@ import BottomNavigator from "./BottomNavigator";
 const Product = ({ navigation }) => {
     const [quantity, setQuantity] = useState(1);
     const [total, setTotal] = useState(0);
+
+    const user = useSelector((state) => state.user || {});
 
     const item = navigation.getParam("item");
 
