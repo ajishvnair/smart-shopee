@@ -5,21 +5,28 @@ export const get = async (key, convertToJSON = true) => {
     return convertToJSON ? JSON.parse(item) : item;
 };
 
-export const set = async (key, value) => {
-    let valueToSave = value;
-    try {
-        // Sometimes true and false values comes as string, so we are trying to parse it as boolean, if err just skips this
-        valueToSave = typeof val === "string" ? JSON.parse(val) : val;
-    } catch (err) {}
-
-    // if the valueToSave is a boolean or falsy values don't stringify, store it
-    valueToSave =
-        typeof valueToSave === "boolean" || !valueToSave
-            ? valueToSave
-            : JSON.stringify(valueToSave);
-    await AsyncStorage.setItem(key, valueToSave);
-};
-
-export const unset = async (key) => {
-    await AsyncStorage.removeItem(key);
+// check availability of a product
+export const checkAvailability = (startTime, endTime) => {
+    if (
+        startTime &&
+        endTime &&
+        startTime !== "" &&
+        endTime !== "" &&
+        startTime !== "undefined" &&
+        endTime !== "undefined"
+    ) {
+        const date = new Date();
+        // return `${currentTime.getHours()} : ${currentTime.getMinutes()}`;
+        const currentTime = `${date.getHours()} : ${date.getMinutes()}`;
+        const startTimes = startTime.split(":");
+        const endTimes = endTime.split(":");
+        if (startTimes[0] < date.getHours() < endTimes[0]) {
+            if (startTimes[1] < date.getMinutes() < endTimes[1]) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+    return true;
 };

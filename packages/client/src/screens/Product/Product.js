@@ -1,23 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-    Image,
-    ScrollView,
-    Text,
-    View,
-    Dimensions,
-    TouchableHighlight,
-    Picker,
-} from "react-native";
+import { Image, ScrollView, Text, View, Dimensions } from "react-native";
+import { checkAvailability } from "../../common/commonMethods";
 import styles from "./styles";
-
-import AddToCart from "../../components/AddToCart/AddToCart";
-import QuantitySelector from "../../components/QuantitySelector/QuantitySelector";
 import CartImage from "../../components/CartImage";
 import DeliveryDetails from "./DeliveryDetails";
 import AddQuantity from "./AddQuantity";
 import BottomNavigator from "./BottomNavigator";
-
-const { width: viewportWidth } = Dimensions.get("window");
 
 const Product = ({ navigation }) => {
     const [quantity, setQuantity] = useState(1);
@@ -29,31 +17,6 @@ const Product = ({ navigation }) => {
         setQuantity(1);
         setTotal(quantity * item.sellingPrice);
     }, [item]);
-
-    const checkAvailability = (startTime, endTime) => {
-        if (
-            startTime &&
-            endTime &&
-            startTime !== "" &&
-            endTime !== "" &&
-            startTime !== "undefined" &&
-            endTime !== "undefined"
-        ) {
-            const date = new Date();
-            // return `${currentTime.getHours()} : ${currentTime.getMinutes()}`;
-            const currentTime = `${date.getHours()} : ${date.getMinutes()}`;
-            const startTimes = startTime.split(":");
-            const endTimes = endTime.split(":");
-            if (startTimes[0] < date.getHours() < endTimes[0]) {
-                if (startTimes[1] < date.getMinutes() < endTimes[1]) {
-                    return true;
-                }
-                return false;
-            }
-            return false;
-        }
-        return true;
-    };
 
     const quantityOperation = (action) => {
         if (action === "+") {
@@ -146,7 +109,7 @@ const Product = ({ navigation }) => {
             <BottomNavigator
                 quantity={quantity}
                 total={total}
-                checkAvailability={checkAvailability}
+                // checkAvailability={checkAvailability}
                 item={item}
             />
         </>
