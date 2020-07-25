@@ -33,81 +33,86 @@ const Product = ({ navigation }) => {
 
     return (
         <>
-            <ScrollView style={styles.container}>
-                {/* for image */}
-                <View style={styles.carouselContainer}>
-                    <View style={styles.carousel}>
-                        <View style={styles.imageContainer}>
-                            <Image
-                                style={styles.image}
-                                source={{ uri: item.image }}
-                            />
-                        </View>
-                    </View>
-                </View>
-                {/* title and price row */}
-
-                <View style={styles.infoRecipeContainer}>
-                    <View style={styles.infoContainer}>
-                        <View>
-                            <Text style={styles.infoRecipeName}>
-                                {`${item.productNameEnglish}(${item.productNameMalayalam})`}
-                            </Text>
-                            <View style={styles.infoContainerSub}>
-                                <Text style={styles.discountPrice}>
-                                    ₹ {item.sellingPrice}
-                                    <Text style={styles.actualPrice}>
-                                        {" "}
-                                        ₹ {item.actualPrice}
-                                    </Text>
-                                </Text>
-                                <Text style={styles.unit}>{item.unit}</Text>
+            <View style={styles.container}>
+                <ScrollView>
+                    {/* for image */}
+                    <View style={styles.carouselContainer}>
+                        <View style={styles.carousel}>
+                            <View style={styles.imageContainer}>
+                                <Image
+                                    style={styles.image}
+                                    source={{ uri: item.image }}
+                                />
                             </View>
                         </View>
-                        <Image
-                            style={styles.infoHeartPhoto}
-                            source={require("../../../assets/icons/heart.png")}
-                        />
                     </View>
+                    {/* title and price row */}
 
-                    {/* <View style={styles.divider}></View> */}
-                    {/* add quantity card */}
-                    <View style={styles.validity}>
-                        <View style={styles.validitySub}>
+                    <View style={styles.infoRecipeContainer}>
+                        <View style={styles.infoContainer}>
+                            <View>
+                                <Text style={styles.infoRecipeName}>
+                                    {`${item.productNameEnglish}(${item.productNameMalayalam})`}
+                                </Text>
+                                <View style={styles.infoContainerSub}>
+                                    <Text style={styles.discountPrice}>
+                                        ₹ {item.sellingPrice}
+                                        <Text style={styles.actualPrice}>
+                                            {" "}
+                                            ₹ {item.actualPrice}
+                                        </Text>
+                                    </Text>
+                                    <Text style={styles.unit}>{item.unit}</Text>
+                                </View>
+                            </View>
                             <Image
-                                style={styles.infoPhoto}
-                                source={require("../../../assets/icons/time.png")}
+                                style={styles.infoHeartPhoto}
+                                source={require("../../../assets/icons/heart.png")}
                             />
-                            <Text
-                                style={{
-                                    ...styles.timer,
-                                    color: checkAvailability(
+                        </View>
+
+                        {/* <View style={styles.divider}></View> */}
+                        {/* add quantity card */}
+                        <View style={styles.validity}>
+                            <View style={styles.validitySub}>
+                                <Image
+                                    style={styles.infoPhoto}
+                                    source={require("../../../assets/icons/time.png")}
+                                />
+                                <Text
+                                    style={{
+                                        ...styles.timer,
+                                        color: checkAvailability(
+                                            item.startTime,
+                                            item.endTime
+                                        )
+                                            ? `#2cd18a`
+                                            : `red`,
+                                    }}
+                                >
+                                    {checkAvailability(
                                         item.startTime,
                                         item.endTime
                                     )
-                                        ? `#2cd18a`
-                                        : `red`,
-                                }}
-                            >
-                                {checkAvailability(item.startTime, item.endTime)
-                                    ? `Available Now`
-                                    : `Not Available`}{" "}
-                            </Text>
+                                        ? `Available Now`
+                                        : `Not Available`}{" "}
+                                </Text>
+                            </View>
+
+                            {checkAvailability(item.startTime, item.endTime) ? (
+                                <AddQuantity
+                                    quantityOperation={quantityOperation}
+                                    quantity={quantity}
+                                />
+                            ) : null}
                         </View>
 
                         {checkAvailability(item.startTime, item.endTime) ? (
-                            <AddQuantity
-                                quantityOperation={quantityOperation}
-                                quantity={quantity}
-                            />
+                            <DeliveryDetails user={user} />
                         ) : null}
                     </View>
-
-                    {checkAvailability(item.startTime, item.endTime) ? (
-                        <DeliveryDetails />
-                    ) : null}
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </View>
             {/* bottom buttons */}
             <BottomNavigator
                 quantity={quantity}

@@ -1,8 +1,32 @@
-import React from "react";
-import { View, Text, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { View, Text, Image, Picker } from "react-native";
 import styles from "./styles";
 
-export default function () {
+export default function ({ user }) {
+    const [location, setLocation] = useState(null);
+
+    const locations = useSelector((state) => state.locations || []);
+
+    useEffect(() => {
+        if (user) {
+            setLocation(user.location);
+        }
+    }, []);
+    const getLocations = () => {
+        const pickerItems = locations.map((location) => (
+            <Picker.Item
+                label={location.location}
+                value={location._id}
+                key={location._id}
+            />
+        ));
+        return pickerItems;
+    };
+    const getTime = (id) => {
+        const lo = locations.find((loc) => loc._id === id);
+        return lo ? lo.deliveryTime : null;
+    };
     return (
         <View style={styles.delivery}>
             <Text style={styles.deliveryHeading}>Delivery Details</Text>
@@ -13,13 +37,18 @@ export default function () {
                     style={styles.locationIcon}
                     source={require("../../../assets/icons/pin.png")}
                 />
-                {/* <Text style={styles.address}>
-                                    Pulimudu, Parathodu, 686512{" "}
-                                </Text> */}
-                {/* location */}
+                {/* <Text style={styles.address}>{user.location} </Text> */}
+                <Picker
+                    // style={}
+                    style={styles.address}
+                    selectedValue={location}
+                    onValueChange={(value) => setLocation(value)}
+                >
+                    {getLocations()}
+                </Picker>
             </View>
             <Text style={styles.subText}>
-                We will reach out you with in 5 hours
+                {`We will reach out you with in ${getTime(location)} hours`}
             </Text>
             <Text style={styles.subText}>
                 Delivery time will vary depending on products in your cart
