@@ -6,11 +6,13 @@ import {
     BackHandler,
     AsyncStorage,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "../../../state/actions/user";
 import { Input, Icon, Button } from "react-native-elements";
 import http from "../../../common/http";
 
 export default function ({ setStatus, mobileNo, setAuthenticated }) {
+    const dispatch = useDispatch();
     // store locations
     // const [locations, setLocations] = useState([]);
     const [name, setName] = useState({ value: "", error: null });
@@ -29,7 +31,11 @@ export default function ({ setStatus, mobileNo, setAuthenticated }) {
 
     const getLocations = () => {
         const pickerItems = locations.map((location) => (
-            <Picker.Item label={location.location} value={location._id} />
+            <Picker.Item
+                label={location.location}
+                value={location._id}
+                key={location._id}
+            />
         ));
         return pickerItems;
     };
@@ -46,17 +52,20 @@ export default function ({ setStatus, mobileNo, setAuthenticated }) {
         http.postAction("api/v1/user/register", { ...payload }).then(
             async (res) => {
                 if (res.status === 200) {
-                    const { accessToken } = res.data;
+                    const { accessToken, user } = res.data;
                     await AsyncStorage.setItem("accessToken", accessToken);
+                    dispatch(setUser(user));
                     setAuthenticated(true);
                 }
             }
         );
     };
 
-    // useEffect(() => {
-    //     getLocation();
-    // }, []);
+    useEffect(() => {
+        if (locations.length > 0) {
+            setLocation({ value: locations[0]._id, error: null });
+        }
+    }, [locations]);
     // for handling back button
     const backAction = () => {
         setStatus("home");

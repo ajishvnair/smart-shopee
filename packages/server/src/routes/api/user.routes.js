@@ -42,7 +42,7 @@ router.post(
 );
 
 router.post("/auth", userAuth.auth, (req, res) => {
-    res.send({ ...req.body.user });
+    res.send({ user: req.body.user });
 });
 
 module.exports = router;

@@ -19,7 +19,10 @@ exports.register = async (req, res) => {
         if (user) {
             return res.status(400).json({ errors: ["user already exist"] });
         }
+
+        const _id = mongoose.Types.ObjectId();
         user = new User({
+            _id,
             mobileNo,
             userName,
             password,
@@ -38,7 +41,10 @@ exports.register = async (req, res) => {
             process.env.ACCESS_TOKEN_SECRET
         );
 
-        res.send({ accessToken, mobileNo, address, location });
+        res.send({
+            accessToken,
+            user: { _id, mobileNo, userName, address, location },
+        });
     } catch (err) {
         return res.status(400).json({ errors: "Something went wrong" });
     }
@@ -87,10 +93,7 @@ exports.login = async (req, res) => {
 
             res.send({
                 accessToken,
-                mobileNo: user.mobileNo,
-                userName: user.userName,
-                address: user.address,
-                location: user.location,
+                user,
             });
         } else {
             return res.status(404).json({ errors: "Incorrect Password" });

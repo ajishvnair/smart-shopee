@@ -7,14 +7,17 @@ import {
     AsyncStorage,
     ActivityIndicator,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../state/actions/user";
 import http from "../../../common/http";
-
 import HomeScreen from "../home";
 import OtpScreen from "../otp";
 import RegisterScreen from "../register";
 import SignInScreen from "../sign-in";
 
 export default function ({ setAuthenticated }) {
+    const dispatch = useDispatch();
+
     const [status, setStatus] = useState("");
     const [mobileNo, setMobileNo] = useState("");
 
@@ -26,6 +29,8 @@ export default function ({ setAuthenticated }) {
         http.postAction("api/v1/user/auth", {}, { headers })
             .then((res) => {
                 if (res.status !== 400) {
+                    const { user } = res.data;
+                    dispatch(setUser(user));
                     // setAuthenticated(true);
                     setStatus("home");
                 } else {

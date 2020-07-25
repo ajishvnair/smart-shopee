@@ -7,9 +7,14 @@ import {
     AsyncStorage,
 } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../state/actions/user";
 import http from "../../../common/http";
 
 export default function ({ setStatus, setAuthenticated }) {
+    //
+    const dispatch = useDispatch();
+
     const [mobileNo, setMobileNo] = useState({ value: "", error: null });
     const [password, setPassword] = useState({ password: "", error: null });
     const [loading, setLoading] = useState(false);
@@ -32,8 +37,9 @@ export default function ({ setStatus, setAuthenticated }) {
         http.postAction("api/v1/user/login", { ...payload })
             .then(async (res) => {
                 if (res.status === 200) {
-                    const { accessToken } = res.data;
+                    const { accessToken, user } = res.data;
                     await AsyncStorage.setItem("accessToken", accessToken);
+                    dispatch(setUser(user));
                     setAuthenticated(true);
                 }
             })
