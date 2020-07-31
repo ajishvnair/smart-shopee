@@ -36,6 +36,7 @@ exports.get = async (req, res) => {
             await newCart.save();
             res.send({
                 products: [],
+                quantities: [],
             });
         }
     } catch (err) {
