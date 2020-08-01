@@ -29,7 +29,7 @@ export default function ({ quantity, total, item }) {
             } else {
                 newCartList.push({ productId: item._id, quantity });
             }
-            // dispatch(setCart([...newCartList]));
+            // post to back end
             http.postAction("api/v1/cart/set", {
                 userId: user._id,
                 products: [...newCartList],
