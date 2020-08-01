@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import { View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { setCart } from "../../state/actions/cart";
@@ -14,8 +14,13 @@ export default function ({ quantity, total, item }) {
     const cart = useSelector((state) => state.cart || []);
     // get user
     const user = useSelector((state) => state.user);
-    const addTo = () => {
+    // for loading
+    const [loading, setLoader] = useState(false);
+    const addTo = useCallback(() => {
         if (checkAvailability(item.startTime, item.endTime)) {
+            // set loading
+            setLoader(true);
+
             let newCartList = [...cart];
             let cartItem = cart.find(
                 (elements) => elements.productId === item._id
@@ -38,12 +43,14 @@ export default function ({ quantity, total, item }) {
                     if (res.status === 200) {
                         dispatch(setCart([...newCartList]));
                     }
+                    setLoader(false);
                 })
                 .catch((err) => {
                     //err
+                    setLoader(false);
                 });
         }
-    };
+    }, [loading, setLoader, cart, dispatch, user]);
     return (
         <View style={styles.addToCart}>
             <View style={styles.addButtons}>
@@ -58,6 +65,7 @@ export default function ({ quantity, total, item }) {
                     quantity={quantity}
                     available={checkAvailability(item.startTime, item.endTime)}
                     addTo={addTo}
+                    loading={loading}
                 />
             </View>
         </View>

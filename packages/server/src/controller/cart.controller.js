@@ -86,6 +86,9 @@ exports.set = async (req, res) => {
     try {
         const { userId, products = [] } = req.body;
         await Cart.findOneAndUpdate({ userId }, { products }, { upsert: true });
+        res.json({
+            message: "Added successfully",
+        });
     } catch (err) {
         return res.status(400).json({ errors: "Something went wrong" });
     }

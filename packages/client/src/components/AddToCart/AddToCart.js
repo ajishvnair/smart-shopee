@@ -3,7 +3,7 @@ import { Image, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import styles from "./styles";
 
-export default function ({ available, addTo }) {
+export default function ({ available, addTo, loading }) {
     return (
         <View style={styles.mainContainer}>
             <Button
@@ -22,6 +22,7 @@ export default function ({ available, addTo }) {
                 containerStyle={styles.container}
                 // operations
                 onPress={() => addTo()}
+                loading={loading}
             />
         </View>
     );
