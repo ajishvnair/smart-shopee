@@ -29,7 +29,8 @@ export default function ({ quantity, total, item }) {
                 const index = cart.findIndex(
                     (elements) => elements.productId === item._id
                 );
-                cartItem.quantity += quantity;
+                cartItem.quantity =
+                    parseInt(cartItem.quantity) + parseInt(quantity);
                 newCartList[index] = { ...cartItem };
             } else {
                 newCartList.push({ productId: item._id, quantity });
