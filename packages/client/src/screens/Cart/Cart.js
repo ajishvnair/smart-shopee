@@ -73,6 +73,14 @@ const Cart = ({ navigation }) => {
                 return;
         }
     };
+    // to display total
+    const calculateTotal = () => {
+        let total = 0;
+        cartList.forEach((c) => {
+            total += parseInt(c.quantity * c.product.sellingPrice);
+        });
+        return total;
+    };
     const onPressProduct = (item) => {
         navigation.navigate("Product", { item });
     };
@@ -105,7 +113,9 @@ const Cart = ({ navigation }) => {
                 onPress={() => setConfirmationModal(true)}
             >
                 <>
-                    <Text style={styles.totalText}>TOTAL ₹ 999</Text>
+                    <Text style={styles.totalText}>
+                        TOTAL ₹ {calculateTotal()}
+                    </Text>
 
                     <Text style={styles.checkoutText}> CHECKOUT</Text>
                 </>
