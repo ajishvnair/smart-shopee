@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import styles from "./styles";
 
-const MenuImage = (onPress) => {
+const MenuImage = ({ onPress }) => {
     const cart = useSelector((state) => state.cart);
     return (
         <TouchableOpacity
