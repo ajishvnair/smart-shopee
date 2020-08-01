@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../../../state/actions/user";
+import { initCart } from "../../../state/actions/cart";
 import { Input, Icon, Button } from "react-native-elements";
 import http from "../../../common/http";
 
@@ -52,9 +53,12 @@ export default function ({ setStatus, mobileNo, setAuthenticated }) {
         http.postAction("api/v1/user/register", { ...payload }).then(
             async (res) => {
                 if (res.status === 200) {
-                    const { accessToken, user } = res.data;
+                    const { accessToken, user, cart } = res.data;
                     await AsyncStorage.setItem("accessToken", accessToken);
                     dispatch(setUser(user));
+                    if (cart) {
+                        dispatch(initCart(cart));
+                    }
                     setAuthenticated(true);
                 }
             }

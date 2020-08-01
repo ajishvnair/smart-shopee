@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../state/actions/user";
+import { initCart } from "../../../state/actions/cart";
 import http from "../../../common/http";
 import HomeScreen from "../home";
 import OtpScreen from "../otp";
@@ -29,8 +30,11 @@ export default function ({ setAuthenticated }) {
         http.postAction("api/v1/user/auth", {}, { headers })
             .then((res) => {
                 if (res.status !== 400) {
-                    const { user } = res.data;
+                    const { user, cart } = res.data;
                     dispatch(setUser(user));
+                    if (cart) {
+                        dispatch(initCart(cart));
+                    }
                     setAuthenticated(true);
                     // setStatus("home");
                 } else {
