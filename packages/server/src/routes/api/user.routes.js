@@ -41,8 +41,6 @@ router.post(
     userController.login
 );
 
-router.post("/auth", userAuth.auth, (req, res) => {
-    res.send({ user: req.body.user });
-});
+router.post("/auth", userAuth.auth, userController.auth);
 
 module.exports = router;

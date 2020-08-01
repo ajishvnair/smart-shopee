@@ -81,7 +81,7 @@ exports.login = async (req, res) => {
         return res.status(400).json({ errors: ["Invalid User"] });
     }
     // compare password
-    await bcryptjs.compare(password, user.password, (err, isMatch) => {
+    await bcryptjs.compare(password, user.password, async (err, isMatch) => {
         // console.log(err, isMatch);
 
         if (isMatch) {
@@ -90,13 +90,27 @@ exports.login = async (req, res) => {
                 { ...user },
                 process.env.ACCESS_TOKEN_SECRET
             );
-
+            const cart = await Cart.findOne({ userId: user._id });
             res.send({
                 accessToken,
                 user,
+                cart,
             });
         } else {
             return res.status(404).json({ errors: "Incorrect Password" });
         }
     });
+};
+
+exports.auth = async (req, res) => {
+    try {
+        const { user } = req.body;
+        const cart = await Cart.findOne({ userId: user._id });
+        res.json({
+            user,
+            cart,
+        });
+    } catch (err) {
+        return res.status(400).json({ errors: "Something went wrong" });
+    }
 };
