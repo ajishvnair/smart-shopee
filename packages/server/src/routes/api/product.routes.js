@@ -51,6 +51,6 @@ router.get("/all/:id", productController.getAll);
 
 router.get("acive/all/:id", productController.getAllActive);
 
-router.get("/byId", productController.getProductsById);
+router.post("/all/byId", productController.getProductsById);
 
 module.exports = router;
