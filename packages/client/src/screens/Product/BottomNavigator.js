@@ -3,13 +3,17 @@ import { View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { setCart } from "../../state/actions/cart";
 import { checkAvailability } from "../../common/commonMethods";
+import http from "../../common/http";
 import styles from "./styles";
 import QuantitySelector from "../../components/QuantitySelector/QuantitySelector";
 import AddToCart from "../../components/AddToCart/AddToCart";
 
 export default function ({ quantity, total, item }) {
     const dispatch = useDispatch();
+    // get cart
     const cart = useSelector((state) => state.cart || []);
+    // get user
+    const user = useSelector((state) => state.user);
     const addTo = () => {
         if (checkAvailability(item.startTime, item.endTime)) {
             let newCartList = [...cart];
@@ -25,7 +29,19 @@ export default function ({ quantity, total, item }) {
             } else {
                 newCartList.push({ productId: item._id, quantity });
             }
-            dispatch(setCart([...newCartList]));
+            // dispatch(setCart([...newCartList]));
+            http.postAction("api/v1/cart/set", {
+                userId: user._id,
+                products: [...newCartList],
+            })
+                .then((res) => {
+                    if (res.status === 200) {
+                        dispatch(setCart([...newCartList]));
+                    }
+                })
+                .catch((err) => {
+                    //err
+                });
         }
     };
     return (
