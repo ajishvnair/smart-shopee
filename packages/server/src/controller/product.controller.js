@@ -233,3 +233,19 @@ exports.getAllActive = async (req, res) => {
         });
     }
 };
+
+exports.getProductsById = async (req, res) => {
+    try {
+        const { products } = req.body;
+        const productsArray = await Product.find({
+            _id: { $in: [...products] },
+        });
+        res.json({
+            products: [...productsArray],
+        });
+    } catch (err) {
+        return res.status(400).json({
+            errors: "Something went wrong in fetching products",
+        });
+    }
+};
