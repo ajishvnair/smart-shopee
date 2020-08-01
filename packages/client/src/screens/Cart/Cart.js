@@ -18,7 +18,19 @@ const Cart = ({ navigation }) => {
                 .then((res) => {
                     if (res.status === 200) {
                         const { products } = res.data;
-                        setCartList([...products]);
+                        // making new list with qunatity
+                        const newProductList = (products || []).map(
+                            (product) => {
+                                const cartItem = cart.find(
+                                    (c) => c.productId === product._id
+                                );
+                                return {
+                                    product,
+                                    quantity: cartItem.quantity,
+                                };
+                            }
+                        );
+                        setCartList([...newProductList]);
                     }
                 })
                 .catch((err) => {
@@ -27,17 +39,50 @@ const Cart = ({ navigation }) => {
         }
     }, []);
 
+    const handleQuantityOperation = (operator, id) => {
+        let newCartList = [];
+        switch (operator) {
+            case "+":
+                newCartList = cartList.map((c) => {
+                    if (c.product._id === id) {
+                        return {
+                            product: c.product,
+                            quantity: c.quantity + 1,
+                        };
+                    }
+                    return c;
+                });
+                setCartList([...newCartList]);
+                break;
+            case "-":
+                newCartList = cartList.map((c) => {
+                    if (c.product._id === id) {
+                        if (c.quantity > 1) {
+                            return {
+                                product: c.product,
+                                quantity: c.quantity - 1,
+                            };
+                        }
+                        return c;
+                    }
+                    return c;
+                });
+                setCartList([...newCartList]);
+                break;
+            default:
+                return;
+        }
+    };
     const onPressProduct = (item) => {
         navigation.navigate("Product", { item });
     };
 
     const renderProducts = ({ item }) => (
-        <TouchableHighlight
-            underlayColor="rgba(73,182,77,1,0.9)"
-            onPress={() => onPressProduct(item)}
-        >
-            <CartItem item={item} />
-        </TouchableHighlight>
+        <CartItem
+            item={item.product}
+            quantity={item.quantity}
+            handleQuantityOperation={handleQuantityOperation}
+        />
     );
 
     return (
