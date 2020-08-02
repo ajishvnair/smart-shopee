@@ -1322,6 +1322,16 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
+"@expo-google-fonts/courgette@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/courgette/-/courgette-0.1.0.tgz#75ce8c2280a0ea6a8c998d7a4ec4d1e30bc701a5"
+  integrity sha512-7Z35fMcJJkwcJmsDVRe8bw6gosWuhjmfStKSnllyV0xe7+hxgCZTjdBDm/pF5n12Fdilxhsp3CKJWmr103FTZA==
+
+"@expo-google-fonts/inter@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/inter/-/inter-0.1.0.tgz#399f068437824fcbf6aa3da5fcf490dba2af85a3"
+  integrity sha512-Y6GCqsUX6JwexQ2wmBkMiJBY6M2GpNQRTczzIGbBGhXWQxqGmP5awRcf0ZJV+OlLeJcKAzas/TW45ZLdpG3yzA==
+
 "@expo/configure-splash-screen@~0.1.0":
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/@expo/configure-splash-screen/-/configure-splash-screen-0.1.12.tgz#8d8889fc98e87cececdb48af45bc8d6447ce699d"
@@ -7357,6 +7367,14 @@ expo-firebase-recaptcha@^1.1.3:
   integrity sha512-E6WbCOFBd82GCm726poq87IL1b41PpqElVQhYN7Uvl6+TvHcvJh4+JJqeHA97nN8dSqtXAs6hLFlokKrAnes3w==
   dependencies:
     expo-firebase-core "~1.1.1"
+
+expo-font@^8.2.2:
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/expo-font/-/expo-font-8.2.2.tgz#c67ee8d3841921a907464d67e8098baeed92bacf"
+  integrity sha512-p/a7Ve+3LiR9ofn77U0UuuE6ZQiLVu3M1btiKUDe5efAp48D9GG41AevKQ7YnkfxTDdGJa0ACAtJAVsAD30jGA==
+  dependencies:
+    fbjs "1.0.0"
+    fontfaceobserver "^2.1.0"
 
 expo-font@~8.2.1:
   version "8.2.1"

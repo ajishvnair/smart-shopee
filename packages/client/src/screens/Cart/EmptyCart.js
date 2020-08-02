@@ -1,24 +1,41 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
+import { useFonts } from "expo-font";
 
 export default function () {
+    const [loaded] = useFonts({
+        "JosefinSans-SemiBold": require("../../../assets/fonts/JosefinSans-SemiBold.ttf"),
+    });
+
     return (
-        <View style={styles.container}>
-            <View style={styles.illustration} elevation={10}>
-                <Image
-                    source={require("../../../assets/icons/empty-cart.png")}
+        loaded && (
+            <View style={styles.container}>
+                <View style={styles.illustration}>
+                    <Image
+                        source={require("../../../assets/icons/empty-cart.gif")}
+                        style={{
+                            flex: 1,
+                            height: null,
+                            width: null,
+                            borderRadius: 200,
+                        }}
+                    />
+                </View>
+                <Text
                     style={{
-                        flex: 1,
-                        height: null,
-                        width: null,
+                        fontFamily: loaded ? "JosefinSans-SemiBold" : "",
+                        fontSize: 25,
                     }}
-                />
+                >
+                    Your cart is empty
+                </Text>
+                <Text
+                    style={{ fontFamily: loaded ? "JosefinSans-SemiBold" : "" }}
+                >
+                    Add something to make me happy :)
+                </Text>
             </View>
-            <Text style={styles.title}>Your cart is empty</Text>
-            <Text style={styles.subTitle}>
-                Add something to make me happy :)
-            </Text>
-        </View>
+        )
     );
 }
 
@@ -29,19 +46,12 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#ECEFF1",
     },
     illustration: {
         width: 200,
         height: 200,
-        borderRadius: 200,
+        // borderRadius: 200,
         backgroundColor: "rgba(52, 52, 52, 0.2)",
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
-        // fontFamily: "Iowan Old Style",
-    },
-    subTitle: {
-        fontSize: 15,
     },
 });
