@@ -9,14 +9,13 @@ import {
 } from "react-native";
 import http from "../../common/http";
 import styles from "./styles";
-import { recipes } from "../../dataProvider/dataArrays";
-// import MenuImage from "../../components/MenuImage/MenuImage";
-// import DrawerActions from "react-navigation";
-import { getCategoryName } from "../../dataProvider/MockDataAPI";
 import CartImage from "../../components/CartImage";
+import Loader from "../../components/loader";
 
 const ProductsScreen = ({ navigation }) => {
+    // to store products
     const [productList, setProductList] = useState([]);
+    const [loading, setLoader] = useState(true);
 
     const id = navigation.getParam("id", 1);
     useEffect(() => {
@@ -24,6 +23,7 @@ const ProductsScreen = ({ navigation }) => {
             .then((res) => {
                 const { products } = res.data;
                 setProductList([...products]);
+                setLoader(false);
             })
             .catch((err) => {
                 console.log(err);
@@ -55,7 +55,7 @@ const ProductsScreen = ({ navigation }) => {
         </TouchableHighlight>
     );
 
-    return (
+    return !loading ? (
         <View>
             <FlatList
                 vertical
@@ -66,6 +66,8 @@ const ProductsScreen = ({ navigation }) => {
                 keyExtractor={(item) => `${item._id}`}
             />
         </View>
+    ) : (
+        <Loader />
     );
 };
 ProductsScreen["navigationOptions"] = ({ navigation }) => ({
