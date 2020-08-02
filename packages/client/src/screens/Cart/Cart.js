@@ -156,7 +156,7 @@ const Cart = ({ navigation }) => {
                         numColumns={1}
                         data={[...cartList]}
                         renderItem={renderProducts}
-                        keyExtractor={(item) => `${item.recipeId}`}
+                        keyExtractor={(item) => `${item.product._id}`}
                     />
                     {overlayLoader && <Loader />}
                 </View>

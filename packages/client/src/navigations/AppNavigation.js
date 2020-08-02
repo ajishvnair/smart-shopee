@@ -23,7 +23,7 @@ const MainNavigator = createStackNavigator(
         // IngredientsDetails: IngredientsDetailsScreen,
     },
     {
-        initialRouteName: "Home",
+        initialRouteName: "Checkout",
         // headerMode: 'float',
         defaulfNavigationOptions: ({ navigation }) => ({
             headerTitleStyle: {
