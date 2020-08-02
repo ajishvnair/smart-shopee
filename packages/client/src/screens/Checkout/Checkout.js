@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { ScrollView, Text, StyleSheet, Picker } from "react-native";
 import { Input, Divider, CheckBox, Button } from "react-native-elements";
@@ -9,13 +9,13 @@ export default function () {
     const allLocations = useSelector((state) => state.locations);
     // local state
     const [name, setName] = useState({ value: "", error: null });
-    const [mobileNo, setmobileNo] = useState({ value: "", error: null });
+    const [mobileNo, setMobileNo] = useState({ value: "", error: null });
     const [location, setLocation] = useState({ value: "", error: null });
     const [address, setAddress] = useState({ value: "", error: null });
 
     useEffect(() => {
         setName({ value: user.userName, error: null });
-        setmobileNo({ value: user.mobileNo, error: null });
+        setMobileNo({ value: user.mobileNo, error: null });
         // const loc = allLocations.find((l) => l._id === user.location);
         setLocation({ value: user.location, error: null });
         setAddress({ value: user.address, error: null });
@@ -29,19 +29,53 @@ export default function () {
     };
     // get delivery charge
     const getDeliveryCharge = () => {
-        // const loc = allLocations.find((lo) => lo._id === location.value);
-        // return loc.deliveryCharge;
+        const loc = allLocations.find((lo) => lo._id === location.value);
+        if (loc) return loc.deliveryCharge;
+        else return "";
     };
+
+    const confirmOrder = useCallback(() => {
+        const phno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        if (name.value === "") {
+            setName({ ...name, error: "Please enter name" });
+        } else if (!mobileNo.value.match(phno)) {
+            setMobileNo({
+                ...mobileNo,
+                error: "Please enter a valid mobile number",
+            });
+        } else if (address.value.length < 5) {
+            setAddress({ ...address, error: "Please enter a valid address" });
+        } else {
+            alert("sc");
+        }
+    }, [name, setName, mobileNo, setMobileNo, address, setAddress]);
     return (
         <>
             <ScrollView style={styles.container}>
-                <Input label="Name" value={name.value} />
+                <Input
+                    label="Name"
+                    value={name.value}
+                    // operations
+                    errorMessage={name.error}
+                    onChangeText={(value) => setName({ value, error: null })}
+                />
                 <Input
                     label="Phone Number"
                     keyboardType="numeric"
+                    // operations
                     value={mobileNo.value}
+                    errorMessage={mobileNo.error}
+                    onChangeText={(value) =>
+                        setMobileNo({ value, error: null })
+                    }
                 />
-                <Input label="Address" value={address.value} />
+                <Input
+                    label="Address"
+                    // operations
+                    value={address.value}
+                    errorMessage={address.error}
+                    onChangeText={(value) => setAddress({ value, error: null })}
+                />
                 <Input
                     label="Select Location"
                     disabled
@@ -69,7 +103,11 @@ export default function () {
                     checked={true}
                 />
             </ScrollView>
-            <Button buttonStyle={styles.btn} title="CONFIRM ORDER" />
+            <Button
+                buttonStyle={styles.btn}
+                title="CONFIRM ORDER"
+                onPress={confirmOrder}
+            />
         </>
     );
 }
