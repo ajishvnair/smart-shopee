@@ -120,7 +120,7 @@ const Cart = ({ navigation }) => {
     const calculateTotal = () => {
         let total = 0;
         cartList.forEach((c) => {
-            total += parseInt(c.quantity * c.product.sellingPrice);
+            total += parseInt(c.quantity) * parseInt(c.product.sellingPrice);
         });
         return total;
     };
@@ -138,10 +138,12 @@ const Cart = ({ navigation }) => {
     );
 
     const handleCheckout = useCallback(() => {
-        if (parseInt(calculateTotal()) < 350) {
+        if (Number(calculateTotal()) < 350) {
             setWarningMessage(true);
+        } else {
+            navigation.navigate("Checkout", { cart: [...cartList] });
         }
-    }, [setWarningMessage]);
+    }, [setWarningMessage, cartList]);
 
     return !loading ? (
         cart.length > 0 ? (
