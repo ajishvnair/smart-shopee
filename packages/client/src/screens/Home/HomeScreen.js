@@ -3,20 +3,22 @@ import { FlatList, Text, View, Image, TouchableHighlight } from "react-native";
 import styles from "./styles";
 // import { categories } from "../../dataProvider/dataArrays";
 // import { getNumberOfRecipes } from "../../dataProvider/MockDataAPI";
-import http from '../../common/http';
+import http from "../../common/http";
 import MenuImage from "../../components/MenuImage/MenuImage";
 import CartImage from "../../components/CartImage";
+import Loader from "../../components/loader";
 
 const HomeScreen = ({ navigation }) => {
     // for storing category
     const [categories, setCategories] = useState([]);
+    const [loading, setLoader] = useState(true);
     // for fetching data
     useEffect(() => {
-        http
-            .getAction("api/v1/category/all")
+        http.getAction("api/v1/category/all")
             .then((res) => {
                 const { categories } = res.data;
                 setCategories([...categories]);
+                setLoader(false);
             })
             .catch((err) => {
                 console.log(err);
@@ -39,8 +41,7 @@ const HomeScreen = ({ navigation }) => {
                 <Image
                     style={styles.categoriesPhoto}
                     source={{
-                        uri:
-                            `${item.image}`,
+                        uri: `${item.image}`,
                     }}
                 />
                 <Text style={styles.categoriesName}>
@@ -54,7 +55,7 @@ const HomeScreen = ({ navigation }) => {
         </TouchableHighlight>
     );
 
-    return (
+    return !loading ? (
         <View>
             <FlatList
                 data={categories}
@@ -62,6 +63,8 @@ const HomeScreen = ({ navigation }) => {
                 keyExtractor={(item) => `${item._id}`}
             />
         </View>
+    ) : (
+        <Loader />
     );
 };
 
