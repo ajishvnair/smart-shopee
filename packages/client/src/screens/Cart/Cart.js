@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FlatList, Text, View, TouchableHighlight, Image } from "react-native";
 import { useSelector } from "react-redux";
 import styles from "./styles";
 import CartItem from "./CartItem";
 import http from "../../common/http";
+import Loader from "../../components/loader";
 
 const Cart = ({ navigation }) => {
     const [cartList, setCartList] = useState([]);
     const [confirmationModal, setConfirmationModal] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const cart = useSelector((state) => state.cart);
 
@@ -31,6 +33,7 @@ const Cart = ({ navigation }) => {
                             }
                         );
                         setCartList([...newProductList]);
+                        setLoading(false);
                     }
                 })
                 .catch((err) => {
@@ -39,40 +42,43 @@ const Cart = ({ navigation }) => {
         }
     }, []);
 
-    const handleQuantityOperation = (operator, id) => {
-        let newCartList = [];
-        switch (operator) {
-            case "+":
-                newCartList = cartList.map((c) => {
-                    if (c.product._id === id) {
-                        return {
-                            product: c.product,
-                            quantity: c.quantity + 1,
-                        };
-                    }
-                    return c;
-                });
-                setCartList([...newCartList]);
-                break;
-            case "-":
-                newCartList = cartList.map((c) => {
-                    if (c.product._id === id) {
-                        if (c.quantity > 1) {
+    const handleQuantityOperation = useCallback(
+        (operator, id) => {
+            let newCartList = [];
+            switch (operator) {
+                case "+":
+                    newCartList = cartList.map((c) => {
+                        if (c.product._id === id) {
                             return {
                                 product: c.product,
-                                quantity: c.quantity - 1,
+                                quantity: c.quantity + 1,
                             };
                         }
                         return c;
-                    }
-                    return c;
-                });
-                setCartList([...newCartList]);
-                break;
-            default:
-                return;
-        }
-    };
+                    });
+                    setCartList([...newCartList]);
+                    break;
+                case "-":
+                    newCartList = cartList.map((c) => {
+                        if (c.product._id === id) {
+                            if (c.quantity > 1) {
+                                return {
+                                    product: c.product,
+                                    quantity: c.quantity - 1,
+                                };
+                            }
+                            return c;
+                        }
+                        return c;
+                    });
+                    setCartList([...newCartList]);
+                    break;
+                default:
+                    return;
+            }
+        },
+        [cartList, setCartList]
+    );
     // to display total
     const calculateTotal = () => {
         let total = 0;
@@ -93,7 +99,7 @@ const Cart = ({ navigation }) => {
         />
     );
 
-    return (
+    return !loading ? (
         <>
             <View>
                 <FlatList
@@ -121,6 +127,8 @@ const Cart = ({ navigation }) => {
                 </>
             </TouchableHighlight>
         </>
+    ) : (
+        <Loader />
     );
 };
 
