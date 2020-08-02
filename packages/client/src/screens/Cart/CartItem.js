@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, Image, TouchableHighlight } from "react-native";
+import { Button, Icon } from "react-native-elements";
 import styles from "./styles";
 
 export default function ({ item, quantity, handleQuantityOperation }) {
@@ -58,9 +59,20 @@ export default function ({ item, quantity, handleQuantityOperation }) {
                     </View>
                     <Text style={styles.priceText}>₹ {calculatePrice()}</Text>
                     <View style={styles.trashContainer}>
-                        <Image
+                        {/* <Image
                             style={styles.infoPhoto}
                             source={require("../../../assets/icons/cross.png")}
+                        /> */}
+                        <Button
+                            buttonStyle={styles.removeBtn}
+                            icon={
+                                <Icon
+                                    name="trash"
+                                    type="font-awesome"
+                                    color="white"
+                                    size={12}
+                                />
+                            }
                         />
                     </View>
                 </View>

@@ -114,6 +114,12 @@ const styles = StyleSheet.create({
         color: "black",
         fontWeight: "bold",
     },
+    removeBtn: {
+        backgroundColor: "red",
+        height: 25,
+        width: 25,
+        borderRadius: 25,
+    },
 });
 
 export default styles;
