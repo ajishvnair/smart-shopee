@@ -103,7 +103,7 @@ const Cart = ({ navigation }) => {
         <>
             <View>
                 <FlatList
-                    style={{ height: "90%" }}
+                    style={{ height: "90%", paddingHorizontal: 5 }}
                     vertical
                     showsVerticalScrollIndicator={false}
                     numColumns={1}
