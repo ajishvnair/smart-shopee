@@ -23,7 +23,7 @@ export default function ({
                     <View style={styles.addQuantityContainer}>
                         <TouchableHighlight
                             activeOpacity={0.1}
-                            underlayColor="red"
+                            underlayColor="#DDDDDD"
                             onPress={() =>
                                 handleQuantityOperation("-", item._id)
                             }

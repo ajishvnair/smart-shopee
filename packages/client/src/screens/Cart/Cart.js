@@ -44,6 +44,8 @@ const Cart = ({ navigation }) => {
                 .catch((err) => {
                     //err
                 });
+        } else {
+            setLoading(false);
         }
     }, []);
 
