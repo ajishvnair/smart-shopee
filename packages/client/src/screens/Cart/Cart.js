@@ -1,17 +1,22 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { FlatList, Text, View, TouchableHighlight, Image } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setCart } from "../../state/actions/cart";
 import styles from "./styles";
 import CartItem from "./CartItem";
 import http from "../../common/http";
 import Loader from "../../components/loader";
 
 const Cart = ({ navigation }) => {
+    const dispatch = useDispatch();
+    // state
     const [cartList, setCartList] = useState([]);
     const [confirmationModal, setConfirmationModal] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [overlayLoader, setOverlayLoader] = useState(false);
 
     const cart = useSelector((state) => state.cart);
+    const user = useSelector((state) => state.user);
 
     useEffect(() => {
         if (cart.length > 0) {
@@ -79,6 +84,34 @@ const Cart = ({ navigation }) => {
         },
         [cartList, setCartList]
     );
+    const handleRemoveProduct = useCallback(
+        (id) => {
+            setOverlayLoader(true);
+            const newCart = cart.filter((c) => c.productId !== id);
+            http.postAction("api/v1/cart/set", {
+                userId: user._id,
+                products: [...newCart],
+            })
+                .then((res) => {
+                    if (res.status === 200) {
+                        dispatch(setCart(newCart));
+                        const newCartList = cartList.filter(
+                            (c) => c.product._id !== id
+                        );
+                        setCartList([...newCartList]);
+                        setOverlayLoader(false);
+                    } else {
+                        // err
+                        setOverlayLoader(false);
+                    }
+                })
+                .catch((err) => {
+                    //err
+                    setOverlayLoader(false);
+                });
+        },
+        [cart, cartList, setCartList, dispatch]
+    );
     // to display total
     const calculateTotal = () => {
         let total = 0;
@@ -96,6 +129,7 @@ const Cart = ({ navigation }) => {
             item={item.product}
             quantity={item.quantity}
             handleQuantityOperation={handleQuantityOperation}
+            handleRemoveProduct={handleRemoveProduct}
         />
     );
 
@@ -111,6 +145,7 @@ const Cart = ({ navigation }) => {
                     renderItem={renderProducts}
                     keyExtractor={(item) => `${item.recipeId}`}
                 />
+                {overlayLoader && <Loader />}
             </View>
             <TouchableHighlight
                 style={styles.checkout}
