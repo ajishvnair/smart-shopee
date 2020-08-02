@@ -138,7 +138,7 @@ const Cart = ({ navigation }) => {
     );
 
     const handleCheckout = useCallback(() => {
-        if (calculateTotal() < 350) {
+        if (parseInt(calculateTotal()) < 350) {
             setWarningMessage(true);
         }
     }, [setWarningMessage]);
