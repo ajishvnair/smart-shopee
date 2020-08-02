@@ -2,8 +2,11 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { ScrollView, Text, StyleSheet, Picker } from "react-native";
 import { Input, Divider, CheckBox, Button } from "react-native-elements";
+import SuccessModal from "./Success";
 
-export default function () {
+export default function ({ navigation }) {
+    // cart list
+    const cart = navigation.getParam("cart");
     // redux data
     const user = useSelector((state) => state.user);
     const allLocations = useSelector((state) => state.locations);
@@ -12,6 +15,10 @@ export default function () {
     const [mobileNo, setMobileNo] = useState({ value: "", error: null });
     const [location, setLocation] = useState({ value: "", error: null });
     const [address, setAddress] = useState({ value: "", error: null });
+    // loader
+    const [btnLoader, setBtnLoader] = useState(false);
+    // show Success modal
+    const [showSuccess, setShowSuccess] = useState(true);
 
     useEffect(() => {
         setName({ value: user.userName, error: null });
@@ -46,9 +53,22 @@ export default function () {
         } else if (address.value.length < 5) {
             setAddress({ ...address, error: "Please enter a valid address" });
         } else {
-            alert("sc");
+            setBtnLoader(true);
+            setTimeout(() => {
+                setShowSuccess(true);
+                setBtnLoader(false);
+            }, 1000);
         }
-    }, [name, setName, mobileNo, setMobileNo, address, setAddress]);
+    }, [
+        name,
+        setName,
+        mobileNo,
+        setMobileNo,
+        address,
+        setAddress,
+        setBtnLoader,
+        setShowSuccess,
+    ]);
     return (
         <>
             <ScrollView style={styles.container}>
@@ -107,7 +127,15 @@ export default function () {
                 buttonStyle={styles.btn}
                 title="CONFIRM ORDER"
                 onPress={confirmOrder}
+                loading={btnLoader}
             />
+            {showSuccess && (
+                <SuccessModal
+                    visible={showSuccess}
+                    setVisible={setShowSuccess}
+                    navigation={navigation}
+                />
+            )}
         </>
     );
 }
