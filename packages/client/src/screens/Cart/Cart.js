@@ -6,6 +6,7 @@ import styles from "./styles";
 import CartItem from "./CartItem";
 import http from "../../common/http";
 import Loader from "../../components/loader";
+import EmptyCart from "./EmptyCart";
 
 const Cart = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -136,34 +137,38 @@ const Cart = ({ navigation }) => {
     );
 
     return !loading ? (
-        <>
-            <View>
-                <FlatList
-                    style={{ height: "90%", paddingHorizontal: 5 }}
-                    vertical
-                    showsVerticalScrollIndicator={false}
-                    numColumns={1}
-                    data={[...cartList]}
-                    renderItem={renderProducts}
-                    keyExtractor={(item) => `${item.recipeId}`}
-                />
-                {overlayLoader && <Loader />}
-            </View>
-            <TouchableHighlight
-                style={styles.checkout}
-                activeOpacity={0.6}
-                underlayColor="#DDDDDD"
-                onPress={() => setConfirmationModal(true)}
-            >
-                <>
-                    <Text style={styles.totalText}>
-                        TOTAL ₹ {calculateTotal()}
-                    </Text>
+        cart.length > 0 ? (
+            <>
+                <View>
+                    <FlatList
+                        style={{ height: "90%", paddingHorizontal: 5 }}
+                        vertical
+                        showsVerticalScrollIndicator={false}
+                        numColumns={1}
+                        data={[...cartList]}
+                        renderItem={renderProducts}
+                        keyExtractor={(item) => `${item.recipeId}`}
+                    />
+                    {overlayLoader && <Loader />}
+                </View>
+                <TouchableHighlight
+                    style={styles.checkout}
+                    activeOpacity={0.6}
+                    underlayColor="#DDDDDD"
+                    onPress={() => setConfirmationModal(true)}
+                >
+                    <>
+                        <Text style={styles.totalText}>
+                            TOTAL ₹ {calculateTotal()}
+                        </Text>
 
-                    <Text style={styles.checkoutText}> CHECKOUT</Text>
-                </>
-            </TouchableHighlight>
-        </>
+                        <Text style={styles.checkoutText}> CHECKOUT</Text>
+                    </>
+                </TouchableHighlight>
+            </>
+        ) : (
+            <EmptyCart />
+        )
     ) : (
         <Loader />
     );
