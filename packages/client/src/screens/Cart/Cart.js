@@ -7,12 +7,13 @@ import CartItem from "./CartItem";
 import http from "../../common/http";
 import Loader from "../../components/loader";
 import EmptyCart from "./EmptyCart";
+import Warning from "./Warning";
 
 const Cart = ({ navigation }) => {
     const dispatch = useDispatch();
     // state
     const [cartList, setCartList] = useState([]);
-    const [confirmationModal, setConfirmationModal] = useState(false);
+    const [warningMessage, setWarningMessage] = useState(false);
     const [loading, setLoading] = useState(true);
     const [overlayLoader, setOverlayLoader] = useState(false);
 
@@ -136,6 +137,12 @@ const Cart = ({ navigation }) => {
         />
     );
 
+    const handleCheckout = useCallback(() => {
+        if (calculateTotal() < 350) {
+            setWarningMessage(true);
+        }
+    }, [setWarningMessage]);
+
     return !loading ? (
         cart.length > 0 ? (
             <>
@@ -155,7 +162,7 @@ const Cart = ({ navigation }) => {
                     style={styles.checkout}
                     activeOpacity={0.6}
                     underlayColor="#DDDDDD"
-                    onPress={() => setConfirmationModal(true)}
+                    onPress={handleCheckout}
                 >
                     <>
                         <Text style={styles.totalText}>
@@ -165,6 +172,12 @@ const Cart = ({ navigation }) => {
                         <Text style={styles.checkoutText}> CHECKOUT</Text>
                     </>
                 </TouchableHighlight>
+                {warningMessage && (
+                    <Warning
+                        visible={warningMessage}
+                        setVisible={setWarningMessage}
+                    />
+                )}
             </>
         ) : (
             <EmptyCart />
