@@ -10,6 +10,7 @@ const orderSchema = new mongoose.Schema({
     time: { type: Date, default: Date.now },
     mobileNo: { type: String },
     totalAmount: { type: String },
+    orderdTime: { type: Date, default: Date.now },
 });
 
 module.exports = Order = mongoose.model("orders", orderSchema);
