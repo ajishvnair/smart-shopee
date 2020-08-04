@@ -50,7 +50,7 @@ const Product = ({ navigation }) => {
 
                     <View style={styles.infoRecipeContainer}>
                         <View style={styles.infoContainer}>
-                            <View>
+                            <View style={styles.sub}>
                                 <Text style={styles.infoRecipeName}>
                                     {`${item.productNameEnglish}(${item.productNameMalayalam})`}
                                 </Text>
@@ -65,10 +65,12 @@ const Product = ({ navigation }) => {
                                     <Text style={styles.unit}>{item.unit}</Text>
                                 </View>
                             </View>
-                            <Image
-                                style={styles.infoHeartPhoto}
-                                source={require("../../../assets/icons/heart.png")}
-                            />
+                            <View>
+                                <Image
+                                    style={styles.infoHeartPhoto}
+                                    source={require("../../../assets/icons/heart.png")}
+                                />
+                            </View>
                         </View>
 
                         {/* <View style={styles.divider}></View> */}

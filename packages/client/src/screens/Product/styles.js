@@ -46,6 +46,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#EEE8CD",
         opacity: 0.8,
     },
+    sub: {
+        width: "90%",
+    },
     infoContainerSub: {
         flex: 1,
         flexDirection: "row",

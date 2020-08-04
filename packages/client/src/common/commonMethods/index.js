@@ -20,8 +20,14 @@ export const checkAvailability = (startTime, endTime) => {
         const currentTime = `${date.getHours()} : ${date.getMinutes()}`;
         const startTimes = startTime.split(":");
         const endTimes = endTime.split(":");
-        if (startTimes[0] < date.getHours() < endTimes[0]) {
-            if (startTimes[1] < date.getMinutes() < endTimes[1]) {
+        if (
+            parseInt(startTimes[0]) <= parseInt(date.getHours()) &&
+            parseInt(date.getHours()) <= parseInt(endTimes[0])
+        ) {
+            if (
+                parseInt(startTimes[1]) < parseInt(date.getMinutes()) &&
+                parseInt(date.getMinutes()) < parseInt(endTimes[1])
+            ) {
                 return true;
             }
             return false;
