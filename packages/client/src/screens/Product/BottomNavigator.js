@@ -51,7 +51,7 @@ export default function ({ quantity, total, item }) {
                     setLoader(false);
                 });
         }
-    }, [loading, setLoader, cart, dispatch, user]);
+    }, [loading, setLoader, cart, dispatch, user, quantity, item]);
     return (
         <View style={styles.addToCart}>
             <View style={styles.addButtons}>
