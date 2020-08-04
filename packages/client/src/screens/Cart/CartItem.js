@@ -75,7 +75,7 @@ export default function ({
                                 <Text
                                     style={{ color: "red", fontWeight: "bold" }}
                                 >
-                                    Not Avialable now
+                                    Not avialable now
                                 </Text>
                             </View>
                         </>

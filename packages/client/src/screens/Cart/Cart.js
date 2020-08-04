@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { FlatList, Text, View, TouchableHighlight, Image } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { setCart } from "../../state/actions/cart";
+import { checkAvailability } from "../../common/commonMethods";
 import styles from "./styles";
 import CartItem from "./CartItem";
 import http from "../../common/http";
@@ -120,7 +121,10 @@ const Cart = ({ navigation }) => {
     const calculateTotal = () => {
         let total = 0;
         cartList.forEach((c) => {
-            total += parseInt(c.quantity) * parseInt(c.product.sellingPrice);
+            if (checkAvailability(c.product.startTime, c.product.endTime)) {
+                total +=
+                    parseInt(c.quantity) * parseInt(c.product.sellingPrice);
+            }
         });
         return total;
     };
