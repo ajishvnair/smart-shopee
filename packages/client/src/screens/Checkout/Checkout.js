@@ -18,7 +18,12 @@ export default function ({ navigation }) {
     // loader
     const [btnLoader, setBtnLoader] = useState(false);
     // show Success modal
-    const [showSuccess, setShowSuccess] = useState(true);
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    const cartList = navigation.getParam("cart");
+    const total = navigation.getParam("total");
+
+    // alert(total);
 
     useEffect(() => {
         setName({ value: user.userName, error: null });
@@ -134,6 +139,7 @@ export default function ({ navigation }) {
                     visible={showSuccess}
                     setVisible={setShowSuccess}
                     navigation={navigation}
+                    total={total}
                 />
             )}
         </>

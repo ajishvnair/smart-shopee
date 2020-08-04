@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { Overlay, Button } from "react-native-elements";
 import { useFonts } from "expo-font";
 
-export default function ({ navigation, visible, setVisible }) {
+export default function ({ navigation, visible, setVisible, total }) {
     const [loaded] = useFonts({
         "JosefinSans-SemiBold": require("../../../assets/fonts/JosefinSans-SemiBold.ttf"),
     });
@@ -31,7 +31,7 @@ export default function ({ navigation, visible, setVisible }) {
                         fontSize: 25,
                     }}
                 >
-                    ₹ 734
+                    ₹ {total}
                 </Text>
                 <Text
                     style={{
@@ -41,7 +41,14 @@ export default function ({ navigation, visible, setVisible }) {
                 >
                     Order placed successfully
                 </Text>
-                <Button title="Ok" buttonStyle={styles.btn} />
+                <Button
+                    title="Ok"
+                    onPress={() => {
+                        setVisible(false);
+                        navigation.navigate("Home");
+                    }}
+                    buttonStyle={styles.btn}
+                />
             </View>
         </Overlay>
     );

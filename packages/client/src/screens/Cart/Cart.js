@@ -145,7 +145,13 @@ const Cart = ({ navigation }) => {
         if (Number(calculateTotal()) < 350) {
             setWarningMessage(true);
         } else {
-            navigation.navigate("Checkout", { cart: [...cartList] });
+            const newCartList = cartList.filter((c) => {
+                checkAvailability(c.product.startTime, c.product.endTime);
+            });
+            navigation.navigate("Checkout", {
+                cart: [...newCartList],
+                total: calculateTotal(),
+            });
         }
     }, [setWarningMessage, cartList]);
 
