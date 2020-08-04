@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: "bold",
+        paddingRight: 5,
     },
     addQuantityContainer: {
         flexDirection: "row",
