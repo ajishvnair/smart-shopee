@@ -145,9 +145,13 @@ const Cart = ({ navigation }) => {
         if (Number(calculateTotal()) < 350) {
             setWarningMessage(true);
         } else {
-            const newCartList = cartList.filter((c) => {
+            let newCartList = cartList.filter((c) => {
                 checkAvailability(c.product.startTime, c.product.endTime);
             });
+            newCartList = cartList.map((c) => ({
+                quantity: c.quantity,
+                productId: c.product._id,
+            }));
             navigation.navigate("Checkout", {
                 cart: [...newCartList],
                 total: calculateTotal(),

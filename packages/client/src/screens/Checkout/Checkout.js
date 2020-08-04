@@ -3,10 +3,9 @@ import { useSelector } from "react-redux";
 import { ScrollView, Text, StyleSheet, Picker } from "react-native";
 import { Input, Divider, CheckBox, Button } from "react-native-elements";
 import SuccessModal from "./Success";
+import http from "../../common/http";
 
 export default function ({ navigation }) {
-    // cart list
-    const cart = navigation.getParam("cart");
     // redux data
     const user = useSelector((state) => state.user);
     const allLocations = useSelector((state) => state.locations);
@@ -19,7 +18,7 @@ export default function ({ navigation }) {
     const [btnLoader, setBtnLoader] = useState(false);
     // show Success modal
     const [showSuccess, setShowSuccess] = useState(false);
-
+    // props data
     const cartList = navigation.getParam("cart");
     const total = navigation.getParam("total");
 
@@ -59,10 +58,30 @@ export default function ({ navigation }) {
             setAddress({ ...address, error: "Please enter a valid address" });
         } else {
             setBtnLoader(true);
-            setTimeout(() => {
-                setShowSuccess(true);
-                setBtnLoader(false);
-            }, 1000);
+            const locationValue = allLocations.find(
+                (loc) => loc._id === location.value
+            );
+
+            const payload = {
+                userId: user._id,
+                userName: name.value,
+                address: address.value,
+                location: locationValue.location,
+                products: [...cartList],
+                mobileNo: mobileNo.value,
+                totalAmount: total,
+            };
+
+            http.postAction("api/v1/orders", { ...payload })
+                .then((res) => {
+                    if (res.status === 200) {
+                        setBtnLoader(false);
+                        setShowSuccess(true);
+                    }
+                })
+                .catch((err) => {
+                    // err
+                });
         }
     }, [
         name,
@@ -73,6 +92,9 @@ export default function ({ navigation }) {
         setAddress,
         setBtnLoader,
         setShowSuccess,
+        user,
+        total,
+        cartList,
     ]);
     return (
         <>
