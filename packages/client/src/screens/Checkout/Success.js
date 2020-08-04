@@ -28,6 +28,14 @@ export default function ({ navigation, visible, setVisible }) {
                 <Text
                     style={{
                         fontFamily: loaded ? "JosefinSans-SemiBold" : "",
+                        fontSize: 25,
+                    }}
+                >
+                    ₹ 734
+                </Text>
+                <Text
+                    style={{
+                        fontFamily: loaded ? "JosefinSans-SemiBold" : "",
                         fontSize: 15,
                     }}
                 >
