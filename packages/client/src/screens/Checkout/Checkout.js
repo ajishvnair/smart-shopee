@@ -1,14 +1,17 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { ScrollView, Text, StyleSheet, Picker } from "react-native";
 import { Input, Divider, CheckBox, Button } from "react-native-elements";
 import SuccessModal from "./Success";
 import http from "../../common/http";
+import { setCart } from "../../state/actions/cart";
 
 export default function ({ navigation }) {
+    const dispatch = useDispatch();
     // redux data
     const user = useSelector((state) => state.user);
     const allLocations = useSelector((state) => state.locations);
+    const cart = useSelector((state) => state.cart);
     // local state
     const [name, setName] = useState({ value: "", error: null });
     const [mobileNo, setMobileNo] = useState({ value: "", error: null });
@@ -72,9 +75,20 @@ export default function ({ navigation }) {
                 totalAmount: total,
             };
 
-            http.postAction("api/v1/orders", { ...payload })
+            http.postAction("api/v1/orders/create", { ...payload })
                 .then((res) => {
                     if (res.status === 200) {
+                        const newCartList = cart.filter((c) => {
+                            if (
+                                cartList.find(
+                                    (ca) => ca.productId === c.productId
+                                )
+                            ) {
+                                return false;
+                            }
+                            return true;
+                        });
+                        dispatch(setCart(newCartList || []));
                         setBtnLoader(false);
                         setShowSuccess(true);
                     }
