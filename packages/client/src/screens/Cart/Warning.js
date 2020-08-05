@@ -23,6 +23,9 @@ export default function ({ visible, setVisible }) {
                 <Button
                     buttonStyle={styles.btn}
                     title="Add More"
+                    titleStyle={{
+                        fontFamily: loaded ? "JosefinSans-SemiBold" : "",
+                    }}
                     onPress={() => setVisible(false)}
                 />
             </View>
@@ -38,6 +41,8 @@ const styles = StyleSheet.create({
     },
     btn: {
         width: 100,
-        height: 30,
+        height: 40,
+        borderRadius: 10,
+        backgroundColor: "#eec248",
     },
 });
