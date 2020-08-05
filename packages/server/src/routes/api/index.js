@@ -7,6 +7,7 @@ const productRouter = require("./product.routes");
 const locationRouter = require("./location.routes");
 const userRouter = require("./user.routes");
 const cartRouter = require("./cart.routes");
+const orderRouter = require("./order.routes");
 
 // admin route
 router.use("/admin", adminRouter);
@@ -15,5 +16,6 @@ router.use("/product", productRouter);
 router.use("/location", locationRouter);
 router.use("/user", userRouter);
 router.use("/cart", cartRouter);
+router.use("/orders", orderRouter);
 
 module.exports = router;
