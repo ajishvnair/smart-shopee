@@ -88,7 +88,22 @@ export default function ({ navigation }) {
                             }
                             return true;
                         });
-                        dispatch(setCart(newCartList || []));
+                        // for clearing cart
+                        http.postAction("api/v1/cart/set", {
+                            userId: user._id,
+                            products: [...newCartList],
+                        })
+                            .then((res) => {
+                                if (res.status === 200) {
+                                    dispatch(setCart([...newCartList]));
+                                }
+                                setLoader(false);
+                            })
+                            .catch((err) => {
+                                //err
+                                setLoader(false);
+                            });
+                        // dispatch(setCart(newCartList || []));
                         setBtnLoader(false);
                         setShowSuccess(true);
                     }

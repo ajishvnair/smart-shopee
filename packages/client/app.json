@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "android",
+    "name": "Akshaya",
     "slug": "android",
     "version": "1.0.0",
     "orientation": "portrait",
-    "android":{"softwareKeyboardLayoutMode": "pan"},
+    "sdkVersion": "38.0.0",
+    "android":{"softwareKeyboardLayoutMode": "pan","package": "com.example.myapp"},
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/bg.png",
