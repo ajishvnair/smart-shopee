@@ -1,8 +1,7 @@
 import axios from "axios";
+import { LOCALHOST } from "../enviornments";
 
-const LOCALHOST = "http://192.168.43.122:3001/";
-
-const getBaseUrl = (url) => `${LOCALHOST}${url}`;
+const getBaseUrl = (url) => `${LOCALHOST.production}${url}`;
 
 export default {
     getAction: (url) => axios.get(getBaseUrl(url)).catch((err) => {}),
