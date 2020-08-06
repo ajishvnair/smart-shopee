@@ -4,7 +4,8 @@
     "description": "smar shopee server",
     "main": "server.js",
     "scripts": {
-        "start": "nodemon server.js"
+        "start": "nodemon server.js",
+        "prod":"pm2 start server.js -i max"
     },
     "dependencies": {
         "@hapi/joi": "^17.1.1",
