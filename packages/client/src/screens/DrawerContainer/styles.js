@@ -11,12 +11,13 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "flex-start",
         paddingHorizontal: 20,
+        // backgroundColor: "#ECEFF1",
+        // padding: 5,
+        // margin: 5,
+        // borderRadius: 15,
     },
     crossLine: {
         borderColor: "black",
-    },
-    menuButton: {
-        backgroundColor: "red",
     },
 });
 

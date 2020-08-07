@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         backgroundColor: "red",
         padding: 10,
         borderRadius: 15,
-        backgroundColor: "#eec248",
+        backgroundColor: "#ECEFF1",
     },
     btnIcon: {
         height: 25,
