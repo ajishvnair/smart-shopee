@@ -26,14 +26,7 @@ export default class DrawerContainer extends React.Component {
                         //   navigation.closeDrawer();
                         // }}
                     />
-                    <MenuButton
-                        title="Cart"
-                        source={require("../../../assets/icons/cart.png")}
-                        onPress={() => {
-                            navigation.navigate("Cart");
-                            navigation.closeDrawer();
-                        }}
-                    />
+
                     <MenuButton
                         title="Profile"
                         source={require("../../../assets/icons/user.png")}
@@ -41,6 +34,14 @@ export default class DrawerContainer extends React.Component {
                         //   navigation.navigate("Search");
                         //   navigation.closeDrawer();
                         // }}
+                    />
+                    <MenuButton
+                        title="Cart"
+                        source={require("../../../assets/icons/cart.png")}
+                        onPress={() => {
+                            navigation.navigate("Cart");
+                            navigation.closeDrawer();
+                        }}
                     />
                 </View>
             </View>

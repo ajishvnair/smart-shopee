@@ -43,7 +43,7 @@ const DrawerStack = createDrawerNavigator(
     {
         drawerPosition: "left",
         initialRouteName: "Main",
-        drawerWidth: 250,
+        drawerWidth: 200,
         contentComponent: DrawerContainer,
     }
 );
