@@ -17,6 +17,7 @@ export default function ({ navigation }) {
     const [mobileNo, setMobileNo] = useState({ value: "", error: null });
     const [location, setLocation] = useState({ value: "", error: null });
     const [address, setAddress] = useState({ value: "", error: null });
+    const [page, setPage] = useState("confirm");
     // loader
     const [btnLoader, setBtnLoader] = useState(false);
     // show Success modal
@@ -105,7 +106,8 @@ export default function ({ navigation }) {
                             });
                         // dispatch(setCart(newCartList || []));
                         setBtnLoader(false);
-                        setShowSuccess(true);
+                        // setShowSuccess(false);
+                        setPage("success");
                     }
                 })
                 .catch((err) => {
@@ -124,10 +126,16 @@ export default function ({ navigation }) {
         user,
         total,
         cartList,
+        setPage,
     ]);
 
     const getTotal = () => {
         return parseInt(total) + parseInt(getDeliveryCharge());
+    };
+
+    const showConfirm = () => {
+        setPage("confirm");
+        setShowSuccess(true);
     };
     return (
         <>
@@ -186,15 +194,20 @@ export default function ({ navigation }) {
             <Button
                 buttonStyle={styles.btn}
                 title="CONFIRM ORDER"
-                onPress={confirmOrder}
-                loading={btnLoader}
+                onPress={showConfirm}
+                // loading={btnLoader}
             />
             {showSuccess && (
                 <SuccessModal
                     visible={showSuccess}
                     setVisible={setShowSuccess}
                     navigation={navigation}
-                    total={getTotal()}
+                    total={total}
+                    getTotal={getTotal}
+                    deliveryCharge={`${getDeliveryCharge()}`}
+                    page={page}
+                    confirmOrder={confirmOrder}
+                    loading={btnLoader}
                 />
             )}
         </>
