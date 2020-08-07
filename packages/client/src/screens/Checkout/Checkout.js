@@ -72,7 +72,7 @@ export default function ({ navigation }) {
                 location: locationValue.location,
                 products: [...cartList],
                 mobileNo: mobileNo.value,
-                totalAmount: total,
+                totalAmount: total + locationValue.deliveryCharge,
             };
 
             http.postAction("api/v1/orders/create", { ...payload })
@@ -125,6 +125,10 @@ export default function ({ navigation }) {
         total,
         cartList,
     ]);
+
+    const getTotal = () => {
+        return parseInt(total) + parseInt(getDeliveryCharge());
+    };
     return (
         <>
             <ScrollView style={styles.container}>
@@ -190,7 +194,7 @@ export default function ({ navigation }) {
                     visible={showSuccess}
                     setVisible={setShowSuccess}
                     navigation={navigation}
-                    total={total}
+                    total={getTotal()}
                 />
             )}
         </>
