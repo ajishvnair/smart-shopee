@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Row, Popover, Button } from "antd";
+import { Table, Row, Popover, Button, Spin, notification } from "antd";
 import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 import { deepClone } from "../../common/helper/commonMethods";
 // import { orders } from "../../common/dataProvider/dummyData";
@@ -11,6 +11,7 @@ export default function () {
     const [ordersList, setOrdersList] = useState([]);
     const [showProduct, setShowProduct] = useState(false);
     const [currentProducts, setCurrentProducts] = useState(null);
+    const [completeLoading, setCompleteLoading] = useState(true);
 
     useEffect(() => {
         protectedHttpProvider
@@ -18,9 +19,14 @@ export default function () {
             .then((res) => {
                 const { orders } = res.data;
                 setOrdersList([...orders]);
+                setCompleteLoading(false);
             })
             .catch((err) => {
                 //err
+                notification.error({
+                    message: "Error while loading orders",
+                });
+                setCompleteLoading(false);
             });
     }, []);
 
@@ -29,11 +35,28 @@ export default function () {
         setShowProduct(true);
     };
 
-    const deleteOrder = (item) => {
-        const newList = [...deepClone(ordersList)].filter(
-            (order) => order._id !== item
-        );
-        setOrdersList(newList);
+    const deleteOrder = (id) => {
+        setCompleteLoading(true);
+        protectedHttpProvider
+            .postAction(`api/v1/orders/delete/${id}`)
+            .then((res) => {
+                if (res.status === 200) {
+                    const newList = [...deepClone(ordersList)].filter(
+                        (order) => order._id !== id
+                    );
+                    setOrdersList(newList);
+                    notification.success({
+                        message: "Order deleted successfully",
+                    });
+                } else {
+                    notification.error({ message: "Something went wrong" });
+                }
+                setCompleteLoading(false);
+            })
+            .catch((err) => {
+                notification.error({ message: "Something went wrong" });
+                setCompleteLoading(false);
+            });
     };
 
     const columns = [
@@ -99,16 +122,16 @@ export default function () {
         //         </BlobProvider>
         //     ),
         // },
-        // {
-        //     title: "",
-        //     dataIndex: "_id",
-        //     key: "_id",
-        //     render: (item, data) => (
-        //         <Button onClick={() => deleteOrder(item)} type="primary" danger>
-        //             Delete
-        //         </Button>
-        //     ),
-        // },
+        {
+            title: "",
+            dataIndex: "_id",
+            key: "_id",
+            render: (item, data) => (
+                <Button onClick={() => deleteOrder(item)} type="primary" danger>
+                    Delete
+                </Button>
+            ),
+        },
     ];
     return (
         <>
@@ -119,7 +142,9 @@ export default function () {
                     setVisibility={setShowProduct}
                 />
             )}
-            <Table dataSource={deepClone(ordersList)} columns={columns} />
+            <Spin size="large" spinning={completeLoading}>
+                <Table dataSource={deepClone(ordersList)} columns={columns} />
+            </Spin>
         </>
     );
 }

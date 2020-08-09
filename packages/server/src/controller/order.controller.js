@@ -42,9 +42,11 @@ exports.get = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
+    const { id } = req.params;
     try {
-        const { id } = req.body;
-        const order = await Order.findOneAndRemove({ _id: id });
+        const order = await Order.findOneAndRemove({
+            _id: mongoose.Types.ObjectId(id),
+        }).lean();
         const completedOrder = new CompletedOrder({
             ...order,
             status: "completed",
