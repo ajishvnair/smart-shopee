@@ -26,7 +26,6 @@ export default class DrawerContainer extends React.Component {
                         //   navigation.closeDrawer();
                         // }}
                     />
-
                     <MenuButton
                         title="Profile"
                         source={require("../../../assets/icons/user.png")}
