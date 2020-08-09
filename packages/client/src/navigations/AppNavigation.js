@@ -1,3 +1,4 @@
+import React from "react";
 import { createAppContainer } from "react-navigation";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import { createStackNavigator } from "react-navigation-stack";
@@ -7,6 +8,7 @@ import ProductsScreen from "../screens/ProductsContainer/ProductsContainer";
 import Product from "../screens/Product/Product";
 import Cart from "../screens/Cart/Cart";
 import Checkout from "../screens/Checkout/Checkout";
+import { Text } from "react-native";
 
 const MainNavigator = createStackNavigator(
     {
@@ -44,10 +46,14 @@ const DrawerStack = createDrawerNavigator(
         drawerPosition: "left",
         initialRouteName: "Main",
         drawerWidth: 200,
-        contentComponent: DrawerContainer,
+        contentComponent: (props) => <DrawerContainer />,
     }
 );
 
-export default AppContainer = createAppContainer(DrawerStack);
+const AppContainer = createAppContainer(DrawerStack);
+
+export default function (props) {
+    return <AppContainer setAuthenticated={props.setAuthenticated} />;
+}
 
 console.disableYellowBox = true;
