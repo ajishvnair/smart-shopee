@@ -14,6 +14,7 @@ export default function ({ navigation }) {
         setButtonLoader(true);
         await AsyncStorage.removeItem("accessToken");
         setButtonLoader(false);
+        navigation.navigate("Login");
     };
     return (
         <View style={styles.content}>

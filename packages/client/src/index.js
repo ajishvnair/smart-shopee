@@ -23,6 +23,7 @@ export default function App() {
 
     useEffect(() => {
         // to get location
+        setAuthenticated(false);
         http.getAction("api/v1/location/all/active")
             .then(async (res) => {
                 if (res.status !== 400) {

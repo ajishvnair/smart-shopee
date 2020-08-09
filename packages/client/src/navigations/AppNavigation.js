@@ -8,6 +8,7 @@ import ProductsScreen from "../screens/ProductsContainer/ProductsContainer";
 import Product from "../screens/Product/Product";
 import Cart from "../screens/Cart/Cart";
 import Checkout from "../screens/Checkout/Checkout";
+import LoginScreen from "../../App";
 import { Text } from "react-native";
 
 const MainNavigator = createStackNavigator(
@@ -17,6 +18,12 @@ const MainNavigator = createStackNavigator(
         Product: Product,
         Cart: Cart,
         Checkout: Checkout,
+        Login: {
+            screen: LoginScreen,
+            navigationOptions: {
+                header: null,
+            },
+        },
         // Categories: CategoriesScreen,
         // Recipe: RecipeScreen,
         // RecipesList: RecipesListScreen,
@@ -46,7 +53,7 @@ const DrawerStack = createDrawerNavigator(
         drawerPosition: "left",
         initialRouteName: "Main",
         drawerWidth: 200,
-        contentComponent: (props) => <DrawerContainer />,
+        contentComponent: DrawerContainer,
     }
 );
 
