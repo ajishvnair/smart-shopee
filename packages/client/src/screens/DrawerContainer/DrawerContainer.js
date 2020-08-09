@@ -33,6 +33,7 @@ export default function ({ navigation }) {
                         navigation.closeDrawer();
                     }}
                 />
+
                 <MenuButton
                     title="Search"
                     source={require("../../../assets/icons/search.png")}
@@ -40,6 +41,7 @@ export default function ({ navigation }) {
                     //   navigation.navigate("Search");
                     //   navigation.closeDrawer();
                     // }}
+                    badge
                 />
                 <MenuButton
                     title="My profile"
@@ -48,6 +50,7 @@ export default function ({ navigation }) {
                     //   navigation.navigate("Search");
                     //   navigation.closeDrawer();
                     // }}
+                    badge
                 />
                 <MenuButton
                     title="My cart"
@@ -60,10 +63,11 @@ export default function ({ navigation }) {
                 <MenuButton
                     title="My orders"
                     source={require("../../../assets/icons/cart.png")}
-                    onPress={() => {
-                        navigation.navigate("Cart");
-                        navigation.closeDrawer();
-                    }}
+                    // onPress={() => {
+                    //     navigation.navigate("Cart");
+                    //     navigation.closeDrawer();
+                    // }}
+                    badge
                 />
                 <View style={styles.buttonContainer}>
                     <Button

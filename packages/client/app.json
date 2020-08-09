@@ -8,7 +8,7 @@
     "android":{"softwareKeyboardLayoutMode": "pan","package": "com.example.myapp"},
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/bg.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
