@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         marginTop: -30,
         fontWeight: "bold",
-        fontSize: 25,
+        fontSize: 15,
         marginBottom: 10,
     },
     buttonContainer: {
