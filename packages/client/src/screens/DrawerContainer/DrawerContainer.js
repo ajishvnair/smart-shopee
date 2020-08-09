@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, Image } from "react-native";
+import React, { useState } from "react";
+import { View, Text, Image, BackHandler, AsyncStorage } from "react-native";
 import { useSelector } from "react-redux";
 import { Button, Icon } from "react-native-elements";
 // import PropTypes from "prop-types";
@@ -8,6 +8,13 @@ import MenuButton from "../../components/MenuButton/MenuButton";
 
 export default function ({ navigation }) {
     const user = useSelector((state) => state.user);
+    const [buttonLoader, setButtonLoader] = useState(false);
+    const onPressLogout = async () => {
+        // BackHandler.exitApp();
+        setButtonLoader(true);
+        await AsyncStorage.removeItem("accessToken");
+        setButtonLoader(false);
+    };
     return (
         <View style={styles.content}>
             <View style={styles.container}>
@@ -73,6 +80,8 @@ export default function ({ navigation }) {
                                 style={{ marginRight: 5, marginTop: 2 }}
                             />
                         }
+                        onPress={onPressLogout}
+                        loading={buttonLoader}
                     />
                 </View>
             </View>

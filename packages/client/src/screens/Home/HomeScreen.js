@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, Text, View, Image, TouchableHighlight } from "react-native";
+import {
+    FlatList,
+    Text,
+    View,
+    Image,
+    TouchableHighlight,
+    BackHandler,
+} from "react-native";
 import styles from "./styles";
 // import { categories } from "../../dataProvider/dataArrays";
 // import { getNumberOfRecipes } from "../../dataProvider/MockDataAPI";
@@ -30,6 +37,16 @@ const HomeScreen = ({ navigation }) => {
         const category = item;
         navigation.navigate("Products", { id: item._id });
     };
+
+    const backAction = () => {
+        BackHandler.exitApp();
+        return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+    );
 
     const renderCategory = ({ item }) => (
         <TouchableHighlight

@@ -38,7 +38,7 @@ export default function App() {
         <Provider store={store}>
             <>
                 {authenticated ? (
-                    <AppContainer />
+                    <AppContainer setAuthenticated={setAuthenticated} />
                 ) : (
                     <Login setAuthenticated={setAuthenticated} />
                 )}
