@@ -73,7 +73,8 @@ export default function ({ navigation }) {
                 location: locationValue.location,
                 products: [...cartList],
                 mobileNo: mobileNo.value,
-                totalAmount: total + locationValue.deliveryCharge,
+                totalAmount:
+                    parseInt(total) + parseInt(locationValue.deliveryCharge),
             };
 
             http.postAction("api/v1/orders/create", { ...payload })

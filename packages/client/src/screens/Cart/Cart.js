@@ -151,6 +151,8 @@ const Cart = ({ navigation }) => {
             newCartList = cartList.map((c) => ({
                 quantity: c.quantity,
                 productId: c.product._id,
+                productNameEnglish: c.product.productNameEnglish,
+                sellingPrice: c.product.sellingPrice,
             }));
             navigation.navigate("Checkout", {
                 cart: [...newCartList],

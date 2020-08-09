@@ -38,15 +38,15 @@ const HomeScreen = ({ navigation }) => {
         navigation.navigate("Products", { id: item._id });
     };
 
-    const backAction = () => {
-        BackHandler.exitApp();
-        return true;
-    };
+    // const backAction = () => {
+    //     BackHandler.exitApp();
+    //     return true;
+    // };
 
-    const backHandler = BackHandler.addEventListener(
-        "hardwareBackPress",
-        backAction
-    );
+    // const backHandler = BackHandler.addEventListener(
+    //     "hardwareBackPress",
+    //     backAction
+    // );
 
     const renderCategory = ({ item }) => (
         <TouchableHighlight
