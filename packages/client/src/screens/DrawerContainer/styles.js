@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         flexDirection: "row",
+        // marginTop: 100,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -18,6 +19,24 @@ const styles = StyleSheet.create({
     },
     crossLine: {
         borderColor: "black",
+    },
+    profile: {
+        alignSelf: "center",
+        // borderWidth: 1,
+        // borderColor: "black",
+        margin: 10,
+    },
+    userIcon: {
+        width: 100,
+        height: 100,
+        alignSelf: "center",
+    },
+    userName: {
+        alignSelf: "center",
+        marginTop: -30,
+        fontWeight: "bold",
+        fontSize: 25,
+        marginBottom: 10,
     },
 });
 
