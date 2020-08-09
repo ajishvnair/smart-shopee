@@ -83,10 +83,16 @@ export default function () {
             key: "location",
         },
         {
+            title: "Address",
+            dataIndex: "address",
+            key: "address",
+        },
+        {
             title: "Orderd Time",
             dataIndex: "orderdTime",
             key: "orderdTime",
         },
+
         {
             title: "Total Cart Value",
             dataIndex: "totalAmount",

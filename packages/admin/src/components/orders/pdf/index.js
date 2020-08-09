@@ -27,13 +27,16 @@ const MyDocument = ({ value }) => (
     <Document>
         <Page size="A4" style={styles.page}>
             <View style={styles.section}>
-                <Text>Name:{`  ${value.user}`}</Text>
+                <Text>Name:{`  ${value.userName}`}</Text>
             </View>
             <View style={styles.section}>
-                <Text>Phone Number:{`  ${value.phoneNo}`}</Text>
+                <Text>Phone Number:{`  ${value.mobileNo}`}</Text>
             </View>
             <View style={styles.section}>
-                <Text>Address:{`  ${value.location}  ${value.landmark}`}</Text>
+                <Text>Address:{`  ${value.location}`}</Text>
+            </View>
+            <View style={styles.section}>
+                <Text>Address:{`  ${value.address}`}</Text>
             </View>
             <View style={styles.section}>
                 <Text>Amount Payable:{`  ${value.totalAmount} `}</Text>
@@ -44,13 +47,13 @@ const MyDocument = ({ value }) => (
             {(value.products || []).map((pro) => (
                 <View style={styles.products}>
                     <View style={styles.product}>
-                        <Text>{`${pro.productName}`}</Text>
+                        <Text>{`${pro.productNameEnglish}`}</Text>
                     </View>
                     <View style={styles.product}>
                         <Text>{`${pro.quantity} unit`}</Text>
                     </View>
                     <View style={styles.product}>
-                        <Text>{pro.total}</Text>
+                        <Text>{`${pro.sellingPrice}/unit`}</Text>
                     </View>
                 </View>
             ))}
