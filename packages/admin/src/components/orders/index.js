@@ -92,36 +92,36 @@ export default function () {
             dataIndex: "totalAmount",
             key: "totalAmount",
         },
-        // {
-        //     title: "Products",
-        //     dataIndex: "products",
-        //     key: "products",
-        //     render: (item, data) => (
-        //         <Button onClick={() => handleShowProduct(item)}>Click</Button>
-        //     ),
-        // },
-        // {
-        //     title: "Print",
-        //     dataIndex: "print",
-        //     key: "print",
-        //     render: (item, data) => (
-        //         <BlobProvider
-        //             document={<PDFDocumnet value={data} />}
-        //             fileName="nice.pdf"
-        //         >
-        //             {({ url }) => (
-        //                 <a
-        //                     className="print-button"
-        //                     href={url}
-        //                     target="_blank"
-        //                     rel="noopener noreferrer"
-        //                 >
-        //                     Print
-        //                 </a>
-        //             )}
-        //         </BlobProvider>
-        //     ),
-        // },
+        {
+            title: "Products",
+            dataIndex: "products",
+            key: "products",
+            render: (item, data) => (
+                <Button onClick={() => handleShowProduct(item)}>Click</Button>
+            ),
+        },
+        {
+            title: "Print",
+            dataIndex: "print",
+            key: "print",
+            render: (item, data) => (
+                <BlobProvider
+                    document={<PDFDocumnet value={data} />}
+                    fileName="nice.pdf"
+                >
+                    {({ url }) => (
+                        <a
+                            className="print-button"
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Print
+                        </a>
+                    )}
+                </BlobProvider>
+            ),
+        },
         {
             title: "",
             dataIndex: "_id",
