@@ -32,6 +32,15 @@ exports.create = async (req, res) => {
     }
 };
 
+exports.get = async (req, res) => {
+    try {
+        const orders = await Order.find().sort({ orderdTime: 1 });
+        res.send({ orders });
+    } catch (err) {
+        return res.status(400).json({ errors: "Something went wrong" });
+    }
+};
+
 exports.delete = async (req, res) => {
     try {
         const { id } = req.body;
