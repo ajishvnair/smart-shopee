@@ -38,6 +38,15 @@ const styles = StyleSheet.create({
         fontSize: 25,
         marginBottom: 10,
     },
+    buttonContainer: {
+        marginTop: 5,
+        alignSelf: "center",
+    },
+    button: {
+        borderRadius: 15,
+        backgroundColor: "#ECEFF1",
+        width: "100%",
+    },
 });
 
 export default styles;

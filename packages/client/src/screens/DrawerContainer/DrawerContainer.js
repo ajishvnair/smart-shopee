@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 import { useSelector } from "react-redux";
+import { Button, Icon } from "react-native-elements";
 // import PropTypes from "prop-types";
 import styles from "./styles";
 import MenuButton from "../../components/MenuButton/MenuButton";
@@ -57,6 +58,23 @@ export default function ({ navigation }) {
                         navigation.closeDrawer();
                     }}
                 />
+                <View style={styles.buttonContainer}>
+                    <Button
+                        title="Logout"
+                        raised
+                        buttonStyle={styles.button}
+                        titleStyle={{ color: "black", fontWeight: "500" }}
+                        icon={
+                            <Icon
+                                type="font-awesome"
+                                name="lock"
+                                size={15}
+                                color="black"
+                                style={{ marginRight: 5, marginTop: 2 }}
+                            />
+                        }
+                    />
+                </View>
             </View>
         </View>
     );
