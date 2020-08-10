@@ -190,6 +190,11 @@ export default function (props) {
             key: "productNameMalayalam",
         },
         {
+            title: "Unit",
+            dataIndex: "unit",
+            key: "unit",
+        },
+        {
             title: "Actual Price",
             dataIndex: "actualPrice",
             key: "actualPrice",
@@ -206,9 +211,9 @@ export default function (props) {
             render: (item, data) => (
                 <span>
                     {data.startTime &&
-                        data.startTime !== "undefined" &&
-                        data.endTime &&
-                        data.startTime !== "undefined"
+                    data.startTime !== "undefined" &&
+                    data.endTime &&
+                    data.startTime !== "undefined"
                         ? `${data.startTime} ${data.endTime}`
                         : `Not set`}
                 </span>

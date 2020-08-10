@@ -9,7 +9,9 @@ export default React.memo(function ({ value, onChange }) {
     );
 
     useEffect(() => {
-        setTime(value ? moment(value, timeFormat) : null);
+        setTime(
+            value && value !== "undefined" ? moment(value, timeFormat) : null
+        );
     }, [value]);
 
     /**
@@ -48,6 +50,7 @@ export default React.memo(function ({ value, onChange }) {
                 style={{ width: "150px" }}
                 placeholder="Hour:Minutes"
                 format={timeFormat}
+                use12Hours={true}
             />
         </span>
     );
