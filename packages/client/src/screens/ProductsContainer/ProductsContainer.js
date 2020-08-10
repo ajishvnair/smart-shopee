@@ -42,7 +42,7 @@ const ProductsScreen = ({ navigation }) => {
             <View style={styles.container}>
                 <Image style={styles.photo} source={{ uri: item.image }} />
                 <Text style={styles.title}>{item.productNameEnglish}</Text>
-                <Text style={styles.title}>{item.productNameMalayalam}</Text>
+                {/* <Text style={styles.title}>{item.productNameMalayalam}</Text> */}
                 <Text style={styles.discountPrice}>
                     ₹ {item.sellingPrice}
                     {item.actualPrice !== item.sellingPrice && (
