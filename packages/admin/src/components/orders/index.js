@@ -59,6 +59,23 @@ export default function () {
             });
     };
 
+    const getDateAndTime = (item) => {
+        const date = new Date(item);
+        const dd = String(date.getDate()).padStart(2, "0");
+        const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+        const yyyy = date.getFullYear();
+        //time
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let ampm = hours >= 12 ? "pm" : "am";
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        const strTime = hours + ":" + minutes + " " + ampm;
+
+        return dd + "/" + mm + "/" + yyyy + " " + strTime;
+    };
+
     const columns = [
         {
             title: "User Name",
@@ -91,6 +108,7 @@ export default function () {
             title: "Orderd Time",
             dataIndex: "orderdTime",
             key: "orderdTime",
+            render: (item) => <span>{getDateAndTime(item)}</span>,
         },
 
         {
