@@ -18,7 +18,10 @@ export default function ({
         <View style={styles.container}>
             <Image style={styles.photo} source={{ uri: item.image }} />
             <View style={styles.info}>
-                <Text style={styles.title}>{item.productNameEnglish}</Text>
+                <Text style={styles.title}>
+                    {item.productNameEnglish}
+                    {`(${item.unit})`}
+                </Text>
 
                 <View style={styles.addQuantity}>
                     {checkAvailability(item.startTime, item.endTime) ? (

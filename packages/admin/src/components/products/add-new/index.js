@@ -78,8 +78,17 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
                     ]}
                 >
                     <Select>
-                        <Option value="kg">Kg</Option>
-                        <Option value="litre">Litre</Option>
+                        <Option value="100g">100g</Option>
+                        <Option value="200g">200g</Option>
+                        <Option value="250g">250g</Option>
+                        <Option value="300g">300g</Option>
+                        <Option value="500g">500g</Option>
+                        <Option value="750g">750g</Option>
+                        <Option value="1kg">1Kg</Option>
+                        <Option value="2kg">2Kg</Option>
+                        <Option value="250l">250l</Option>
+                        <Option value="500l">500l</Option>
+                        <Option value="1l">1l</Option>
                     </Select>
                 </Form.Item>
                 <Form.Item
@@ -106,10 +115,7 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
                 >
                     <Input />
                 </Form.Item>
-                <Form.Item
-                    name={["priority"]}
-                    label="Priority"
-                >
+                <Form.Item name={["priority"]} label="Priority">
                     <Input />
                 </Form.Item>
                 <Row>
