@@ -78,6 +78,7 @@ export default function ({ visibility, handleCancel, handleSave, value }) {
                     ]}
                 >
                     <Select>
+                        <Option value="1Piece">1Piece</Option>
                         <Option value="100g">100g</Option>
                         <Option value="200g">200g</Option>
                         <Option value="250g">250g</Option>

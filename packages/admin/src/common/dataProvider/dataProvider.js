@@ -13,7 +13,7 @@ export const productData = {
     active: false,
     productNameEnglish: "",
     productNameMalayalam: "",
-    unit: "kg",
+    unit: "1kg",
     actualPrice: "",
     sellingPrice: "",
     isDeleted: false,
