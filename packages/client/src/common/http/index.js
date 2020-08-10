@@ -1,7 +1,7 @@
 import axios from "axios";
 import { LOCALHOST } from "../enviornments";
 
-const getBaseUrl = (url) => `${LOCALHOST.production}${url}`;
+const getBaseUrl = (url) => `${LOCALHOST.development}${url}`;
 
 export default {
     getAction: (url) => axios.get(getBaseUrl(url)).catch((err) => {}),

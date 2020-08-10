@@ -21,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
     const [loading, setLoader] = useState(true);
     // for fetching data
     useEffect(() => {
-        http.getAction("api/v1/category/all")
+        http.getAction("api/v1/category/all/active")
             .then((res) => {
                 const { categories } = res.data;
                 setCategories([...categories]);

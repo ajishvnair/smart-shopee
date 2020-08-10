@@ -1,8 +1,8 @@
 import axios from "axios";
-import { API_URL } from "../../environments/Environments";
+import { LOCALHOST } from "../../environments/Environments";
 import { storageEngine } from "../helper/commonMethods";
 
-const getBaseUrl = (url) => API_URL + url;
+const getBaseUrl = (url) => url;
 
 const getHeader = () => {
     const token = storageEngine.get("accessToken");

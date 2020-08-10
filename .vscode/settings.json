@@ -8,6 +8,7 @@
         "admin",
         "server",
         "client",
-        "global"
+        "global",
+        "all"
     ]
 }

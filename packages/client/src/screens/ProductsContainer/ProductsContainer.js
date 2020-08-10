@@ -19,7 +19,7 @@ const ProductsScreen = ({ navigation }) => {
 
     const id = navigation.getParam("id", 1);
     useEffect(() => {
-        http.getAction(`api/v1/product/all/${id}`)
+        http.getAction(`api/v1/product/active/all/${id}`)
             .then((res) => {
                 const { products } = res.data;
                 setProductList([...products]);

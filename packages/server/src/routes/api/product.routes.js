@@ -49,7 +49,7 @@ router.post("/update/:id", adminAuth.auth, productController.updateStatus);
 // for listing product
 router.get("/all/:id", productController.getAll);
 
-router.get("acive/all/:id", productController.getAllActive);
+router.get("/active/all/:id", productController.getAllActive);
 
 router.post("/all/byId", productController.getProductsById);
 

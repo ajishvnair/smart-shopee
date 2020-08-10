@@ -221,8 +221,7 @@ exports.getAllActive = async (req, res) => {
     try {
         const { id } = req.params;
         const products = await Product.find({
-            categoryId: id,
-            active: true,
+            $and: [{ categoryId: id }, { active: true }],
         }).sort({
             priority: 1,
         });
