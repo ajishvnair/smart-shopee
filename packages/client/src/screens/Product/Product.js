@@ -57,12 +57,17 @@ const Product = ({ navigation }) => {
                                 <View style={styles.infoContainerSub}>
                                     <Text style={styles.discountPrice}>
                                         ₹ {item.sellingPrice}
-                                        <Text style={styles.actualPrice}>
-                                            {" "}
-                                            ₹ {item.actualPrice}
-                                        </Text>
+                                        {item.actualPrice !==
+                                            item.sellingPrice && (
+                                            <Text style={styles.actualPrice}>
+                                                {" "}
+                                                ₹ {item.actualPrice}
+                                            </Text>
+                                        )}
                                     </Text>
-                                    <Text style={styles.unit}>{item.unit}</Text>
+                                    <Text style={styles.unit}>
+                                        /{item.unit}
+                                    </Text>
                                 </View>
                             </View>
                             <View>
@@ -121,6 +126,7 @@ const Product = ({ navigation }) => {
                 total={total}
                 // checkAvailability={checkAvailability}
                 item={item}
+                navigation={navigation}
             />
         </>
     );

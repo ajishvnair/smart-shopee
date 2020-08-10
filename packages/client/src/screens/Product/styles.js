@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     unit: {
         fontWeight: "bold",
         paddingBottom: 3,
+        marginTop: 5,
     },
     infoDescriptionRecipe: {
         textAlign: "left",

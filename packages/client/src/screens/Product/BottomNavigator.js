@@ -8,7 +8,7 @@ import styles from "./styles";
 import QuantitySelector from "../../components/QuantitySelector/QuantitySelector";
 import AddToCart from "../../components/AddToCart/AddToCart";
 
-export default function ({ quantity, total, item }) {
+export default function ({ quantity, total, item, navigation }) {
     const dispatch = useDispatch();
     // get cart
     const cart = useSelector((state) => state.cart || []);
@@ -67,6 +67,7 @@ export default function ({ quantity, total, item }) {
                     available={checkAvailability(item.startTime, item.endTime)}
                     addTo={addTo}
                     loading={loading}
+                    navigation={navigation}
                 />
             </View>
         </View>

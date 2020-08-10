@@ -45,11 +45,13 @@ const ProductsScreen = ({ navigation }) => {
                 <Text style={styles.title}>{item.productNameMalayalam}</Text>
                 <Text style={styles.discountPrice}>
                     ₹ {item.sellingPrice}
-                    <Text style={styles.actualPrice}>
-                        {" "}
-                        ₹ {item.actualPrice}
-                    </Text>{" "}
-                    <Text style={styles.unit}>{item.unit}</Text>
+                    {item.actualPrice !== item.sellingPrice && (
+                        <Text style={styles.actualPrice}>
+                            {" "}
+                            ₹ {item.actualPrice}
+                        </Text>
+                    )}{" "}
+                    <Text style={styles.unit}>/{item.unit}</Text>
                 </Text>
             </View>
         </TouchableHighlight>

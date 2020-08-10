@@ -3,7 +3,7 @@ import { Image, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import styles from "./styles";
 
-export default function ({ available, addTo, loading }) {
+export default function ({ available, addTo, loading, navigation }) {
     return (
         <View style={styles.mainContainer}>
             <Button
@@ -21,7 +21,13 @@ export default function ({ available, addTo, loading }) {
                 buttonStyle={styles.mainContainer}
                 containerStyle={styles.container}
                 // operations
-                onPress={() => addTo()}
+                onPress={() => {
+                    if (available) {
+                        addTo();
+                    } else {
+                        navigation.navigate("Cart");
+                    }
+                }}
                 loading={loading}
             />
         </View>
