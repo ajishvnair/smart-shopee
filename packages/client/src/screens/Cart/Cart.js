@@ -153,6 +153,7 @@ const Cart = ({ navigation }) => {
                 productId: c.product._id,
                 productNameEnglish: c.product.productNameEnglish,
                 sellingPrice: c.product.sellingPrice,
+                unit: c.product.unit,
             }));
             navigation.navigate("Checkout", {
                 cart: [...newCartList],

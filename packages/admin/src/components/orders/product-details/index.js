@@ -14,18 +14,26 @@ export default function ({ values, visibility, setVisibility }) {
                         <Col>{product.productId}</Col>
                     </Row>
                     <Row>
+                        <Col span={8}>Unit</Col>
+                        <Col span={2}>{product.unit}</Col>
+                    </Row>
+                    <Row>
                         <Col span={8}>Quantity</Col>
                         <Col span={2}>{product.quantity}</Col>
                     </Row>
                     <Row>
                         <Col span={8}>Price</Col>
-                        <Col span={2}>{product.sellingPrice}</Col>
+                        <Col span={2}>
+                            {product.sellingPrice}
+                            {` `}Rs
+                        </Col>
                     </Row>
                     <Row>
                         <Col span={8}>Total</Col>
-                        <Col span={2}>
+                        <Col span={4}>
                             {parseInt(product.sellingPrice) *
                                 parseInt(product.quantity)}
+                            {` `}Rs
                         </Col>
                     </Row>
                 </Card>

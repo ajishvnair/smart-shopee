@@ -33,7 +33,7 @@ const MyDocument = ({ value }) => (
                 <Text>Phone Number:{`  ${value.mobileNo}`}</Text>
             </View>
             <View style={styles.section}>
-                <Text>Address:{`  ${value.location}`}</Text>
+                <Text>Location:{`  ${value.location}`}</Text>
             </View>
             <View style={styles.section}>
                 <Text>Address:{`  ${value.address}`}</Text>
@@ -50,10 +50,13 @@ const MyDocument = ({ value }) => (
                         <Text>{`${pro.productNameEnglish}`}</Text>
                     </View>
                     <View style={styles.product}>
+                        <Text>{`${pro.unit}`}</Text>
+                    </View>
+                    <View style={styles.product}>
                         <Text>{`${pro.quantity} unit`}</Text>
                     </View>
                     <View style={styles.product}>
-                        <Text>{`${pro.sellingPrice}/unit`}</Text>
+                        <Text>{`${pro.sellingPrice} Rs/unit`}</Text>
                     </View>
                 </View>
             ))}
