@@ -15,8 +15,9 @@ const getHeader = () => {
 
 export const httpProvider = {
     postAction: (url, payload) =>
-        axios.post(getBaseUrl(url), payload).catch((err) => {}),
-    getAction: (url) => axios.get(getBaseUrl(url)).catch((err) => {}),
+        axios.post(getBaseUrl(url), payload, getHeader()).catch((err) => {}),
+    getAction: (url) =>
+        axios.get(getBaseUrl(url), getHeader()).catch((err) => {}),
 };
 
 export const protectedHttpProvider = {
