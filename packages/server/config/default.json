@@ -1,4 +1,4 @@
 {
-    "HOST": 3001,
+    "HOST": 443,
     "mongoURI": "mongodb+srv://AjishVNair:JJMnjQNcwmDVR3bm@devcconnector.pz9j0.mongodb.net/smart-shopee?retryWrites=true&w=majority"
 }
