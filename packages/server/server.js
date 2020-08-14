@@ -34,9 +34,9 @@ app.use(express.json({ extended: false }));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
-app.use(express.static(`../admin/build`));
+app.use(express.static(`build`));
 app.get(`*`, (req, res) => {
-    res.sendFile(path.resolve(__dirname, `..`, `admin`, `build`, `index.html`));
+    res.sendFile(path.resolve(__dirname, `build`, `index.html`));
 });
 
 app.use("/uploads", express.static("uploads"));
