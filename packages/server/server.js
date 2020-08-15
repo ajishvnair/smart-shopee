@@ -35,7 +35,7 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(express.static(`build`));
-app.get(`*`, (req, res) => {
+app.get(`/admin`, (req, res) => {
     res.sendFile(path.resolve(__dirname, `build`, `index.html`));
 });
 
