@@ -13,7 +13,8 @@ export default function () {
     const [currentProducts, setCurrentProducts] = useState(null);
     const [completeLoading, setCompleteLoading] = useState(true);
 
-    useEffect(() => {
+    const getOrder = () => {
+        setCompleteLoading(true);
         protectedHttpProvider
             .getAction("api/v1/orders/get")
             .then((res) => {
@@ -28,6 +29,10 @@ export default function () {
                 });
                 setCompleteLoading(false);
             });
+    };
+
+    useEffect(() => {
+        getOrder();
     }, []);
 
     const handleShowProduct = (data) => {
@@ -166,6 +171,11 @@ export default function () {
                     setVisibility={setShowProduct}
                 />
             )}
+            <div className="add-button mg-10 ag-right">
+                <Button type="primary" onClick={() => getOrder()}>
+                    Refresh
+                </Button>
+            </div>
             <Spin size="large" spinning={completeLoading}>
                 <Table dataSource={deepClone(ordersList)} columns={columns} />
             </Spin>
