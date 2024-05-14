@@ -1,4 +1,4 @@
-A shpping application having server, we client and mobile client
+A shopping application having server, web client and mobile client
 
 How Run
  1. git clone git@github.com:ajishvnair/smart-shopee.git
